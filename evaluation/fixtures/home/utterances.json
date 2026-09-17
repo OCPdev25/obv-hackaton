@@ -1,0 +1,142 @@
+{
+  "$schema": "home-journeys/utterances v1",
+  "rubric": "art_uWsp80Fg v1.0",
+  "note": "Data only — inputs plus expected outcomes, independent of candidate code. Epochs are pinned by evaluation/src/home/timestamps.ts; validate.ts re-asserts equality.",
+  "actors": {
+    "mom": { "id": "actor-mom", "role": "parent", "householdId": "hh-primary", "grantedChildIds": ["child-lena"] },
+    "dad": { "id": "actor-dad", "role": "parent", "householdId": "hh-primary", "grantedChildIds": ["child-lena"] },
+    "ruth": { "id": "actor-ruth", "role": "caregiver", "householdId": "hh-primary", "grantedChildIds": ["child-lena"], "viaGrant": "grant-ruth-2026-10" },
+    "marcus": { "id": "actor-marcus", "role": "none", "householdId": null, "grantedChildIds": [] }
+  },
+  "children": [{ "id": "child-lena", "name": "Lena (synthetic)", "householdId": "hh-primary" }],
+  "captures": {
+    "u1": {
+      "captureId": "cap-u1-20261101",
+      "mode": "voice-transcript",
+      "actorId": "actor-mom",
+      "childId": "child-lena",
+      "capturedAt": 1793581200000,
+      "timezone": "America/New_York",
+      "raw": "Lena had half a banana at 8, then a total meltdown at drop-off, went down for her nap at 12:30 and slept till 2, and she used the potty twice this afternoon.",
+      "expected": {
+        "events": [
+          {
+            "category": "meal",
+            "occurrence": "exactly-one",
+            "occurredAt": 1793538000000,
+            "toleranceMs": 0,
+            "quantity": { "value": 0.5, "unit": "banana" },
+            "noteContains": ["banana"]
+          },
+          {
+            "category": "mood",
+            "occurrence": "at-least-one",
+            "occurredAtWindow": { "from": 1793538000000, "to": 1793554200000 },
+            "occurredAtAbsentAllowed": true,
+            "noteContains": ["meltdown"]
+          },
+          {
+            "category": "sleep",
+            "occurrence": "exactly-one",
+            "occurredAt": 1793554200000,
+            "toleranceMs": 0,
+            "quantity": { "value": 90, "unit": "minutes" }
+          },
+          {
+            "category": "potty",
+            "occurrence": "at-least-one",
+            "occurredAtWindow": { "from": 1793559600000, "to": 1793574000000 },
+            "occurredAtAbsentAllowed": false
+          }
+        ],
+        "extrasAllow": [{ "category": "potty", "quantity": { "value": 2, "unit": "times" } }],
+        "pottyCoverage": "two-events-or-quantity-two",
+        "forbiddenNoteSubstrings": ["three heads"]
+      }
+    },
+    "u2": {
+      "captureId": "cap-u2-20261101",
+      "mode": "text",
+      "actorId": "actor-mom",
+      "childId": "child-lena",
+      "capturedAt": 1793581200000,
+      "timezone": "America/New_York",
+      "raw": "Lena had half a banana at 8. Total meltdown at drop-off. Nap from 12:30 to 2. Used the potty twice this afternoon.",
+      "expectedNote": "Text-parity twin of u1: identical expected block (shared by reference via parityWith).",
+      "parityWith": "u1"
+    },
+    "u1b": {
+      "captureId": "cap-u1b-20261101",
+      "mode": "voice-transcript",
+      "actorId": "actor-mom",
+      "childId": "child-lena",
+      "capturedAt": 1793582100000,
+      "timezone": "America/New_York",
+      "stale": {
+        "fragmentRaw": "and also she wore her",
+        "fragmentAttempt": 1,
+        "resumedRaw": "and also she wore her dinosaur pajamas all day",
+        "resumedAttempt": 2,
+        "expectedWinnerEvents": 0,
+        "note": "Older attempt must lose to the newer attempt regardless of resolution order (P5). Winner has zero events — extraction never blocks capture."
+      }
+    },
+    "u3": {
+      "captureId": "cap-u3-20261101",
+      "mode": "voice-transcript",
+      "actorId": "actor-dad",
+      "childId": "child-lena",
+      "capturedAt": 1793553300000,
+      "timezone": "America/New_York",
+      "raw": "She ate like a horse at lunch — okay, two full servings of pasta — then told me the babysitter has three heads. She woke up from her nap about an hour ago; that nap was 45 minutes.",
+      "expected": {
+        "events": [
+          {
+            "category": "meal",
+            "occurrence": "exactly-one",
+            "occurredAtWindow": { "from": 1793547000000, "to": 1793553300000 },
+            "occurredAtAbsentAllowed": true,
+            "quantity": { "value": 2, "unit": "servings" },
+            "noteContains": ["pasta"]
+          },
+          {
+            "category": "sleep",
+            "occurrence": "exactly-one",
+            "occurredAtWindow": { "from": 1793547000000, "to": 1793549700000 },
+            "occurredAtAbsentAllowed": false,
+            "quantity": { "value": 45, "unit": "minutes" }
+          }
+        ],
+        "extrasAllow": [],
+        "exactly": true,
+        "forbiddenNoteSubstrings": ["three heads"]
+      }
+    }
+  },
+  "corrections": {
+    "u4": {
+      "viaStatement": "actually the nap was closer to an hour, not 45 minutes",
+      "targetCaptureId": "cap-u3-20261101",
+      "targetCategory": "sleep",
+      "expectPatch": { "quantity": { "value": 60, "unit": "minutes" } },
+      "byActorId": "actor-dad",
+      "note": "View selection supplies targetEventLocalId at runtime; NL statement must resolve to that same record or return UnresolvedReference — never guess."
+    },
+    "noTargetStatement": "actually the waffle was three waffles",
+    "rejectFromCaptureId": "cap-u1-20261101",
+    "rejectTargetCategory": "potty",
+    "rejectByActorId": "actor-dad"
+  },
+  "questions": {
+    "q1": { "actorId": "actor-ruth", "childId": "child-lena", "text": "What did she eat today?" },
+    "q2": { "actorId": "actor-ruth", "childId": "child-lena", "text": "When was her last nap?" },
+    "q3WriteAttempt": { "actorId": "actor-ruth", "childId": "child-lena", "text": "Log that she had a snack" },
+    "privateEntryId": "entry-o31-private",
+    "askAt": 1793628000000
+  },
+  "authorization": {
+    "nonMemberActorId": "actor-marcus",
+    "outOfScopeChildId": "child-theo",
+    "note": "child-theo belongs to another household; no history exists for it. Any access must fail closed with an empty disclosure."
+  }
+}
