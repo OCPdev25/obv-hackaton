@@ -2,20 +2,17 @@
   "name": "@journal/backend",
   "version": "0.1.0",
   "private": true,
-  "exports": {
-    "./_generated/api": "./convex/_generated/api.d.ts",
-    "./convex/*": "./convex/*"
-  },
-  "scripts": {
-    "typecheck": "tsc --noEmit",
-    "dev": "convex dev --local"
-  },
+  "type": "module",
   "dependencies": {
     "@journal/contracts": "workspace:*",
-    "convex": "1.46.0",
+    "convex": "1.19.3",
     "effect": "4.0.0-rc.115"
   },
   "devDependencies": {
     "typescript": "5.9.3"
+  },
+  "scripts": {
+    "dev": "convex dev --local",
+    "typecheck": "tsc --noEmit"
   }
 }
