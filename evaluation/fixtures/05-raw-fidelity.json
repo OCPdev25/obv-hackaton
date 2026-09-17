@@ -1,0 +1,24 @@
+{
+  "id": "raw-fidelity",
+  "kind": "raw-fidelity",
+  "description": "The raw transcript must survive a validation failure and a retry byte-for-byte (UTF-8): no normalization (NFC/NFD), no trimming, no re-encoding. Byte equality is checked via SHA-256 on the created entry, the replayed entry, and the timeline read.",
+  "capture": { "capturedAt": 1789563600000, "timezone": "America/New_York", "authorId": "caregiver-1" },
+  "cases": [
+    {
+      "id": "raw-after-validation-failure",
+      "captureId": "cap-raw-001",
+      "transcript": "∆∆∆ no events here \u0000\r\n trailing   \t",
+      "expectCreated": true,
+      "expectedEvents": []
+    },
+    {
+      "id": "raw-across-retry",
+      "captureId": "cap-raw-002",
+      "transcript": "Ava drank 6 ounces of water at 11:30 AM. 🐧 nai\u0308ve  \r\n\t ",
+      "expectCreated": true,
+      "expectedEvents": [
+        { "category": "meal", "occurredAt": 1789572600000, "quantity": { "value": 6, "unit": "oz" }, "noteContains": ["water"] }
+      ]
+    }
+  ]
+}

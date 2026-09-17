@@ -1,0 +1,8 @@
+{
+  "id": "malformed-extraction",
+  "kind": "malformed-extraction",
+  "description": "Raw input from which no schema-valid event can be faithfully extracted. Extraction must fail without blocking capture (contract: events may be empty) and the raw transcript must be preserved byte-for-byte.",
+  "capture": { "capturedAt": 1789563600000, "timezone": "America/New_York", "authorId": "caregiver-1" },
+  "input": { "captureId": "cap-malformed-001", "transcript": "!!! ??? ~~~ [unintelligible] \u0000\u0001\t   \u007f" },
+  "expected": { "entryCreated": true, "events": [], "rawPreserved": true }
+}

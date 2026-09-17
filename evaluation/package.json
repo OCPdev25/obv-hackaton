@@ -1,0 +1,17 @@
+{
+  "name": "@journal/evaluation",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Shared acceptance/evaluation corpus and candidate-agnostic harness for the Shared Child Journal arena cross-review.",
+  "scripts": {
+    "eval": "bun src/run.ts",
+    "test": "bun src/run.ts",
+    "typecheck": "tsc --noEmit",
+    "eval:broken": "bun src/run.ts --adapter=./src/example/broken-adapter.ts --expect-failure"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.0",
+    "typescript": "^5.9.3"
+  }
+}

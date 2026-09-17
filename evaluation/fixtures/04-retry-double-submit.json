@@ -1,0 +1,12 @@
+{
+  "id": "retry-double-submit",
+  "kind": "retry-double-submit",
+  "description": "The same capture submitted twice (network retry / double tap) must produce exactly one persisted event set; the second submission is an idempotent replay of the first record, not a new entry.",
+  "capture": { "capturedAt": 1789563600000, "timezone": "America/New_York", "authorId": "caregiver-1" },
+  "input": { "captureId": "cap-retry-001", "transcript": "Ava went poop on the potty at 10:15 AM." },
+  "expected": {
+    "events": [
+      { "category": "potty", "occurredAt": 1789568100000, "noteContains": ["potty"] }
+    ]
+  }
+}

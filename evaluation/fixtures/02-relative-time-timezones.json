@@ -1,0 +1,78 @@
+{
+  "id": "relative-time-timezones",
+  "kind": "relative-time",
+  "description": "Relative expressions must resolve to the same absolute instant regardless of capture zone, using the IANA offset at the resolved instant (correct across DST).",
+  "conventions": {
+    "this morning": "08:00 local time on the capture date, in the capture zone",
+    "yesterday 6pm": "18:00 local time on the calendar day before the capture date, in the capture zone (offset at that instant, so DST-safe)",
+    "an hour ago": "capturedAt minus exactly 3600000 ms (zone-independent)",
+    "just now": "capturedAt exactly (zone-independent)"
+  },
+  "authorId": "caregiver-1",
+  "cases": [
+    {
+      "id": "this-morning-et",
+      "captureId": "cap-rel-01",
+      "transcript": "She went poop on the potty this morning.",
+      "capturedAt": 1789563600000,
+      "timezone": "America/New_York",
+      "expected": { "category": "potty", "occurredAt": 1789560000000, "noteContains": ["potty"] }
+    },
+    {
+      "id": "yesterday-6pm-et",
+      "captureId": "cap-rel-02",
+      "transcript": "She had a big bowl of pasta yesterday 6pm.",
+      "capturedAt": 1789563600000,
+      "timezone": "America/New_York",
+      "expected": { "category": "meal", "occurredAt": 1789509600000, "noteContains": ["pasta"] }
+    },
+    {
+      "id": "yesterday-6pm-akl-nzst",
+      "captureId": "cap-rel-03",
+      "transcript": "She had a big bowl of pasta yesterday 6pm.",
+      "capturedAt": 1789520400000,
+      "timezone": "Pacific/Auckland",
+      "expected": { "category": "meal", "occurredAt": 1789452000000, "noteContains": ["pasta"] }
+    },
+    {
+      "id": "yesterday-6pm-akl-nzdt",
+      "captureId": "cap-rel-04",
+      "transcript": "She had a big bowl of pasta yesterday 6pm.",
+      "capturedAt": 1790647200000,
+      "timezone": "Pacific/Auckland",
+      "expected": { "category": "meal", "occurredAt": 1790571600000, "noteContains": ["pasta"] }
+    },
+    {
+      "id": "yesterday-6pm-et-est",
+      "captureId": "cap-rel-05",
+      "transcript": "She had a big bowl of pasta yesterday 6pm.",
+      "capturedAt": 1793671200000,
+      "timezone": "America/New_York",
+      "expected": { "category": "meal", "occurredAt": 1793574000000, "noteContains": ["pasta"] }
+    },
+    {
+      "id": "an-hour-ago-utc",
+      "captureId": "cap-rel-06",
+      "transcript": "She went poop on the potty an hour ago.",
+      "capturedAt": 1789549200000,
+      "timezone": "UTC",
+      "expected": { "category": "potty", "occurredAt": 1789545600000, "noteContains": ["potty"] }
+    },
+    {
+      "id": "just-now-utc",
+      "captureId": "cap-rel-07",
+      "transcript": "She went poop on the potty just now.",
+      "capturedAt": 1789549200000,
+      "timezone": "UTC",
+      "expected": { "category": "potty", "occurredAt": 1789549200000, "noteContains": ["potty"] }
+    },
+    {
+      "id": "this-morning-akl-nzdt",
+      "captureId": "cap-rel-08",
+      "transcript": "She went poop on the potty this morning.",
+      "capturedAt": 1790647200000,
+      "timezone": "Pacific/Auckland",
+      "expected": { "category": "potty", "occurredAt": 1790622000000, "noteContains": ["potty"] }
+    }
+  ]
+}

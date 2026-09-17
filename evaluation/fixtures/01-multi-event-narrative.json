@@ -1,0 +1,14 @@
+{
+  "id": "multi-event-narrative",
+  "kind": "multi-event-narrative",
+  "description": "One narrative dictation yields multiple events; count and transcript order must be preserved exactly.",
+  "capture": { "capturedAt": 1789563600000, "timezone": "America/New_York", "authorId": "caregiver-1" },
+  "input": { "transcript": "Ava had 8 ounces of milk with breakfast at 8:00 AM. Then she went poop on the potty at 9:30 AM. Before lunch she was really happy and giggly at 12:45 PM." },
+  "expected": {
+    "events": [
+      { "category": "meal", "occurredAt": 1789560000000, "quantity": { "value": 8, "unit": "oz" }, "noteContains": ["milk"] },
+      { "category": "potty", "occurredAt": 1789565400000, "noteContains": ["potty"] },
+      { "category": "mood", "occurredAt": 1789577100000, "noteContains": ["giggly"] }
+    ]
+  }
+}

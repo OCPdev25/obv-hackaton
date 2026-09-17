@@ -1,0 +1,26 @@
+{
+  "id": "reload-persistence",
+  "kind": "reload-persistence",
+  "description": "After a simulated cold start (adapter.reload()), the persisted timeline must be identical to what was observed before reload — no lost, duplicated, reordered, or mutated events.",
+  "capture": { "capturedAt": 1789563600000, "timezone": "America/New_York", "authorId": "caregiver-1" },
+  "inputs": [
+    {
+      "captureId": "cap-reload-001",
+      "transcript": "Ava had 4 ounces of water with her snack at 3:00 PM.",
+      "expected": {
+        "events": [
+          { "category": "meal", "occurredAt": 1789585200000, "quantity": { "value": 4, "unit": "oz" }, "noteContains": ["water"] }
+        ]
+      }
+    },
+    {
+      "captureId": "cap-reload-002",
+      "transcript": "Ava was super sleepy at bedtime at 7:30 PM.",
+      "expected": {
+        "events": [
+          { "category": "sleep", "occurredAt": 1789601400000, "noteContains": ["sleepy"] }
+        ]
+      }
+    }
+  ]
+}
