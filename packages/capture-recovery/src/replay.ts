@@ -1,4 +1,5 @@
 import { Schema } from "effect"
+import { CaptureId } from "@journal/domain"
 
 import { bannerFor, RecoveryBanner } from "./banner.js"
 import { CaptureEvent } from "./events.js"
@@ -98,7 +99,10 @@ const check = (name: string, expected: unknown, actual: unknown): Check => ({
  * persisted); scenario expectations are returned as checks, not thrown.
  */
 export const runFixture = (fixture: Fixture): FixtureRunResult => {
-  let state: CaptureRecovery = createCapture({ ...fixture.capture })
+  let state: CaptureRecovery = createCapture({
+    ...fixture.capture,
+    captureId: Schema.decodeUnknownSync(CaptureId)(fixture.capture.captureId),
+  })
   const storage = new InMemoryCaptureStorage()
   storage.save(state)
 

@@ -2,6 +2,7 @@ import { describe, expect, test } from "bun:test"
 import { readdirSync, readFileSync } from "node:fs"
 import { join } from "node:path"
 import { Schema } from "effect"
+import { CaptureId } from "@journal/domain"
 
 import {
   CaptureEvent,
@@ -18,6 +19,8 @@ import {
   type CaptureRecovery,
   type FixtureRunResult,
 } from "../src/index.js"
+
+const asCaptureId = Schema.decodeUnknownSync(CaptureId)
 
 const fixturesDir = join(import.meta.dir, "..", "fixtures")
 
@@ -124,7 +127,7 @@ describe("recovery fixture replay", () => {
 
 describe("reducer invariants", () => {
   const base: CaptureRecovery = createCapture({
-    captureId: "cap-invariant",
+    captureId: asCaptureId("cap-invariant"),
     authorId: "caregiver-1",
     at: 1_000,
   })
@@ -205,7 +208,7 @@ describe("reducer invariants", () => {
 })
 
 describe("truthful UI projection", () => {
-  const base = createCapture({ captureId: "cap-ui", authorId: "caregiver-1", at: 1_000 })
+  const base = createCapture({ captureId: asCaptureId("cap-ui"), authorId: "caregiver-1", at: 1_000 })
 
   test("pending never claims saved; failed copy names the problem and keeps the raw safe", () => {
     let state = base
@@ -261,14 +264,14 @@ describe("storage contract", () => {
 
   test("unresolved captures and discard receipts are listed separately", () => {
     const storage = new InMemoryCaptureStorage()
-    const live = createCapture({ captureId: "cap-live", authorId: "caregiver-1", at: 1_000 })
-    let dead = createCapture({ captureId: "cap-dead", authorId: "caregiver-1", at: 2_000 })
+    const live = createCapture({ captureId: asCaptureId("cap-live"), authorId: "caregiver-1", at: 1_000 })
+    let dead = createCapture({ captureId: asCaptureId("cap-dead"), authorId: "caregiver-1", at: 2_000 })
     dead = reduce(dead, { _tag: "TranscriptChanged", at: 3_000, text: "private note" })
     dead = reduce(dead, { _tag: "DiscardRequested", at: 4_000 })
     storage.save(live)
     storage.save(dead)
-    expect(storage.listUnresolved().map((s) => s.captureId)).toEqual(["cap-live"])
-    expect(storage.listReceipts().map((s) => s.captureId)).toEqual(["cap-dead"])
+    expect(storage.listUnresolved().map((s) => s.captureId)).toEqual([asCaptureId("cap-live")])
+    expect(storage.listReceipts().map((s) => s.captureId)).toEqual([asCaptureId("cap-dead")])
   })
 
   test("fail-closed read: a corrupt stored record cannot enter the machine", () => {

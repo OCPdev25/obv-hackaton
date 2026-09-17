@@ -1,5 +1,5 @@
 import { Schema } from "effect"
-import { ExtractionAttempt } from "@journal/domain"
+import { AttemptNumber } from "@journal/domain"
 
 import { FailureReason } from "./state.js"
 
@@ -47,14 +47,14 @@ export const SubmitAccepted = Schema.TaggedStruct("SubmitAccepted", {
 
 export const SubmitRejected = Schema.TaggedStruct("SubmitRejected", {
   at: Schema.Number,
-  attempt: ExtractionAttempt,
+  attempt: AttemptNumber,
   reason: FailureReason,
 })
 
 /** Decoded extraction result for (captureId, attempt) — latest-attempt-only. */
 export const ExtractionResultArrived = Schema.TaggedStruct("ExtractionResultArrived", {
   at: Schema.Number,
-  attempt: ExtractionAttempt,
+  attempt: AttemptNumber,
   outcome: ExtractionOutcome,
 })
 
