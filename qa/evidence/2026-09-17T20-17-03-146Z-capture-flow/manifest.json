@@ -1,0 +1,304 @@
+{
+  "manifestVersion": 1,
+  "runId": "2026-09-17T20-17-03-146Z-capture-flow",
+  "platform": "browser",
+  "driver": "qa/record.ts (playwright chromium 153.0.8010.12)",
+  "capturedAt": "2026-09-17T20:17:05.503Z",
+  "headSha": "8de8cfadfad0c2a9633d1ccee5c2a7e706dcec4b",
+  "branch": "HEAD",
+  "worktreeDirty": false,
+  "pr": null,
+  "scenario": "capture-flow",
+  "scenarioTitle": "Capture → inspect → correct → save (failure/recovery) → reopen → handoff",
+  "fixtureSeed": {
+    "corpus": "evaluation/fixtures",
+    "fixtureIds": [
+      "multi-event-narrative",
+      "malformed-extraction",
+      "retry-double-submit",
+      "raw-fidelity",
+      "reload-persistence"
+    ],
+    "capturedAtMs": 1789563600000,
+    "timezone": "America/New_York",
+    "authorId": "caregiver-1",
+    "note": "Synthetic family data only (fictional child 'Ava', synthetic caregiver-1) — no real persons, no credentials."
+  },
+  "environment": {
+    "node": "v24.3.0",
+    "bun": "1.3.14",
+    "browser": "chromium 153.0.8010.12 (headless shell)",
+    "viewport": "1440x900",
+    "adapter": "evaluation/src/example/example-adapter.ts (in-memory, corpus known-good)",
+    "backend": "in-memory — reopen = adapter.reload() cold-start equivalence",
+    "servedFrom": "http://127.0.0.1:38477"
+  },
+  "steps": [
+    {
+      "id": "tc-1",
+      "name": "capture",
+      "title": "Capture preserves the raw transcript byte-for-byte and issues a resilient captureId",
+      "status": "pass",
+      "fixtureIds": [
+        "multi-event-narrative"
+      ],
+      "assertions": [
+        {
+          "name": "createEntry resolved Created",
+          "pass": true,
+          "detail": "state=created"
+        },
+        {
+          "name": "captureId assigned (resilient capture identity)",
+          "pass": true,
+          "detail": "cap-demo-001"
+        },
+        {
+          "name": "raw transcript preserved byte-for-byte (SHA-256, computed in page)",
+          "pass": true
+        },
+        {
+          "name": "raw fidelity verdict visible in UI",
+          "pass": true,
+          "detail": "input  sha256 87e8cd1ceec7f8d2…   stored sha256 87e8cd1ceec7f8d2…   ✓ byte-for-byte preserved"
+        }
+      ],
+      "assets": [
+        {
+          "file": "tc-1-capture-form.png",
+          "role": "before"
+        },
+        {
+          "file": "tc-1-capture.png",
+          "role": "result"
+        }
+      ]
+    },
+    {
+      "id": "tc-2",
+      "name": "inspect",
+      "title": "Inspect shows extracted typed events with resolved instants from the corpus fixture",
+      "status": "pass",
+      "fixtureIds": [
+        "multi-event-narrative"
+      ],
+      "assertions": [
+        {
+          "name": "event count matches fixture (3)",
+          "pass": true,
+          "detail": "3"
+        },
+        {
+          "name": "categories in transcript order [meal, potty, mood]",
+          "pass": true,
+          "detail": "meal,potty,mood"
+        },
+        {
+          "name": "occurredAt resolved to fixture-expected instants (relative-time + timezone)",
+          "pass": true,
+          "detail": "1789560000000,1789565400000,1789577100000 vs 1789560000000,1789565400000,1789577100000"
+        },
+        {
+          "name": "confidences finite within [0,1]",
+          "pass": true
+        }
+      ],
+      "assets": [
+        {
+          "file": "tc-2-inspect.png",
+          "role": "result"
+        }
+      ]
+    },
+    {
+      "id": "tc-3",
+      "name": "correct",
+      "title": "Correct: malformed capture is stored raw with zero events (captured_with_event_errors); corrected capture succeeds",
+      "status": "pass",
+      "fixtureIds": [
+        "malformed-extraction",
+        "retry-double-submit"
+      ],
+      "assertions": [
+        {
+          "name": "malformed capture persisted (extraction failure never blocks capture)",
+          "pass": true,
+          "detail": "state=created"
+        },
+        {
+          "name": "zero schema-valid events extracted",
+          "pass": true,
+          "detail": "0"
+        },
+        {
+          "name": "captured_with_event_errors badge shown",
+          "pass": true
+        },
+        {
+          "name": "raw preserved byte-for-byte through validation failure (control chars intact)",
+          "pass": true
+        },
+        {
+          "name": "corrected capture created",
+          "pass": true,
+          "detail": "state=created"
+        },
+        {
+          "name": "corrected capture extracted exactly one potty event",
+          "pass": true,
+          "detail": "potty"
+        }
+      ],
+      "assets": [
+        {
+          "file": "tc-3-correct-before.png",
+          "role": "error"
+        },
+        {
+          "file": "tc-3-correct-after.png",
+          "role": "result"
+        }
+      ]
+    },
+    {
+      "id": "tc-4",
+      "name": "save-failure-recovery",
+      "title": "Save: backend failure surfaces an error state without persisting; retry recovers; double-submit is an idempotent replay",
+      "status": "pass",
+      "fixtureIds": [
+        "retry-double-submit"
+      ],
+      "assertions": [
+        {
+          "name": "simulated backend failure surfaced as visible error state",
+          "pass": true,
+          "detail": "Simulated backend failure — qa fail-save injection"
+        },
+        {
+          "name": "failed save did not persist (timeline unchanged)",
+          "pass": true,
+          "detail": "3 → 3"
+        },
+        {
+          "name": "retry persisted the entry (recovery)",
+          "pass": true,
+          "detail": "state=created"
+        },
+        {
+          "name": "double-submit resolved IdempotentReplay (original wins)",
+          "pass": true,
+          "detail": "state=idempotent-replay"
+        },
+        {
+          "name": "no second entry persisted after replay",
+          "pass": true,
+          "detail": "4 → 4"
+        },
+        {
+          "name": "captureIds in timeline unique",
+          "pass": true,
+          "detail": "4/4"
+        }
+      ],
+      "assets": [
+        {
+          "file": "tc-4-save-error.png",
+          "role": "error"
+        },
+        {
+          "file": "tc-4-save-recovered.png",
+          "role": "result"
+        }
+      ]
+    },
+    {
+      "id": "tc-5",
+      "name": "reopen",
+      "title": "Reopen: cold-start reload re-reads the durable timeline — nothing lost, duplicated, or mutated; transcripts byte-identical",
+      "status": "pass",
+      "fixtureIds": [
+        "reload-persistence",
+        "raw-fidelity"
+      ],
+      "assertions": [
+        {
+          "name": "timeline re-read after simulated cold start",
+          "pass": true,
+          "detail": "state=reloaded"
+        },
+        {
+          "name": "no entries lost across reload",
+          "pass": true,
+          "detail": "6 → 6"
+        },
+        {
+          "name": "all transcripts byte-identical after reload (SHA-256, incl. unicode/control-char raw)",
+          "pass": true,
+          "detail": "5/5 matched"
+        },
+        {
+          "name": "no duplicated captures after reload",
+          "pass": true,
+          "detail": "6/6"
+        }
+      ],
+      "assets": [
+        {
+          "file": "tc-5-reopen.png",
+          "role": "result"
+        }
+      ]
+    },
+    {
+      "id": "tc-6",
+      "name": "handoff",
+      "title": "Handoff: invited caregiver reads the attributed timeline; unrelated viewer is fail-closed denied",
+      "status": "pass",
+      "fixtureIds": [
+        "reload-persistence",
+        "malformed-extraction"
+      ],
+      "assertions": [
+        {
+          "name": "invited caregiver authorized — timeline visible",
+          "pass": true,
+          "detail": "authorized=true count=6 (expected 6)"
+        },
+        {
+          "name": "author attribution visible in timeline row",
+          "pass": true,
+          "detail": "cap-demo-001 · draft · by caregiver-1 · 3 event(s) · 2026-09-16T13:00:00.000Z\"Ava had 8 ou"
+        },
+        {
+          "name": "unrelated viewer fail-closed: nothing rendered",
+          "pass": true,
+          "detail": "authorized=false count=0"
+        },
+        {
+          "name": "denial message visible",
+          "pass": true
+        }
+      ],
+      "assets": [
+        {
+          "file": "tc-6-handoff-authorized.png",
+          "role": "result"
+        },
+        {
+          "file": "tc-6-handoff-denied.png",
+          "role": "error"
+        }
+      ]
+    }
+  ],
+  "videos": [
+    {
+      "file": "tc-flow-session.webm",
+      "role": "recording"
+    }
+  ],
+  "notes": [
+    "Platform: browser (headless Chromium). Native (iOS) recording pending — Apple worker adapter contract: qa/README.md.",
+    "Adapter: the evaluation corpus's worked example (in-memory, known-good). Master's product UI is an arena-held candidate lineage, so this recording evidences the flow PROTOCOL + harness; the same tooling records the product UI when it lands (point --scenario steps at the app URL)."
+  ]
+}
