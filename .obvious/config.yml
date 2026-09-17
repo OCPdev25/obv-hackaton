@@ -1,0 +1,5 @@
+# Default repository policy for obv-hackaton.
+# Auto-detected from GitHub repo settings (all merge methods enabled).
+version: 1
+defaultBranch: master
+mergeMethod: squash
