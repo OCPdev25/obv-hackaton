@@ -31,6 +31,7 @@ packages/extraction  Transcript → typed events pipeline (stub, no LLM call yet
 packages/month-history  Deterministic month-history view model + executable journeys (28-check rubric, `bun src/run.ts`)
 packages/ui          Shared RN primitives
 evaluation/          Acceptance corpus (6 fixtures) + candidate-agnostic cross-review harness
+qa/                  Standalone Playwright flow-recording harness + evidence receipts (bun, not a workspace member)
 security/            THREAT-MODEL.md + executable fail-closed access cases (17 tests)
 deploy/              Thin-path deployment evidence (dev deployment reliable-panther-823)
 ```
@@ -68,7 +69,10 @@ The security suite and evaluation harness are standalone (`security/` and
 does not cover them — run them locally whenever you touch `security/`,
 `evaluation/`, or the domain contracts. `.github/workflows/verification.yml`
 runs both suites (plus the evaluation negative control and the
-verification-gate validator tests) on every PR and push to `master`.
+verification-gate validator tests) on every PR and push to `master`. The
+`qa/` flow-recording harness is standalone the same way: run
+`cd qa && bun run typecheck && bun run record --scenario=capture-flow` when
+you touch it (see `qa/README.md`).
 
 ## Verification gate (executable merge workflow)
 

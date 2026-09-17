@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Flow Recording Console (QA fixture)</title>
+  <style>
+    :root { color-scheme: light; }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+      background: #f6f7f9; color: #1c2430; font-size: 15px; line-height: 1.45;
+    }
+    header { background: #14213d; color: #fff; padding: 18px 28px; }
+    header h1 { margin: 0 0 4px; font-size: 20px; }
+    header p { margin: 0; color: #c9d2e3; font-size: 13px; }
+    main { max-width: 980px; margin: 24px auto 60px; padding: 0 24px; display: grid; gap: 18px; }
+    section { background: #fff; border: 1px solid #dde3ec; border-radius: 10px; padding: 18px 22px; }
+    h2 { margin: 0 0 12px; font-size: 16px; color: #14213d; }
+    h3 { margin: 16px 0 6px; font-size: 14px; color: #3c4a63; }
+    label { display: block; font-size: 13px; color: #3c4a63; margin: 10px 0 2px; }
+    textarea, input, select {
+      width: 100%; padding: 8px 10px; border: 1px solid #c7cfdb; border-radius: 6px;
+      font: 13px/1.4 ui-monospace, "SF Mono", Menlo, monospace; background: #fbfcfe; color: #1c2430;
+    }
+    select { font-family: inherit; }
+    .row { display: flex; gap: 14px; align-items: center; margin-top: 12px; }
+    .row label { display: flex; gap: 6px; align-items: center; margin: 0; }
+    .row input[type="checkbox"] { width: auto; }
+    button {
+      background: #14213d; color: #fff; border: 0; border-radius: 6px; padding: 9px 18px;
+      font-size: 14px; cursor: pointer;
+    }
+    button:active { transform: translateY(1px); }
+    code { background: #eef1f6; border-radius: 4px; padding: 1px 6px; font-size: 12.5px; }
+    pre {
+      background: #101623; color: #d7e2f2; border-radius: 8px; padding: 12px 14px;
+      overflow-x: auto; white-space: pre-wrap; word-break: break-all; font-size: 12.5px; margin: 6px 0;
+    }
+    .state { font-weight: 600; padding: 2px 10px; border-radius: 999px; font-size: 13px; }
+    .state-created { background: #d9f2e3; color: #116234; }
+    .state-replay { background: #e3e8f7; color: #2c3e8f; }
+    .state-rejected { background: #f7e3d9; color: #8f3c11; }
+    .state-error { background: #f8d9d9; color: #8f1120; }
+    .state-reloaded { background: #d9eef7; color: #115d8f; }
+    .state-idle { background: #e7e9ee; color: #4a5468; }
+    .badge {
+      display: inline-block; background: #fff4d9; color: #7a5410; border: 1px solid #ecd9a0;
+      border-radius: 6px; padding: 6px 10px; font-size: 13px; margin: 8px 0;
+    }
+    .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+    .chip {
+      background: #eef4ff; border: 1px solid #c8d8f7; color: #1e3f7a; border-radius: 999px;
+      padding: 5px 12px; font-size: 12.5px;
+    }
+    #timeline { list-style: none; margin: 8px 0 0; padding: 0; display: grid; gap: 10px; }
+    #timeline li { border: 1px solid #e3e8f0; border-radius: 8px; padding: 10px 12px; background: #fbfcfe; }
+    .muted { color: #66738a; font-size: 12.5px; }
+    .ok { color: #116234; font-weight: 600; }
+    .bad { color: #8f1120; font-weight: 600; }
+    #timeline-denied {
+      background: #f8d9d9; color: #7a1120; border: 1px solid #e5b3b8;
+      border-radius: 8px; padding: 12px 14px; font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Shared Child Journal — Flow Recording Console</h1>
+    <p>QA fixture page (not product UI). Drives the acceptance-corpus <code>CandidateAdapter</code> protocol end to end. Synthetic family data only.</p>
+  </header>
+  <main>
+    <section id="capture-form">
+      <h2>Capture</h2>
+      <label for="transcript">Transcript (verbatim, byte-for-byte)</label>
+      <textarea id="transcript" rows="4"></textarea>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        <div>
+          <label for="captured-at">Captured at (unix ms)</label>
+          <input id="captured-at" value="1789563600000" />
+        </div>
+        <div>
+          <label for="timezone">Timezone</label>
+          <input id="timezone" value="America/New_York" />
+        </div>
+        <div>
+          <label for="author-id">Author</label>
+          <input id="author-id" value="caregiver-1" />
+        </div>
+        <div>
+          <label for="capture-id">Capture ID (blank = auto)</label>
+          <input id="capture-id" placeholder="auto" />
+        </div>
+      </div>
+      <div class="row">
+        <button id="capture-btn" type="button">Capture</button>
+        <label><input type="checkbox" id="fail-save" /> fail next save</label>
+        <button id="reload-btn" type="button">Reload (cold start)</button>
+      </div>
+    </section>
+
+    <section id="capture-result">
+      <h2>Inspect</h2>
+      <p>State: <code id="capture-state" class="state state-idle">idle</code> <span id="capture-id-echo" class="muted"></span></p>
+      <p id="result-message" class="muted"></p>
+      <div id="event-errors-badge" class="badge" hidden>
+        captured_with_event_errors — no schema-valid event could be extracted; raw transcript preserved (extraction failure never blocks capture)
+      </div>
+      <div id="events" class="chips"></div>
+      <h3>Raw fidelity (byte-for-byte, SHA-256)</h3>
+      <pre id="raw-echo">—</pre>
+      <p id="raw-sha" class="muted">—</p>
+      <p id="error-message" class="bad" hidden></p>
+    </section>
+
+    <section id="timeline-section">
+      <h2>Timeline</h2>
+      <div id="timeline-denied" hidden>Fail-closed: this viewer holds no household grant for this child — timeline hidden.</div>
+      <ol id="timeline"></ol>
+    </section>
+
+    <section id="handoff-section">
+      <h2>Handoff (viewer role)</h2>
+      <label for="role-select">Viewing as</label>
+      <select id="role-select">
+        <option value="parent">parent (household)</option>
+        <option value="caregiver-invited">caregiver (invited)</option>
+        <option value="unauthorized-viewer">unrelated viewer (no household grant)</option>
+      </select>
+      <p id="role-banner" class="muted"></p>
+    </section>
+  </main>
+  <script src="/console.js" defer></script>
+</body>
+</html>
