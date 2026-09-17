@@ -1,0 +1,52 @@
+{
+  "kind": "knowledge-items",
+  "id": "knowledge-05-conflicting-reports",
+  "description": "Synthetic conflicting reports: mom and dad report different bedtimes. Both items stay CURRENT with their own attribution — neither overwrites the other, no automatic winner, no silent merge. The conflict is surfaced by query on the shared topic; a resolution would be a superseding append, never an edit.",
+  "items": [
+    {
+      "householdId": "synthetic-household-0001",
+      "childId": "synthetic-child-0001",
+      "kind": "settling",
+      "topic": "bedtime",
+      "statement": "Bedtime is 7:30 pm on school nights and she is asleep within minutes.",
+      "status": "current",
+      "validFrom": 1789498800000,
+      "statedBy": "caregiver-mom",
+      "recordedBy": "caregiver-mom",
+      "provenanceKind": "caregiver-stated",
+      "confidence": 0.8,
+      "sourceType": "entry",
+      "sourceEntryId": "synthetic-entry-0005",
+      "sourceSpan": { "start": 0, "end": 66 },
+      "sourceQuote": "7:30 sharp on school nights and she's out within minutes.",
+      "visibility": "published",
+      "createdAt": 1789588800000
+    },
+    {
+      "householdId": "synthetic-household-0001",
+      "childId": "synthetic-child-0001",
+      "kind": "settling",
+      "topic": "bedtime",
+      "statement": "Bedtime is closer to 8:15 pm on school nights — the 7:30 attempt has never once worked.",
+      "status": "current",
+      "validFrom": 1789498800000,
+      "statedBy": "caregiver-dad",
+      "recordedBy": "caregiver-dad",
+      "provenanceKind": "caregiver-stated",
+      "confidence": 0.75,
+      "sourceType": "conversation",
+      "sourceRef": "synthetic-conversation-0015",
+      "sourceQuote": "Honestly, 8:15 is the real bedtime. The 7:30 attempt has never once worked.",
+      "visibility": "published",
+      "createdAt": 1789588800000
+    }
+  ],
+  "expected": {
+    "itemCount": 2,
+    "topics": ["bedtime"],
+    "kindCounts": { "settling": 2 },
+    "statusCounts": { "current": 2 },
+    "supersedesCount": 0,
+    "conflictTopics": ["bedtime"]
+  }
+}

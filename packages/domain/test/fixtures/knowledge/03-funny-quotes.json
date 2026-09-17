@@ -1,0 +1,57 @@
+{
+  "kind": "knowledge-items",
+  "id": "knowledge-03-funny-quotes",
+  "description": "Synthetic verbatim quotes spoken by the child, each with speaker attribution and a preserved source snippet. quoteText is the exact words; sourceQuote is the exact raw source text they came from — both stay verbatim.",
+  "items": [
+    {
+      "householdId": "synthetic-household-0001",
+      "childId": "synthetic-child-0001",
+      "kind": "quote",
+      "topic": "sayings",
+      "statement": "Car-seat astronomy at dusk on the way home from grandma's.",
+      "quoteText": "The moon is following our car. It loves us.",
+      "spokenBy": "child",
+      "status": "current",
+      "validFrom": 1789588800000,
+      "statedBy": "caregiver-dad",
+      "recordedBy": "caregiver-dad",
+      "provenanceKind": "caregiver-stated",
+      "confidence": 0.95,
+      "sourceType": "entry",
+      "sourceEntryId": "synthetic-entry-0003",
+      "sourceSpan": { "start": 12, "end": 96 },
+      "sourceQuote": "From the back seat, completely serious: 'The moon is following our car. It loves us.'",
+      "visibility": "published",
+      "createdAt": 1789588800000
+    },
+    {
+      "householdId": "synthetic-household-0001",
+      "childId": "synthetic-child-0001",
+      "kind": "quote",
+      "topic": "sayings",
+      "statement": "Delivered solemnly at breakfast — the family's benchmark for when to stop singing.",
+      "quoteText": "Dada, your singing is broken.",
+      "spokenBy": "child",
+      "status": "current",
+      "validFrom": 1789588800000,
+      "statedBy": "caregiver-mom",
+      "recordedBy": "caregiver-mom",
+      "provenanceKind": "caregiver-confirmed",
+      "confidence": 1,
+      "sourceType": "conversation",
+      "sourceRef": "synthetic-conversation-0011",
+      "sourceQuote": "'Dada, your singing is broken.' — she waited for me to stop before adding 'again.'",
+      "visibility": "published",
+      "createdAt": 1789588800000
+    }
+  ],
+  "expected": {
+    "itemCount": 2,
+    "topics": ["sayings"],
+    "kindCounts": { "quote": 2 },
+    "statusCounts": { "current": 2 },
+    "supersedesCount": 0,
+    "spokenByCounts": { "child": 2 },
+    "conflictTopics": []
+  }
+}

@@ -1,0 +1,69 @@
+{
+  "kind": "knowledge-items",
+  "id": "knowledge-01-settling-preferences",
+  "description": "Synthetic settling preferences with full source attribution: one model-extracted from a journal transcript, one stated by dad in conversation, one manually authored by an invited caregiver as a draft pending review. No event extraction — knowledge is a separate layer.",
+  "items": [
+    {
+      "householdId": "synthetic-household-0001",
+      "childId": "synthetic-child-0001",
+      "kind": "settling",
+      "topic": "settle-white-noise",
+      "statement": "Falls asleep fastest with white noise on and the door left slightly open.",
+      "status": "current",
+      "validFrom": 1789588800000,
+      "statedBy": "caregiver-mom",
+      "recordedBy": "extraction-model",
+      "provenanceKind": "model-extracted",
+      "confidence": 0.82,
+      "sourceType": "entry",
+      "sourceEntryId": "synthetic-entry-0001",
+      "sourceSpan": { "start": 0, "end": 74 },
+      "sourceQuote": "She goes down easiest with the white noise on and the door cracked a little.",
+      "visibility": "published",
+      "createdAt": 1789588800000
+    },
+    {
+      "householdId": "synthetic-household-0001",
+      "childId": "synthetic-child-0001",
+      "kind": "settling",
+      "topic": "settle-hold",
+      "statement": "Prefers being patted on the back over being rocked when she is overtired.",
+      "status": "current",
+      "validFrom": 1789588800000,
+      "statedBy": "caregiver-dad",
+      "recordedBy": "caregiver-dad",
+      "provenanceKind": "caregiver-stated",
+      "confidence": 0.9,
+      "sourceType": "conversation",
+      "sourceRef": "synthetic-conversation-0004",
+      "sourceQuote": "When she is overtired, patting her back works way better than rocking her.",
+      "visibility": "published",
+      "createdAt": 1789588800000
+    },
+    {
+      "householdId": "synthetic-household-0001",
+      "childId": "synthetic-child-0001",
+      "kind": "settling",
+      "topic": "nap-lovey",
+      "statement": "Needs the gray bunny lovey to settle for naps.",
+      "status": "current",
+      "validFrom": 1789588800000,
+      "statedBy": "caregiver-nanny",
+      "recordedBy": "caregiver-nanny",
+      "provenanceKind": "caregiver-confirmed",
+      "confidence": 1,
+      "sourceType": "manual",
+      "visibility": "draft",
+      "createdAt": 1789588800000
+    }
+  ],
+  "expected": {
+    "itemCount": 3,
+    "topics": ["nap-lovey", "settle-hold", "settle-white-noise"],
+    "kindCounts": { "settling": 3 },
+    "statusCounts": { "current": 3 },
+    "visibilityCounts": { "draft": 1, "published": 2 },
+    "supersedesCount": 0,
+    "conflictTopics": []
+  }
+}
