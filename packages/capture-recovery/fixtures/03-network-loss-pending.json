@@ -1,0 +1,18 @@
+{
+  "id": "network-loss-pending",
+  "kind": "network-loss",
+  "description": "The network drops right after submit. The truthful contract: the capture stays pending — the server outcome is genuinely unknown and the client must not fabricate a failure or a save. When connectivity returns, the server ack (it completed despite the disconnect) lands and the capture is saved.",
+  "capture": { "captureId": "cap-recover-003", "authorId": "caregiver-1", "at": 1789563800000 },
+  "steps": [
+    { "event": { "_tag": "SubmitRequested", "at": 1789563801000, "submissionId": "sub-recover-003" } },
+    { "event": { "_tag": "NetworkLost", "at": 1789563802000 } },
+    { "event": { "_tag": "NetworkRestored", "at": 1789563840000 } },
+    { "event": { "_tag": "SubmitAccepted", "at": 1789563841000 } }
+  ],
+  "expect": {
+    "phase": "saved",
+    "tone": "success",
+    "bannerVisible": false,
+    "attempt": 0
+  }
+}

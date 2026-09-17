@@ -1,0 +1,24 @@
+{
+  "id": "interruption-mid-draft",
+  "kind": "interruption-recovery",
+  "description": "A phone call interrupts mid-dictation. The raw transcript was persisted before the interruption, so after reload the draft is recoverable verbatim and can be completed one-handed.",
+  "capture": { "captureId": "cap-recover-001", "authorId": "caregiver-1", "at": 1789563600000 },
+  "steps": [
+    { "event": { "_tag": "TranscriptChanged", "at": 1789563601000, "text": "Ava had a huge meltdown" } },
+    { "event": { "_tag": "TranscriptChanged", "at": 1789563602000, "text": "Ava had a huge meltdown after preschool" } },
+    { "event": { "_tag": "Interrupted", "at": 1789563603000, "kind": "call" } },
+    { "reload": true },
+    { "event": { "_tag": "Resumed", "at": 1789563630000 } },
+    { "event": { "_tag": "TranscriptChanged", "at": 1789563631000, "text": "Ava had a huge meltdown after preschool, calmed by her plush rabbit." } },
+    { "event": { "_tag": "SubmitRequested", "at": 1789563640000, "submissionId": "sub-recover-001" } },
+    { "event": { "_tag": "SubmitAccepted", "at": 1789563645000 } }
+  ],
+  "expect": {
+    "phase": "saved",
+    "tone": "success",
+    "bannerVisible": false,
+    "rawTranscript": "Ava had a huge meltdown after preschool, calmed by her plush rabbit.",
+    "submissionId": "sub-recover-001",
+    "attempt": 0
+  }
+}

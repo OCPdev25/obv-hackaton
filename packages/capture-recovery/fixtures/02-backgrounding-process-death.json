@@ -1,0 +1,21 @@
+{
+  "id": "backgrounding-process-death",
+  "kind": "interruption-recovery",
+  "description": "The app is backgrounded mid-dictation and the OS kills the process. On relaunch, the draft rehydrates from persisted state alone — raw text intact, author attribution intact — and the caregiver completes the capture.",
+  "capture": { "captureId": "cap-recover-002", "authorId": "caregiver-1", "at": 1789563700000 },
+  "steps": [
+    { "event": { "_tag": "TranscriptChanged", "at": 1789563701000, "text": "Ava ate all of her pasta at dinner" } },
+    { "event": { "_tag": "Interrupted", "at": 1789563702000, "kind": "background" } },
+    { "reload": true },
+    { "event": { "_tag": "Resumed", "at": 1789563760000 } },
+    { "event": { "_tag": "SubmitRequested", "at": 1789563761000, "submissionId": "sub-recover-002" } },
+    { "event": { "_tag": "SubmitAccepted", "at": 1789563764000 } }
+  ],
+  "expect": {
+    "phase": "saved",
+    "tone": "success",
+    "bannerVisible": false,
+    "rawTranscript": "Ava ate all of her pasta at dinner",
+    "attempt": 0
+  }
+}
