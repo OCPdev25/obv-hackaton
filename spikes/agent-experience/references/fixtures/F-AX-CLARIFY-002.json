@@ -1,0 +1,59 @@
+{
+  "fixtureId": "F-AX-CLARIFY-002",
+  "kind": "acceptance",
+  "title": "\"she went down for her nap\" with two visible nap events for the SAME child -> dedup collapses to one candidate, resolved binding, never a 1-option question",
+  "contractSource": "art_gCDrtx4S section 5, F-AX-CLARIFY-001 — dedup-before-count refinement (PR #28 review finding F1)",
+  "scenario": {
+    "narrative": "Mom dictates 'she went down for her nap' with the child picker empty (currentChild absent) and two visible nap events in references - both bound to the SAME child. The candidates dedup by kind:targetId BEFORE the count checks, so the two references collapse to a single child candidate. One candidate is the resolver's normal binding path: the outcome is a resolved binding with provenance recorded - never a clarification question with a single option (the schema pins clarification options to 2-4).",
+    "anchors": { "askUtc": "2026-09-17T18:30:00Z" }
+  },
+  "input": {
+    "envelope": {
+      "envelopeId": "fx_env_clarify_002",
+      "captureId": "fx_capture_002",
+      "capturedAt": 1789669800000,
+      "capturedAtTimezone": {
+        "value": "America/New_York",
+        "source": "app-known",
+        "basis": "device settings at capture time"
+      },
+      "utterance": "she went down for her nap",
+      "actor": { "authorId": "fx_parent_a", "role": "parent" },
+      "householdId": "fx_household_1",
+      "viewContext": {
+        "value": { "screen": "timeline" },
+        "source": "app-known",
+        "basis": "timeline screen open"
+      },
+      "references": [
+        {
+          "referenceId": "fx_ref_003",
+          "kind": "event",
+          "targetId": "fx_evt_sleep_002",
+          "relatedChildId": "fx_child_m",
+          "snippet": "Mia - nap, 1 hour",
+          "source": "app-known",
+          "visibleToActor": true
+        },
+        {
+          "referenceId": "fx_ref_004",
+          "kind": "event",
+          "targetId": "fx_evt_sleep_003",
+          "relatedChildId": "fx_child_m",
+          "snippet": "Mia - second nap, 40 minutes",
+          "source": "app-known",
+          "visibleToActor": true
+        }
+      ]
+    }
+  },
+  "expected": {
+    "outcomeTag": "resolved",
+    "targetId": "fx_child_m",
+    "kind": "child",
+    "provenance": "app-known",
+    "basis": "sole visible candidate in envelope context",
+    "clarifyQuestionEmitted": false,
+    "zeroWrites": true
+  }
+}

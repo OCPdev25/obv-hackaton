@@ -1,0 +1,64 @@
+{
+  "fixtureId": "F-AX-CLARIFY-003",
+  "kind": "acceptance",
+  "title": "\"she's down for her nap now\" with two visible nap events for the SAME child and currentChild asserted -> tiebreak then dedup collapse to one candidate, resolved binding via currentChild, never a 1-option question",
+  "contractSource": "art_gCDrtx4S section 5, F-AX-CLARIFY-001 — dedup-before-count refinement (PR #28 review finding F1)",
+  "scenario": {
+    "narrative": "Mom dictates 'she's down for her nap now' with the child picker set to Mia (currentChild asserted) and two visible nap events in references - both bound to Mia. The currentChild tiebreak keeps both child-kind candidates (both match), then the kind:targetId dedup collapses them to a single candidate BEFORE the count checks. One candidate resolves through the currentChild binding path: provenance is the currentChild's source and the basis names the tiebreak and the first via reference - never a clarification question with a single option (the schema pins clarification options to 2-4).",
+    "anchors": { "askUtc": "2026-09-17T18:30:00Z" }
+  },
+  "input": {
+    "envelope": {
+      "envelopeId": "fx_env_clarify_003",
+      "captureId": "fx_capture_003",
+      "capturedAt": 1789669800000,
+      "capturedAtTimezone": {
+        "value": "America/New_York",
+        "source": "app-known",
+        "basis": "device settings at capture time"
+      },
+      "utterance": "she's down for her nap now",
+      "actor": { "authorId": "fx_parent_a", "role": "parent" },
+      "householdId": "fx_household_1",
+      "currentChild": {
+        "value": { "childId": "fx_child_m", "displayName": "Mia" },
+        "source": "user-asserted",
+        "basis": "child picker selection"
+      },
+      "viewContext": {
+        "value": { "screen": "timeline" },
+        "source": "app-known",
+        "basis": "timeline screen open"
+      },
+      "references": [
+        {
+          "referenceId": "fx_ref_005",
+          "kind": "event",
+          "targetId": "fx_evt_sleep_004",
+          "relatedChildId": "fx_child_m",
+          "snippet": "Mia - nap, 1 hour",
+          "source": "app-known",
+          "visibleToActor": true
+        },
+        {
+          "referenceId": "fx_ref_006",
+          "kind": "event",
+          "targetId": "fx_evt_sleep_005",
+          "relatedChildId": "fx_child_m",
+          "snippet": "Mia - second nap, 40 minutes",
+          "source": "app-known",
+          "visibleToActor": true
+        }
+      ]
+    }
+  },
+  "expected": {
+    "outcomeTag": "resolved",
+    "targetId": "fx_child_m",
+    "kind": "child",
+    "provenance": "user-asserted",
+    "basis": "bound by user-asserted currentChild via reference fx_evt_sleep_004",
+    "clarifyQuestionEmitted": false,
+    "zeroWrites": true
+  }
+}

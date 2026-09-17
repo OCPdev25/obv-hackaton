@@ -1,0 +1,38 @@
+{
+  "fixtureId": "F-AX-UNRESOLVED-CORRECTION-001",
+  "kind": "adversarial",
+  "title": "a correction with no resolvable target invents nothing",
+  "contractSource": "art_gCDrtx4S section 5, F-AX-UNRESOLVED-CORRECTION-001",
+  "scenario": {
+    "narrative": "Mom says 'actually 45 minutes' with no reference in the envelope and no selected record - only the child context. currentChild does not license a target: a child is not a correction target. The system invents nothing - no 'most recent event' default, no duration-only fabricated event, no guessed binding - and returns the typed unresolved-reference error, never an error string naming a real record.",
+    "anchors": { "correctionAttemptUtc": "2026-09-17T20:30:00Z" }
+  },
+  "input": {
+    "envelope": {
+      "envelopeId": "fx_env_corr_001",
+      "captureId": "fx_capture_corr_001",
+      "capturedAt": 1789677000000,
+      "capturedAtTimezone": {
+        "value": "America/New_York",
+        "source": "app-known",
+        "basis": "device settings at capture time"
+      },
+      "utterance": "actually 45 minutes",
+      "actor": { "authorId": "fx_parent_a", "role": "parent" },
+      "householdId": "fx_household_1",
+      "currentChild": {
+        "value": { "childId": "fx_child_m", "displayName": "Mia" },
+        "source": "app-known",
+        "basis": "child detail screen"
+      }
+    }
+  },
+  "expected": {
+    "outcomeTag": "unresolved-reference",
+    "reason": "no-reference",
+    "retryable": false,
+    "detailAbsent": true,
+    "serializedOutcomeMustNotContain": ["45", "fx_evt_sleep_001", "fx_rev_001", "fx_child_m"],
+    "zeroWrites": true
+  }
+}

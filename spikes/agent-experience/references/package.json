@@ -1,0 +1,11 @@
+{
+  "name": "@spike/agent-experience-references",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Spike: ambiguous-reference clarify reducer + correction-driven answer invalidation (slice 1 of Remember & Retrieve, art_gCDrtx4S)",
+  "scripts": {
+    "test": "bun test",
+    "typecheck": "tsc -p tsconfig.test.json --noEmit"
+  }
+}
