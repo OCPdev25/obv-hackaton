@@ -1,0 +1,54 @@
+{
+  "id": "FQ-HOUSEHOLD-B-ISOLATION",
+  "description": "Second household proves household scoping: nanny is a member of BOTH households; mom belongs only to household A. Mom has no household path to household-B questions even though she could answer identical questions at home.",
+  "household": {
+    "householdId": "fxhouseholdb000000000000",
+    "memberIds": ["caregiver-nanny", "caregiver-bparent"]
+  },
+  "childId": "fxchildb0000000000000000",
+  "entries": [
+    { "householdId": "fxhouseholdb000000000000", "childId": "fxchildb0000000000000000", "_id": "fxentryb0000000000000000", "authorId": "caregiver-bparent", "visibility": "published" }
+  ],
+  "questions": [
+    {
+      "_id": "fxqisolation000000000000",
+      "_creationTime": 1789670000000,
+      "householdId": "fxhouseholdb000000000000",
+      "childId": "fxchildb0000000000000000",
+      "targetKind": "entry",
+      "entryId": "fxentryb0000000000000000",
+      "askedById": "caregiver-nanny",
+      "question": "Did Maya finish her snack before pickup?",
+      "audienceKind": "household",
+      "addresseeIds": [],
+      "handoffIncluded": true,
+      "createdAt": 1789670000000
+    }
+  ],
+  "activities": [],
+  "expected": {
+    "derived": [
+      { "questionId": "fxqisolation000000000000", "status": "open", "reopenedCount": 0, "answerCount": 0, "handoffIncluded": true }
+    ],
+    "visibility": [
+      {
+        "questionId": "fxqisolation000000000000",
+        "allow": ["caregiver-nanny", "caregiver-bparent"],
+        "deny": [
+          { "caregiverId": "caregiver-mom", "code": "DENY_Q_NO_HOUSEHOLD_PATH" },
+          { "caregiverId": "caregiver-dad", "code": "DENY_Q_NO_HOUSEHOLD_PATH" }
+        ]
+      }
+    ],
+    "askDenies": [],
+    "digest": {
+      "note": "digest expectations per viewer; windowStart = local midnight (1789617600000)",
+      "windowStart": 1789617600000,
+      "perViewer": [
+        { "caregiverId": "caregiver-nanny", "hasQuestions": true, "unresolved": ["fxqisolation000000000000"], "resolvedInWindow": [] },
+        { "caregiverId": "caregiver-bparent", "hasQuestions": true, "unresolved": ["fxqisolation000000000000"], "resolvedInWindow": [] },
+        { "caregiverId": "caregiver-mom", "hasQuestions": false, "unresolved": [], "resolvedInWindow": [] }
+      ]
+    }
+  }
+}
