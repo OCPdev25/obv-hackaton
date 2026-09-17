@@ -1,0 +1,26 @@
+{
+  "name": "@journal/handoff",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Caregiver handoff prototypes: since-last-seen digest with gap disclosure + grounded interactive follow-up (feeds delivery slots 23/24)",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.test.json --noEmit",
+    "test": "bun test"
+  },
+  "dependencies": {
+    "@journal/domain": "workspace:*",
+    "effect": "4.0.0-rc.115"
+  },
+  "devDependencies": {
+    "@types/bun": "^1.3.14",
+    "typescript": "~6.0.3"
+  }
+}

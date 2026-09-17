@@ -1,0 +1,96 @@
+{
+  "id": "window-edge-semantics",
+  "description": "Nine-day window: week-spanning questions are answerable inside it while month-spanning ones are refused; every uncovered day is disclosed.",
+  "input": {
+    "childId": "syn-child-ava",
+    "childName": "Ava",
+    "recipientName": "Nana Ruth",
+    "lastSeenAt": 1788840000000,
+    "generatedAt": 1789603200000,
+    "timezone": "America/New_York",
+    "entries": [
+      {
+        "entryId": "syn-entry-001",
+        "captureId": "syn-capture-001",
+        "authorId": "caregiver-mom",
+        "createdAt": 1789387500000,
+        "visibility": "published",
+        "extractionStatus": "structured",
+        "rawTranscript": "Ava had 8 ounces of milk with breakfast at 8:00 AM. Then she went poop on the potty at 9:30 AM.",
+        "events": [
+          {
+            "category": "meal",
+            "timestamp": 1789387200000,
+            "payload": {
+              "ounces": 8
+            },
+            "confidence": 0.95
+          },
+          {
+            "category": "potty",
+            "timestamp": 1789392600000,
+            "confidence": 0.9
+          }
+        ]
+      },
+      {
+        "entryId": "syn-entry-002",
+        "captureId": "syn-capture-002",
+        "authorId": "caregiver-dad",
+        "createdAt": 1789491900000,
+        "visibility": "published",
+        "extractionStatus": "structured",
+        "rawTranscript": "Ava napped for 95 minutes starting at 1:02 PM.",
+        "events": [
+          {
+            "category": "sleep",
+            "timestamp": 1789491720000,
+            "payload": {
+              "minutes": 95
+            },
+            "confidence": 0.9
+          }
+        ]
+      }
+    ],
+    "routineNotes": []
+  },
+  "expect": {
+    "claimCountByCategory": {
+      "meal": 1,
+      "potty": 1,
+      "sleep": 1
+    },
+    "gapDates": [
+      "2026-09-08",
+      "2026-09-09",
+      "2026-09-10",
+      "2026-09-11",
+      "2026-09-12",
+      "2026-09-13",
+      "2026-09-16"
+    ],
+    "coverageZero": [
+      "mood",
+      "milestone",
+      "school"
+    ],
+    "questionTags": [],
+    "digestContains": [
+      "No entries were logged on 2026-09-10"
+    ],
+    "followUps": [
+      {
+        "question": "How was her week?",
+        "outcome": "not-logged",
+        "answerContains": [
+          "Nothing matching that was logged"
+        ]
+      },
+      {
+        "question": "How was her month?",
+        "outcome": "refused-out-of-window"
+      }
+    ]
+  }
+}
