@@ -5,6 +5,7 @@ import { EntryFields, EntrySchema } from "./entry.js"
 import { EventFields } from "./event.js"
 import { HouseholdFields } from "./household.js"
 import { CaptureId } from "./extraction.js"
+import { RetractionFilter } from "./retraction.js"
 
 /**
  * Operation contracts for Convex queries/mutations. These are the single
@@ -60,6 +61,12 @@ export type CreateHouseholdOutput = typeof CreateHouseholdOutput["Type"]
 export const ListEntriesByChildInput = Schema.Struct({
   childId: convexId("children"),
   limit: Schema.optionalKey(Schema.Int),
+  /**
+   * v0.4 retraction filter hook — the pattern every household-facing query
+   * input embeds (agent queries slots 15/17/23/24, timeline reads). Absent
+   * means the household default: retracted entries are EXCLUDED.
+   */
+  retraction: Schema.optionalKey(RetractionFilter),
 })
 export type ListEntriesByChildInput = typeof ListEntriesByChildInput["Type"]
 
