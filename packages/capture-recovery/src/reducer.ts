@@ -1,3 +1,4 @@
+import type { CaptureId } from "@journal/domain"
 import type { CaptureEvent } from "./events.js"
 import type { CaptureRecovery, DiscardReceipt } from "./state.js"
 
@@ -27,7 +28,7 @@ import type { CaptureRecovery, DiscardReceipt } from "./state.js"
  */
 
 export const createCapture = (input: {
-  captureId: string
+  captureId: CaptureId
   authorId: string
   at: number
 }): CaptureRecovery => ({

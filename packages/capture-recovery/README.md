@@ -7,7 +7,7 @@ loss, and duplicate submission** — prototyped one-handed for mom, dad, and
 invited caregivers.
 
 Bounded direct-worker extension of the canonical contract
-(`art_I2TCG08V` v0.2). It **imports** `CaptureId`, `ExtractionAttempt`, and
+(`art_I2TCG08V` v0.2). It **imports** `CaptureId`, `AttemptNumber`, and
 `ExtractionStatus` from `@journal/domain` and **modifies nothing** in the
 existing domain, entry, event, extraction, ui, security, or evaluation
 packages. Proposal target: fold into contract v0.3 if accepted.
