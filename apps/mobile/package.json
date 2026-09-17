@@ -10,6 +10,7 @@
     "ios": "expo start --ios"
   },
   "dependencies": {
+    "@journal/month-history": "workspace:*",
     "@journal/ui": "workspace:*",
     "convex": "^1.46.0",
     "effect": "4.0.0-rc.115",
