@@ -130,7 +130,8 @@ const KNOWN_KINDS = [
   'reload-persistence',
 ] as const
 
-function assertFixture(value: unknown, file: string): Fixture {
+/** Shared with the manifest loader: extraction-accuracy registration enforces the same discipline. */
+export function assertFixture(value: unknown, file: string): Fixture {
   if (typeof value !== 'object' || value === null) {
     throw new Error(`${file}: fixture must be a JSON object`)
   }
@@ -144,14 +145,25 @@ function assertFixture(value: unknown, file: string): Fixture {
   return value as Fixture
 }
 
-/** Load every *.json fixture from a directory, sorted by filename. Fails fast — never skips. */
-export async function loadFixtures(fixturesDir: URL): Promise<readonly Fixture[]> {
+/**
+ * Load every *.json fixture from a directory, sorted by filename. Fails fast — never skips.
+ *
+ * `excludeAbsolutePaths` lists absolute file paths to skip (e.g. the fixture-area
+ * manifest itself, which lives in the fixtures root and must never load as a fixture).
+ */
+export async function loadFixtures(
+  fixturesDir: URL,
+  options: { readonly excludeAbsolutePaths?: readonly string[] } = {},
+): Promise<readonly Fixture[]> {
   const { readdir } = await import('node:fs/promises')
   const { fileURLToPath } = await import('node:url')
-  const { join } = await import('node:path')
+  const { join, resolve } = await import('node:path')
 
   const dir = fileURLToPath(fixturesDir)
-  const files = (await readdir(dir)).filter((f) => f.endsWith('.json')).sort()
+  const excluded = new Set((options.excludeAbsolutePaths ?? []).map((p) => resolve(p)))
+  const files = (await readdir(dir))
+    .filter((f) => f.endsWith('.json') && !excluded.has(resolve(join(dir, f))))
+    .sort()
   if (files.length === 0) {
     throw new Error(`no fixture files found in ${dir}`)
   }
