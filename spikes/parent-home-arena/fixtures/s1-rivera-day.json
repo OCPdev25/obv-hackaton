@@ -1,0 +1,515 @@
+{
+  "fixtureId": "S1-RIVERA-DAY-CANONICAL",
+  "scenario": "Canonical scenario S1 - rubric art_VyNYOggs v1.0 (binding). Nap semantics amended 2026-09-17 by product-owner ruling: missing data reads 'No nap recorded'; never implies confirmed absence; no behavioral prediction without a supported source.",
+  "candidate": "shared canonical data - parent-home arena visual board; candidates adapt this into their own store formats",
+  "timezone": "America/New_York",
+  "dayLabel": "Tuesday",
+  "day": "2026-09-15",
+  "renderedMoment": "S1-E 18:10 — Marco opens cold, takeover brief is the home",
+  "household": {
+    "householdId": "hh_rivera",
+    "name": "The Riveras",
+    "members": [
+      {
+        "userId": "elena",
+        "displayName": "Elena (mom, primary logger)",
+        "role": "parent"
+      },
+      {
+        "userId": "marco",
+        "displayName": "Marco (dad, takes over bedtime)",
+        "role": "parent"
+      },
+      {
+        "userId": "rosa",
+        "displayName": "Rosa (invited grandmother, weekday afternoons)",
+        "role": "caregiver"
+      }
+    ],
+    "child": {
+      "childId": "child_sofia",
+      "name": "Sofia",
+      "ageYears": 3
+    }
+  },
+  "entries": [
+    {
+      "captureId": "cap-e1-morning",
+      "entryId": "entry-e1",
+      "wire": {
+        "_tag": "Entry",
+        "transcript": "Breakfast was half the oatmeal, no milk. She woke at eleven last night and was up until twelve thirty. Drop-off at preschool was hard — about five minutes of crying, then she settled. Two potty successes and one accident at home before breakfast. She finally pedaled the balance bike halfway down the block. She was upset again after quiet time.",
+        "authorId": "elena",
+        "createdAt": 1789472280000,
+        "visibility": "published",
+        "events": [
+          {
+            "_tag": "Event",
+            "category": "sleep",
+            "occurredAt": 1789441200000,
+            "confidence": 1,
+            "authorId": "elena",
+            "note": "night waking 23:00–00:30 — corrected from the afternoon-nap misread"
+          },
+          {
+            "_tag": "Event",
+            "category": "meal",
+            "occurredAt": 1789470600000,
+            "quantity": {
+              "value": 0.5,
+              "unit": "serving"
+            },
+            "confidence": 0.88,
+            "authorId": "elena",
+            "note": "half the oatmeal, refused milk"
+          },
+          {
+            "_tag": "Event",
+            "category": "school",
+            "occurredAt": 1789471800000,
+            "confidence": 0.83,
+            "authorId": "elena",
+            "note": "hard drop-off — about five minutes of crying, then she settled"
+          },
+          {
+            "_tag": "Event",
+            "category": "potty",
+            "occurredAt": 1789469400000,
+            "quantity": {
+              "value": 2,
+              "unit": "successes"
+            },
+            "confidence": 0.9,
+            "authorId": "elena",
+            "note": "two successes before breakfast"
+          },
+          {
+            "_tag": "Event",
+            "category": "milestone",
+            "occurredAt": 1789471500000,
+            "confidence": 0.88,
+            "authorId": "elena",
+            "note": "pedaled the balance bike halfway down the block — first time"
+          },
+          {
+            "_tag": "Event",
+            "category": "mood",
+            "occurredAt": 1789414200000,
+            "confidence": 1,
+            "authorId": "elena",
+            "note": "teary after preschool quiet time yesterday; wanted to keep playing; calmed quickly"
+          }
+        ]
+      },
+      "capture": {
+        "mode": "mixed",
+        "voiceTopics": [
+          0,
+          1,
+          2
+        ],
+        "typedTopics": [
+          3,
+          4,
+          5
+        ],
+        "interruptedAt": 1789472460000,
+        "resumedAt": 1789473060000,
+        "interruptionNote": "Incoming call from the preschool after the third topic; Elena returned 10 minutes later and finished by typing while holding Sofia (quiet-input path). Server extraction (attempt 0) was NOT cancelled by the disconnect — envelope rule (a).",
+        "attempts": [
+          {
+            "attempt": 0,
+            "startedAt": 1789472340000,
+            "finishedAt": 1789472520000,
+            "outcome": "succeeded",
+            "note": "ran server-side over the partial transcript (topics 1–3) while the client was interrupted"
+          },
+          {
+            "attempt": 1,
+            "startedAt": 1789473060000,
+            "finishedAt": 1789473180000,
+            "outcome": "succeeded",
+            "note": "full transcript after typed completion; stale attempt 0 discarded, never merged (rule 2); the extractor again proposed an afternoon nap — suppressed because the caregiver-confirmed correction is pinned (art_rBKvvzIa §3.2)",
+            "suppressedConflicts": [
+              {
+                "category": "sleep",
+                "reason": "caregiver-confirmed correction ev-sleep-2 is pinned; rerun never downgrades it"
+              }
+            ]
+          }
+        ],
+        "clarification": {
+          "question": "\"She was upset again after quiet time\" — when was that, and what happened?",
+          "answer": "Yesterday at preschool, after quiet time — she got teary because she wanted to keep playing; she calmed after a few minutes.",
+          "askedAt": 1789473180000,
+          "answeredAt": 1789473240000
+        },
+        "visibilityTimeline": [
+          {
+            "at": 1789472280000,
+            "state": "draft"
+          },
+          {
+            "at": 1789473300000,
+            "state": "published"
+          }
+        ]
+      }
+    },
+    {
+      "captureId": "cap-e2-accident",
+      "entryId": "entry-e2",
+      "wire": {
+        "_tag": "Entry",
+        "transcript": "Follow-up from this morning — she had the one accident at home before breakfast. Wet underwear, I changed her clothes right away.",
+        "authorId": "elena",
+        "createdAt": 1789473900000,
+        "visibility": "published",
+        "events": [
+          {
+            "_tag": "Event",
+            "category": "potty",
+            "occurredAt": 1789469700000,
+            "quantity": {
+              "value": 1,
+              "unit": "accident"
+            },
+            "confidence": 1,
+            "authorId": "elena",
+            "note": "one accident at home before breakfast — typed manually after extraction timed out"
+          }
+        ]
+      },
+      "capture": {
+        "mode": "text",
+        "voiceTopics": [],
+        "typedTopics": [
+          0
+        ],
+        "attempts": [
+          {
+            "attempt": 0,
+            "startedAt": 1789473900000,
+            "finishedAt": 1789473960000,
+            "outcome": "failed",
+            "failureReason": "Timeout — provider/network timeout (retryable)",
+            "note": "visible failed state offered retry; Elena typed the event manually instead. The failed attempt stays in lineage; the raw transcript is preserved — no data loss (S1-D)."
+          }
+        ],
+        "visibilityTimeline": [
+          {
+            "at": 1789473900000,
+            "state": "draft"
+          },
+          {
+            "at": 1789474140000,
+            "state": "published"
+          }
+        ]
+      }
+    }
+  ],
+  "events": [
+    {
+      "eventId": "ev-sleep-1",
+      "entryId": "entry-e1",
+      "audienceScope": "household",
+      "supersededBy": "ev-sleep-2",
+      "sourceExcerpt": {
+        "start": 41,
+        "end": 102
+      },
+      "wire": {
+        "_tag": "Event",
+        "category": "sleep",
+        "occurredAt": 1789406100000,
+        "confidence": 0.61,
+        "authorId": "elena",
+        "note": "afternoon nap (extraction guess — misread)"
+      }
+    },
+    {
+      "eventId": "ev-sleep-2",
+      "entryId": "entry-e1",
+      "audienceScope": "household",
+      "corrects": "ev-sleep-1",
+      "endAt": 1789446600000,
+      "sourceExcerpt": {
+        "start": 41,
+        "end": 102
+      },
+      "wire": {
+        "_tag": "Event",
+        "category": "sleep",
+        "occurredAt": 1789441200000,
+        "confidence": 1,
+        "authorId": "elena",
+        "note": "night waking 23:00–00:30 — corrected from the afternoon-nap misread"
+      }
+    },
+    {
+      "eventId": "ev-meal-1",
+      "entryId": "entry-e1",
+      "audienceScope": "household",
+      "sourceExcerpt": {
+        "start": 0,
+        "end": 40
+      },
+      "photoId": "media/breakfast-photo.png",
+      "wire": {
+        "_tag": "Event",
+        "category": "meal",
+        "occurredAt": 1789470600000,
+        "quantity": {
+          "value": 0.5,
+          "unit": "serving"
+        },
+        "confidence": 0.88,
+        "authorId": "elena",
+        "note": "half the oatmeal, refused milk"
+      }
+    },
+    {
+      "eventId": "ev-school-1",
+      "entryId": "entry-e1",
+      "audienceScope": "parents",
+      "sourceExcerpt": {
+        "start": 103,
+        "end": 183
+      },
+      "wire": {
+        "_tag": "Event",
+        "category": "school",
+        "occurredAt": 1789471800000,
+        "confidence": 0.83,
+        "authorId": "elena",
+        "note": "hard drop-off — about five minutes of crying, then she settled"
+      }
+    },
+    {
+      "eventId": "ev-potty-1",
+      "entryId": "entry-e1",
+      "audienceScope": "household",
+      "sourceExcerpt": {
+        "start": 184,
+        "end": 246
+      },
+      "wire": {
+        "_tag": "Event",
+        "category": "potty",
+        "occurredAt": 1789469400000,
+        "quantity": {
+          "value": 2,
+          "unit": "successes"
+        },
+        "confidence": 0.9,
+        "authorId": "elena",
+        "note": "two successes before breakfast"
+      }
+    },
+    {
+      "eventId": "ev-milestone-1",
+      "entryId": "entry-e1",
+      "audienceScope": "household",
+      "sourceExcerpt": {
+        "start": 247,
+        "end": 307
+      },
+      "wire": {
+        "_tag": "Event",
+        "category": "milestone",
+        "occurredAt": 1789471500000,
+        "confidence": 0.88,
+        "authorId": "elena",
+        "note": "pedaled the balance bike halfway down the block — first time"
+      }
+    },
+    {
+      "eventId": "ev-mood-1",
+      "entryId": "entry-e1",
+      "audienceScope": "household",
+      "sourceExcerpt": {
+        "start": 308,
+        "end": 345
+      },
+      "wire": {
+        "_tag": "Event",
+        "category": "mood",
+        "occurredAt": 1789414200000,
+        "confidence": 1,
+        "authorId": "elena",
+        "note": "teary after preschool quiet time yesterday; wanted to keep playing; calmed quickly"
+      }
+    },
+    {
+      "eventId": "ev-potty-2",
+      "entryId": "entry-e2",
+      "audienceScope": "household",
+      "sourceExcerpt": {
+        "start": 0,
+        "end": 129
+      },
+      "wire": {
+        "_tag": "Event",
+        "category": "potty",
+        "occurredAt": 1789469700000,
+        "quantity": {
+          "value": 1,
+          "unit": "accident"
+        },
+        "confidence": 1,
+        "authorId": "elena",
+        "note": "one accident at home before breakfast — typed manually after extraction timed out"
+      }
+    }
+  ],
+  "audienceRestrictions": [
+    {
+      "eventId": "ev-school-1",
+      "scope": "parents",
+      "grantedBy": "elena",
+      "grantedAt": 1789472700000,
+      "note": "S1-B: restrict the drop-off meltdown event to parents only, per the grants model"
+    }
+  ],
+  "reviewSessions": [
+    {
+      "at": 1789472640000,
+      "entryId": "entry-e1",
+      "seenState": "draft",
+      "caption": "S1-B (07:44): extraction finished server-side during the call; Elena inspects the draft, corrects the nap misread with a preview, restricts the drop-off event, and attaches the breakfast photo. Full review-card flow = slots 11–14 (out of scope) — this is the one representative doorway.",
+      "actions": [
+        {
+          "kind": "correct",
+          "at": 1789472640000,
+          "detail": "ev-sleep-1 (afternoon nap, 0.61) → ev-sleep-2 (night waking 23:00–00:30, confirmed 1.0); preview shown before confirm"
+        },
+        {
+          "kind": "restrict-audience",
+          "at": 1789472700000,
+          "detail": "ev-school-1 → parents only"
+        },
+        {
+          "kind": "attach-photo",
+          "at": 1789472760000,
+          "detail": "breakfast photo attached to ev-meal-1"
+        }
+      ]
+    }
+  ],
+  "readOnlyQuestions": [
+    {
+      "question": "Did she nap?",
+      "askedBy": "marco",
+      "askedAt": 1789510260000,
+      "answer": "No nap recorded today. The only sleep event is the corrected night waking (23:00–00:30) — first misread as an afternoon nap, corrected by Elena at 07:44.",
+      "sources": [
+        {
+          "kind": "correction",
+          "ref": "ev-sleep-2",
+          "excerpt": "night waking 23:00–00:30 — corrected from the afternoon-nap misread"
+        },
+        {
+          "kind": "event",
+          "ref": "ev-sleep-2"
+        },
+        {
+          "kind": "fixture",
+          "ref": "coverage: no nap event in today's log — absence of record, not a confirmed absence"
+        }
+      ]
+    }
+  ],
+  "takeover": {
+    "confirmedBy": "marco",
+    "confirmedAt": 1789510320000,
+    "plan": {
+      "note": "No nap recorded in today's log. Bedtime plan is the parents' call; no behavioral prediction is offered without a supported source.",
+      "basis": [
+        "ev-sleep-2"
+      ]
+    },
+    "fiveFacts": [
+      {
+        "headline": "Night waking 23:00–00:30 last night",
+        "detail": "Corrected at 07:44 — extraction first read it as an afternoon nap.",
+        "refs": [
+          {
+            "kind": "event",
+            "ref": "ev-sleep-2"
+          },
+          {
+            "kind": "correction",
+            "ref": "ev-sleep-1 → ev-sleep-2"
+          }
+        ]
+      },
+      {
+        "headline": "Ate half the oatmeal, refused milk",
+        "refs": [
+          {
+            "kind": "event",
+            "ref": "ev-meal-1"
+          },
+          {
+            "kind": "transcript-excerpt",
+            "ref": "entry-e1",
+            "excerpt": "Breakfast was half the oatmeal, no milk."
+          }
+        ]
+      },
+      {
+        "headline": "Hard drop-off — settled after about five minutes",
+        "detail": "Parents only (Elena restricted this at 07:45) — Marco sees it; Rosa does not.",
+        "refs": [
+          {
+            "kind": "event",
+            "ref": "ev-school-1"
+          }
+        ]
+      },
+      {
+        "headline": "No nap recorded",
+        "detail": "Reads from the correction: what looked like a nap was the night waking.",
+        "refs": [
+          {
+            "kind": "correction",
+            "ref": "ev-sleep-1 → ev-sleep-2"
+          },
+          {
+            "kind": "fixture",
+            "ref": "coverage: no nap event in today's log (absence of record, not a confirmed absence)"
+          }
+        ]
+      },
+      {
+        "headline": "Pedaled the balance bike halfway down the block — worth celebrating",
+        "refs": [
+          {
+            "kind": "event",
+            "ref": "ev-milestone-1"
+          },
+          {
+            "kind": "transcript-excerpt",
+            "ref": "entry-e1",
+            "excerpt": "She finally pedaled the balance bike halfway down the block."
+          }
+        ]
+      }
+    ],
+    "pendingItems": [
+      {
+        "label": "Clarification answered",
+        "detail": "\"upset again after quiet time\" — Elena confirmed: teary after preschool quiet time yesterday; calmed quickly.",
+        "state": "resolved",
+        "at": 1789473240000
+      },
+      {
+        "label": "Failed extraction resolved by hand",
+        "detail": "Potty-accident event timed out on a provider timeout; Elena typed it manually. Failed attempt visible in lineage; nothing lost.",
+        "state": "resolved",
+        "at": 1789474080000
+      }
+    ]
+  }
+}
