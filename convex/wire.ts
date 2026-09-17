@@ -3,11 +3,16 @@
  * schema (contract.ts) to storage, per the contract's "Convex mapping" section.
  * These enforce wire shape; range constraints (confidence ∈ [0,1]) and other
  * refinements are enforced by the Effect schema at the mutation boundary.
+ *
+ * Storage deviation from the contract's mapping table (deployment-verified):
+ * Convex rejects stored fields starting with `_` (reserved for system fields),
+ * so the wire-level `_tag` discriminator is stripped on write and re-wrapped on
+ * read (see entries.ts / timeline.ts). Table + validator identity replaces the
+ * tag at rest; the wire format is unchanged in both directions.
  */
 import { v } from 'convex/values'
 
 export const eventValidator = v.object({
-  _tag: v.literal('Event'),
   category: v.union(
     v.literal('potty'),
     v.literal('meal'),
@@ -24,7 +29,6 @@ export const eventValidator = v.object({
 })
 
 export const entryValidator = v.object({
-  _tag: v.literal('Entry'),
   transcript: v.string(),
   authorId: v.string(),
   createdAt: v.number(),

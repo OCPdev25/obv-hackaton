@@ -93,10 +93,13 @@ export const createEntry = mutation({
       events: domainEvents,
     }
     const wire = Schema.encodeSync(Entry)(domainEntry)
+    // Storage boundary: strip the wire-level `_tag` discriminators — Convex
+    // rejects `_`-prefixed stored fields. timeline:list re-wraps them on read.
+    const { _tag: _entryTag, ...entryWire } = wire
+    const events = entryWire.events.map(({ _tag: _eventTag, ...eventWire }) => eventWire)
     const entryId = await ctx.db.insert('entries', {
-      ...wire,
-      // Effect encodes arrays readonly; Convex storage wants a mutable copy.
-      events: [...wire.events],
+      ...entryWire,
+      events,
       childId: args.childId,
       captureId: args.captureId,
     })
