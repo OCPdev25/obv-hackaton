@@ -11,7 +11,12 @@ export { EventFields, EventSchema, EventDocument, ProducedBy } from "./event.js"
 export { HouseholdFields, HouseholdSchema, HouseholdDocument } from "./household.js"
 export {
   AppendEventsInput,
+  CreateChildInput,
+  CreateChildOutput,
   CreateEntryInput,
+  CreateEntryOutput,
+  CreateHouseholdInput,
+  CreateHouseholdOutput,
   ListEntriesByChildInput,
   ListEntriesByChildOutput,
 } from "./contracts.js"

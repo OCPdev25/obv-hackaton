@@ -14,6 +14,12 @@ const tableFrom = (fields: Schema.Struct.Fields) => defineTable(convexFields(Sch
 export default defineSchema({
   households: tableFrom(HouseholdFields),
   children: tableFrom(ChildFields).index("by_household", ["householdId"]),
-  entries: tableFrom(EntryFields).index("by_household", ["householdId"]).index("by_child", ["childId"]),
+  entries: tableFrom(EntryFields)
+    .index("by_household", ["householdId"])
+    .index("by_child", ["childId"])
+    // Idempotent captures: lookup by the client-side capture session id.
+    .index("by_capture", ["captureId"])
+    // Chronological timeline: per-child, oldest first (journal reads forward).
+    .index("by_child_createdAt", ["childId", "createdAt"]),
   events: tableFrom(EventFields).index("by_child", ["childId"]),
 })
