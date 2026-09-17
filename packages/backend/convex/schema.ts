@@ -24,8 +24,9 @@ const eventValidator = v.object({
 })
 
 export default defineSchema({
+  // No stored _tag column: Convex reserves leading-underscore field names, and
+  // the discriminator is constant for this table. toWire restores it on read.
   entries: defineTable({
-    _tag: v.literal("Entry"),
     captureId: v.string(),
     childId: v.string(),
     transcript: v.string(),

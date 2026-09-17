@@ -9,7 +9,6 @@ import { mutation, query } from "./_generated/server.js"
 
 const toWire = (doc: {
   _id: string
-  _tag: "Entry"
   captureId: string
   childId: string
   transcript: string
@@ -18,7 +17,7 @@ const toWire = (doc: {
   status: "draft" | "published"
   events: unknown[]
 }) => ({
-  _tag: doc._tag,
+  _tag: "Entry" as const,
   entryId: doc._id,
   captureId: doc.captureId,
   childId: doc.childId,
@@ -31,7 +30,6 @@ const toWire = (doc: {
 
 export const publishEntry = mutation({
   args: {
-    _tag: v.literal("Entry"),
     captureId: v.string(),
     childId: v.string(),
     transcript: v.string(),

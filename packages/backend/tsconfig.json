@@ -2,8 +2,9 @@
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "module": "esnext",
+    "types": ["node"],
     "moduleResolution": "bundler",
     "noEmit": true
   },
-  "include": ["convex/**/*.ts"]
+  "include": ["convex/**/*.ts", "e2e/**/*.ts"]
 }

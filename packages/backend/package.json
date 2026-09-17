@@ -4,12 +4,18 @@
   "type": "module",
   "scripts": {
     "dev": "convex dev --local",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "e2e": "tsx e2e/driver.ts"
   },
   "dependencies": {
-    "convex": "1.46.0"
+    "convex": "1.46.0",
+    "@journal/capture": "workspace:*",
+    "@journal/domain": "workspace:*",
+    "effect": "4.0.0-rc.115"
   },
   "devDependencies": {
-    "typescript": "5.9.3"
+    "typescript": "5.9.3",
+    "tsx": "4.23.13",
+    "@types/node": "24.10.1"
   }
 }

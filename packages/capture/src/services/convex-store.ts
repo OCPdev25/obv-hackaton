@@ -27,7 +27,12 @@ export const makeConvexEntryStoreLayer = (url: string): Layer.Layer<EntryStore, 
       return {
         publish: (draft: Entry) =>
           Effect.tryPromise({
-            try: () => client.mutation(asMutationName("entries:publishEntry"), encodeEntry(draft)),
+            // Convex reserves _-prefixed field names; the stored shape omits
+            // the constant discriminator and the function restores it on read.
+            try: () => {
+              const { _tag: _omitted, ...storeArgs } = encodeEntry(draft)
+              return client.mutation(asMutationName("entries:publishEntry"), storeArgs)
+            },
             catch: (error) =>
               new PublishError({
                 captureId: draft.captureId,
