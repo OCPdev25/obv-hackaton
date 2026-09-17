@@ -1,0 +1,143 @@
+{
+  "cases": [
+    {
+      "id": "CC-01-time-correction-basic",
+      "category": "time-correction",
+      "description": "The brief's headline phrase: a bare conversational time correction (\"actually two thirty\") against the most recent capture.",
+      "exercises": ["bare time phrase binds to latest entry in scope", "revision replaces value, not duplicate", "raw transcript byte preservation", "correction attribution to the speaker"],
+      "setup": {
+        "turns": [
+          {
+            "turnId": "s1",
+            "captureId": "fx_cc01_nap",
+            "speakerId": "fx_u_dad",
+            "capturedAt": 1789496400000,
+            "text": "Nora went down for her nap at 2:15.",
+            "seedEvents": [
+              { "category": "sleep", "occurredAt": 1789496100000, "note": "nap" }
+            ]
+          }
+        ],
+        "baseline": { "entryCount": 1 }
+      },
+      "turns": [
+        {
+          "turnId": "t1",
+          "speakerId": "fx_u_dad",
+          "capturedAt": 1789496700000,
+          "text": "Actually, two thirty.",
+          "correctionId": "cc01-t1",
+          "expect": {
+            "responseClass": "applied",
+            "stateDelta": {
+              "entryChanges": [
+                {
+                  "ofCaptureId": "fx_cc01_nap",
+                  "events": [{ "category": "sleep", "occurredAt": 1789497000000 }]
+                }
+              ],
+              "appendedRevisions": [
+                { "ofCaptureId": "fx_cc01_nap", "kind": "correction", "authorId": "fx_u_dad", "count": 1 }
+              ]
+            }
+          }
+        }
+      ],
+      "final": {
+        "entryCount": 1,
+        "entries": [
+          {
+            "ofCaptureId": "fx_cc01_nap",
+            "childId": "fx_child_nora",
+            "authorId": "fx_u_dad",
+            "status": "draft",
+            "transcriptByteEquals": "Nora went down for her nap at 2:15.",
+            "events": [{ "category": "sleep", "occurredAt": 1789497000000 }],
+            "revisionKinds": ["capture", "correction"],
+            "lastRevisionAuthorId": "fx_u_dad"
+          }
+        ]
+      },
+      "forbidden": [
+        "entry.delete",
+        "event.duplicate_without_supersession",
+        "revision.attribution_rewrite",
+        "raw.mutate",
+        "publication.change_via_correction",
+        "lineage.truncate"
+      ]
+    },
+    {
+      "id": "CC-02-time-correction-published",
+      "category": "time-correction",
+      "description": "Same correction against an already-published entry: the value updates in place via revision and publication state must not flip.",
+      "exercises": ["audience/publication separation under correction", "no silent unpublish-republish cycle"],
+      "setup": {
+        "turns": [
+          {
+            "turnId": "s1",
+            "captureId": "fx_cc02_nap",
+            "speakerId": "fx_u_dad",
+            "capturedAt": 1789496400000,
+            "text": "Nora went down for her nap at 2:15.",
+            "seedEvents": [
+              { "category": "sleep", "occurredAt": 1789496100000, "note": "nap" }
+            ]
+          }
+        ],
+        "publish": ["fx_cc02_nap"],
+        "baseline": {
+          "entryCount": 1,
+          "entries": [{ "ofCaptureId": "fx_cc02_nap", "status": "published" }]
+        }
+      },
+      "turns": [
+        {
+          "turnId": "t1",
+          "speakerId": "fx_u_dad",
+          "capturedAt": 1789497600000,
+          "text": "Actually, two thirty.",
+          "correctionId": "cc02-t1",
+          "expect": {
+            "responseClass": "applied",
+            "stateDelta": {
+              "entryChanges": [
+                {
+                  "ofCaptureId": "fx_cc02_nap",
+                  "status": "published",
+                  "transcriptUnchanged": true,
+                  "events": [{ "category": "sleep", "occurredAt": 1789497000000 }]
+                }
+              ],
+              "appendedRevisions": [
+                { "ofCaptureId": "fx_cc02_nap", "kind": "correction", "authorId": "fx_u_dad", "count": 1 }
+              ]
+            }
+          }
+        }
+      ],
+      "final": {
+        "entryCount": 1,
+        "entries": [
+          {
+            "ofCaptureId": "fx_cc02_nap",
+            "childId": "fx_child_nora",
+            "authorId": "fx_u_dad",
+            "status": "published",
+            "transcriptByteEquals": "Nora went down for her nap at 2:15.",
+            "events": [{ "category": "sleep", "occurredAt": 1789497000000 }],
+            "revisionKinds": ["capture", "correction"],
+            "lastRevisionAuthorId": "fx_u_dad"
+          }
+        ]
+      },
+      "forbidden": [
+        "publication.change_via_correction",
+        "entry.delete",
+        "event.duplicate_without_supersession",
+        "raw.mutate",
+        "revision.attribution_rewrite"
+      ]
+    }
+  ]
+}

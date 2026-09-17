@@ -1,0 +1,239 @@
+{
+  "cases": [
+    {
+      "id": "CC-09-negation-reverses-claim",
+      "category": "negation",
+      "description": "Dad negates Mom's logged claim (\"she didn't eat the spinach — she threw it on the floor\"). The prior assertion is superseded by a corrective revision — not deleted, not left current.",
+      "exercises": ["negation of a prior assertion = content revision", "current event no longer asserts the retracted claim", "raw transcript still carries the original words", "cross-author attribution"],
+      "setup": {
+        "turns": [
+          {
+            "turnId": "s1",
+            "captureId": "fx_cc09_meal",
+            "speakerId": "fx_u_mom",
+            "capturedAt": 1789510200000,
+            "text": "Nora ate her spinach at dinner.",
+            "seedEvents": [
+              { "category": "meal", "occurredAt": 1789509600000, "note": "ate her spinach" }
+            ]
+          }
+        ],
+        "baseline": { "entryCount": 1 }
+      },
+      "turns": [
+        {
+          "turnId": "t1",
+          "speakerId": "fx_u_dad",
+          "capturedAt": 1789510500000,
+          "text": "She didn't eat the spinach — she threw it on the floor.",
+          "correctionId": "cc09-t1",
+          "expect": {
+            "responseClass": "applied",
+            "stateDelta": {
+              "entryChanges": [
+                {
+                  "ofCaptureId": "fx_cc09_meal",
+                  "authorIdMustRemain": "fx_u_mom",
+                  "transcriptUnchanged": true,
+                  "events": [
+                    {
+                      "category": "meal",
+                      "occurredAt": 1789509600000,
+                      "noteContains": ["threw it on the floor"],
+                      "noteNotContains": ["ate her spinach"]
+                    }
+                  ]
+                }
+              ],
+              "appendedRevisions": [
+                { "ofCaptureId": "fx_cc09_meal", "kind": "correction", "authorId": "fx_u_dad", "count": 1 }
+              ]
+            }
+          }
+        }
+      ],
+      "final": {
+        "entryCount": 1,
+        "entries": [
+          {
+            "ofCaptureId": "fx_cc09_meal",
+            "childId": "fx_child_nora",
+            "authorId": "fx_u_mom",
+            "status": "draft",
+            "transcriptByteEquals": "Nora ate her spinach at dinner.",
+            "events": [
+              {
+                "category": "meal",
+                "occurredAt": 1789509600000,
+                "noteContains": ["threw it on the floor"],
+                "noteNotContains": ["ate her spinach"]
+              }
+            ],
+            "revisionKinds": ["capture", "correction"],
+            "lastRevisionAuthorId": "fx_u_dad"
+          }
+        ]
+      },
+      "forbidden": [
+        "entry.delete",
+        "raw.mutate",
+        "entry.duplicate_without_supersession",
+        "revision.attribution_rewrite",
+        "lineage.truncate"
+      ]
+    },
+    {
+      "id": "CC-10-negation-zero-care",
+      "category": "negation",
+      "description": "\"Nora didn't nap at all today\" with NO nap entry in the log. This is an explicit zero-care observation that must be CAPTURED as a reviewable record — not read as missing data, not written as a 0-minute nap quantity, and not suppressed. Proposal-pinned representation: sleep-category event, no quantity, note carries the negation; occurredAt = the assertion instant.",
+      "exercises": ["missing ≠ zero care (the distinction in both directions)", "zero-care must be captured when stated", "zero-duration quantity representation forbidden", "new entry from a negation turn"],
+      "setup": {
+        "turns": [
+          {
+            "turnId": "s1",
+            "captureId": "fx_cc10_breakfast",
+            "speakerId": "fx_u_dad",
+            "capturedAt": 1789478400000,
+            "text": "Nora had pancakes at 9.",
+            "seedEvents": [
+              { "category": "meal", "occurredAt": 1789477200000, "note": "pancakes" }
+            ]
+          }
+        ],
+        "baseline": { "entryCount": 1 }
+      },
+      "turns": [
+        {
+          "turnId": "t1",
+          "speakerId": "fx_u_mom",
+          "capturedAt": 1789502400000,
+          "text": "Nora didn't nap at all today.",
+          "correctionId": "cc10-t1",
+          "expect": {
+            "responseClass": "applied",
+            "stateDelta": {
+              "entryCountDelta": 1,
+              "newEntries": [
+                {
+                  "childId": "fx_child_nora",
+                  "authorId": "fx_u_mom",
+                  "status": "draft",
+                  "events": [
+                    {
+                      "category": "sleep",
+                      "occurredAt": 1789502400000,
+                      "noteContains": ["no nap"]
+                    }
+                  ],
+                  "revisionKinds": ["capture"]
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "final": {
+        "entryCount": 2,
+        "entries": [
+          {
+            "ofCaptureId": "fx_cc10_breakfast",
+            "childId": "fx_child_nora",
+            "authorId": "fx_u_dad",
+            "status": "draft",
+            "transcriptByteEquals": "Nora had pancakes at 9.",
+            "events": [{ "category": "meal", "occurredAt": 1789477200000 }],
+            "revisionKinds": ["capture"]
+          }
+        ],
+        "newEntries": [
+          {
+            "childId": "fx_child_nora",
+            "authorId": "fx_u_mom",
+            "status": "draft",
+            "events": [
+              {
+                "category": "sleep",
+                "occurredAt": 1789502400000,
+                "noteContains": ["no nap"]
+              }
+            ],
+            "revisionKinds": ["capture"]
+          }
+        ]
+      },
+      "forbidden": [
+        "write.suppressed_when_due",
+        "quantity.zero_duration_sleep_representation",
+        "zero_care.assert_without_capture",
+        "entry.delete"
+      ]
+    },
+    {
+      "id": "CC-11-negation-cancel-pending",
+      "category": "negation",
+      "description": "\"Actually wait — don't log that\" immediately after a capture, while the entry is still draft and unpublished. The cancel withdraws the structured events and keeps the entry as a draft with its raw transcript byte-intact. Cancelling is never a hard delete, and never publishes.",
+      "exercises": ["cancel-before-publication semantics", "raw preserved even when withdrawn", "cancel ≠ delete", "cancel ≠ publish"],
+      "setup": {
+        "turns": [
+          {
+            "turnId": "s1",
+            "captureId": "fx_cc11_meltdown",
+            "speakerId": "fx_u_mom",
+            "capturedAt": 1789502700000,
+            "text": "Leo had a meltdown at the store at 4.",
+            "seedEvents": [
+              { "category": "mood", "occurredAt": 1789502400000, "note": "meltdown at the store" }
+            ]
+          }
+        ],
+        "baseline": { "entryCount": 1 }
+      },
+      "turns": [
+        {
+          "turnId": "t1",
+          "speakerId": "fx_u_mom",
+          "capturedAt": 1789502820000,
+          "text": "Actually wait — don't log that.",
+          "correctionId": "cc11-t1",
+          "expect": {
+            "responseClass": "applied",
+            "stateDelta": {
+              "entryChanges": [
+                {
+                  "ofCaptureId": "fx_cc11_meltdown",
+                  "status": "draft",
+                  "transcriptUnchanged": true,
+                  "events": []
+                }
+              ],
+              "appendedRevisions": [
+                { "ofCaptureId": "fx_cc11_meltdown", "kind": "cancel", "authorId": "fx_u_mom", "count": 1 }
+              ]
+            }
+          }
+        }
+      ],
+      "final": {
+        "entryCount": 1,
+        "entries": [
+          {
+            "ofCaptureId": "fx_cc11_meltdown",
+            "childId": "fx_child_leo",
+            "authorId": "fx_u_mom",
+            "status": "draft",
+            "transcriptByteEquals": "Leo had a meltdown at the store at 4.",
+            "events": [],
+            "revisionKinds": ["capture", "cancel"],
+            "lastRevisionAuthorId": "fx_u_mom"
+          }
+        ]
+      },
+      "forbidden": [
+        "entry.delete",
+        "raw.delete",
+        "raw.mutate",
+        "publication.change_via_correction"
+      ]
+    }
+  ]
+}
