@@ -1,0 +1,670 @@
+{
+  "fixtureId": "HOME-C-MONTH-HISTORY",
+  "window": {
+    "start": "2026-08-17",
+    "end": "2026-09-15",
+    "days": 30
+  },
+  "deterministic": {
+    "seed": 20260915,
+    "generator": "scripts/generate-fixtures.ts",
+    "prng": "mulberry32"
+  },
+  "note": "The final row is set from the S1 day so month history and scenario can never diverge.",
+  "days": [
+    {
+      "date": "2026-08-17",
+      "dayLabel": "Monday",
+      "captures": 1,
+      "eventsByCategory": {
+        "meal": 2,
+        "sleep": 2,
+        "potty": 3,
+        "mood": 1,
+        "school": 1,
+        "milestone": 1
+      },
+      "nightWakings": 0,
+      "napMinutes": 45,
+      "pottySuccesses": 3,
+      "pottyAccidents": 1,
+      "milestones": [
+        "told a full story about her day"
+      ],
+      "coverage": "partial",
+      "gapNotes": [
+        "no evening capture"
+      ],
+      "source": "generated"
+    },
+    {
+      "date": "2026-08-18",
+      "dayLabel": "Tuesday",
+      "captures": 1,
+      "eventsByCategory": {
+        "meal": 3,
+        "sleep": 3,
+        "potty": 2,
+        "mood": 1,
+        "school": 1,
+        "milestone": 0
+      },
+      "nightWakings": 1,
+      "napMinutes": 75,
+      "pottySuccesses": 4,
+      "pottyAccidents": 2,
+      "milestones": [],
+      "coverage": "full",
+      "gapNotes": [],
+      "source": "generated"
+    },
+    {
+      "date": "2026-08-19",
+      "dayLabel": "Wednesday",
+      "captures": 3,
+      "eventsByCategory": {
+        "meal": 2,
+        "sleep": 2,
+        "potty": 2,
+        "mood": 1,
+        "school": 1,
+        "milestone": 0
+      },
+      "nightWakings": 0,
+      "napMinutes": 75,
+      "pottySuccesses": 4,
+      "pottyAccidents": 0,
+      "milestones": [],
+      "coverage": "full",
+      "gapNotes": [],
+      "source": "generated"
+    },
+    {
+      "date": "2026-08-20",
+      "dayLabel": "Thursday",
+      "captures": 1,
+      "eventsByCategory": {
+        "meal": 3,
+        "sleep": 2,
+        "potty": 2,
+        "mood": 1,
+        "school": 1,
+        "milestone": 0
+      },
+      "nightWakings": 0,
+      "napMinutes": 60,
+      "pottySuccesses": 4,
+      "pottyAccidents": 0,
+      "milestones": [],
+      "coverage": "partial",
+      "gapNotes": [
+        "no evening capture"
+      ],
+      "source": "generated"
+    },
+    {
+      "date": "2026-08-21",
+      "dayLabel": "Friday",
+      "captures": 1,
+      "eventsByCategory": {
+        "meal": 3,
+        "sleep": 2,
+        "potty": 3,
+        "mood": 1,
+        "school": 1,
+        "milestone": 1
+      },
+      "nightWakings": 0,
+      "napMinutes": 60,
+      "pottySuccesses": 4,
+      "pottyAccidents": 1,
+      "milestones": [
+        "washed hands without being asked"
+      ],
+      "coverage": "full",
+      "gapNotes": [],
+      "source": "generated"
+    },
+    {
+      "date": "2026-08-22",
+      "dayLabel": "Saturday",
+      "captures": 1,
+      "eventsByCategory": {
+        "meal": 3,
+        "sleep": 1,
+        "potty": 2,
+        "mood": 1,
+        "school": 0,
+        "milestone": 0
+      },
+      "nightWakings": 0,
+      "napMinutes": 0,
+      "pottySuccesses": 3,
+      "pottyAccidents": 1,
+      "milestones": [],
+      "coverage": "full",
+      "gapNotes": [],
+      "source": "generated"
+    },
+    {
+      "date": "2026-08-23",
+      "dayLabel": "Sunday",
+      "captures": 0,
+      "eventsByCategory": {},
+      "nightWakings": 0,
+      "napMinutes": 0,
+      "pottySuccesses": 0,
+      "pottyAccidents": 0,
+      "milestones": [],
+      "coverage": "none",
+      "gapNotes": [
+        "no capture — family day out"
+      ],
+      "source": "generated"
+    },
+    {
+      "date": "2026-08-24",
+      "dayLabel": "Monday",
+      "captures": 1,
+      "eventsByCategory": {
+        "meal": 2,
+        "sleep": 3,
+        "potty": 1,
+        "mood": 1,
+        "school": 1,
+        "milestone": 0
+      },
+      "nightWakings": 1,
+      "napMinutes": 60,
+      "pottySuccesses": 4,
+      "pottyAccidents": 0,
+      "milestones": [],
+      "coverage": "full",
+      "gapNotes": [],
+      "source": "generated"
+    },
+    {
+      "date": "2026-08-25",
+      "dayLabel": "Tuesday",
+      "captures": 3,
+      "eventsByCategory": {
+        "meal": 3,
+        "sleep": 1,
+        "potty": 2,
+        "mood": 0,
+        "school": 1,
+        "milestone": 0
+      },
+      "nightWakings": 0,
+      "napMinutes": 0,
+      "pottySuccesses": 3,
+      "pottyAccidents": 0,
+      "milestones": [],
+      "coverage": "partial",
+      "gapNotes": [
+        "no evening capture"
+      ],
+      "source": "generated"
+    },
+    {
+      "date": "2026-08-26",
+      "dayLabel": "Wednesday",
+      "captures": 2,
+      "eventsByCategory": {
+        "meal": 2,
+        "sleep": 1,
+        "potty": 3,
+        "mood": 1,
+        "school": 1,
+        "milestone": 0
+      },
+      "nightWakings": 0,
+      "napMinutes": 0,
+      "pottySuccesses": 3,
+      "pottyAccidents": 2,
+      "milestones": [],
+      "coverage": "full",
+      "gapNotes": [],
+      "source": "generated"
+    },
+    {
+      "date": "2026-08-27",
+      "dayLabel": "Thursday",
+      "captures": 2,
+      "eventsByCategory": {
+        "meal": 3,
+        "sleep": 2,
+        "potty": 2,
+        "mood": 1,
+        "school": 1,
+        "milestone": 0
+      },
+      "nightWakings": 0,
+      "napMinutes": 75,
+      "pottySuccesses": 2,
+      "pottyAccidents": 1,
+      "milestones": [],
+      "coverage": "partial",
+      "gapNotes": [
+        "no evening capture"
+      ],
+      "source": "generated"
+    },
+    {
+      "date": "2026-08-28",
+      "dayLabel": "Friday",
+      "captures": 3,
+      "eventsByCategory": {
+        "meal": 2,
+        "sleep": 2,
+        "potty": 1,
+        "mood": 1,
+        "school": 1,
+        "milestone": 0
+      },
+      "nightWakings": 0,
+      "napMinutes": 60,
+      "pottySuccesses": 4,
+      "pottyAccidents": 0,
+      "milestones": [],
+      "coverage": "full",
+      "gapNotes": [],
+      "source": "generated"
+    },
+    {
+      "date": "2026-08-29",
+      "dayLabel": "Saturday",
+      "captures": 1,
+      "eventsByCategory": {
+        "meal": 3,
+        "sleep": 2,
+        "potty": 2,
+        "mood": 1,
+        "school": 0,
+        "milestone": 0
+      },
+      "nightWakings": 0,
+      "napMinutes": 60,
+      "pottySuccesses": 3,
+      "pottyAccidents": 2,
+      "milestones": [],
+      "coverage": "full",
+      "gapNotes": [],
+      "source": "generated"
+    },
+    {
+      "date": "2026-08-30",
+      "dayLabel": "Sunday",
+      "captures": 3,
+      "eventsByCategory": {
+        "meal": 2,
+        "sleep": 3,
+        "potty": 2,
+        "mood": 0,
+        "school": 0,
+        "milestone": 0
+      },
+      "nightWakings": 1,
+      "napMinutes": 90,
+      "pottySuccesses": 2,
+      "pottyAccidents": 2,
+      "milestones": [],
+      "coverage": "full",
+      "gapNotes": [],
+      "source": "generated"
+    },
+    {
+      "date": "2026-08-31",
+      "dayLabel": "Monday",
+      "captures": 2,
+      "eventsByCategory": {
+        "meal": 3,
+        "sleep": 2,
+        "potty": 1,
+        "mood": 1,
+        "school": 1,
+        "milestone": 0
+      },
+      "nightWakings": 0,
+      "napMinutes": 90,
+      "pottySuccesses": 2,
+      "pottyAccidents": 0,
+      "milestones": [],
+      "coverage": "full",
+      "gapNotes": [],
+      "source": "generated"
+    },
+    {
+      "date": "2026-09-01",
+      "dayLabel": "Tuesday",
+      "captures": 1,
+      "eventsByCategory": {
+        "meal": 3,
+        "sleep": 2,
+        "potty": 1,
+        "mood": 1,
+        "school": 1,
+        "milestone": 0
+      },
+      "nightWakings": 0,
+      "napMinutes": 60,
+      "pottySuccesses": 2,
+      "pottyAccidents": 0,
+      "milestones": [],
+      "coverage": "partial",
+      "gapNotes": [
+        "no evening capture"
+      ],
+      "source": "generated"
+    },
+    {
+      "date": "2026-09-02",
+      "dayLabel": "Wednesday",
+      "captures": 3,
+      "eventsByCategory": {
+        "meal": 3,
+        "sleep": 2,
+        "potty": 1,
+        "mood": 0,
+        "school": 1,
+        "milestone": 0
+      },
+      "nightWakings": 0,
+      "napMinutes": 45,
+      "pottySuccesses": 4,
+      "pottyAccidents": 0,
+      "milestones": [],
+      "coverage": "full",
+      "gapNotes": [],
+      "source": "generated"
+    },
+    {
+      "date": "2026-09-03",
+      "dayLabel": "Thursday",
+      "captures": 3,
+      "eventsByCategory": {
+        "meal": 3,
+        "sleep": 2,
+        "potty": 3,
+        "mood": 0,
+        "school": 1,
+        "milestone": 0
+      },
+      "nightWakings": 0,
+      "napMinutes": 60,
+      "pottySuccesses": 5,
+      "pottyAccidents": 1,
+      "milestones": [],
+      "coverage": "partial",
+      "gapNotes": [
+        "no evening capture"
+      ],
+      "source": "generated"
+    },
+    {
+      "date": "2026-09-04",
+      "dayLabel": "Friday",
+      "captures": 2,
+      "eventsByCategory": {
+        "meal": 2,
+        "sleep": 3,
+        "potty": 2,
+        "mood": 1,
+        "school": 1,
+        "milestone": 0
+      },
+      "nightWakings": 1,
+      "napMinutes": 45,
+      "pottySuccesses": 3,
+      "pottyAccidents": 1,
+      "milestones": [],
+      "coverage": "full",
+      "gapNotes": [],
+      "source": "generated"
+    },
+    {
+      "date": "2026-09-05",
+      "dayLabel": "Saturday",
+      "captures": 3,
+      "eventsByCategory": {
+        "meal": 2,
+        "sleep": 3,
+        "potty": 1,
+        "mood": 1,
+        "school": 0,
+        "milestone": 0
+      },
+      "nightWakings": 1,
+      "napMinutes": 90,
+      "pottySuccesses": 2,
+      "pottyAccidents": 0,
+      "milestones": [],
+      "coverage": "full",
+      "gapNotes": [],
+      "source": "generated"
+    },
+    {
+      "date": "2026-09-06",
+      "dayLabel": "Sunday",
+      "captures": 0,
+      "eventsByCategory": {},
+      "nightWakings": 0,
+      "napMinutes": 0,
+      "pottySuccesses": 0,
+      "pottyAccidents": 0,
+      "milestones": [],
+      "coverage": "none",
+      "gapNotes": [
+        "no capture — family day out"
+      ],
+      "source": "generated"
+    },
+    {
+      "date": "2026-09-07",
+      "dayLabel": "Monday",
+      "captures": 3,
+      "eventsByCategory": {
+        "meal": 2,
+        "sleep": 2,
+        "potty": 2,
+        "mood": 0,
+        "school": 1,
+        "milestone": 1
+      },
+      "nightWakings": 1,
+      "napMinutes": 0,
+      "pottySuccesses": 4,
+      "pottyAccidents": 0,
+      "milestones": [
+        "first two-wheel scooter attempt"
+      ],
+      "coverage": "full",
+      "gapNotes": [],
+      "source": "generated"
+    },
+    {
+      "date": "2026-09-08",
+      "dayLabel": "Tuesday",
+      "captures": 1,
+      "eventsByCategory": {
+        "meal": 2,
+        "sleep": 2,
+        "potty": 1,
+        "mood": 0,
+        "school": 1,
+        "milestone": 0
+      },
+      "nightWakings": 1,
+      "napMinutes": 0,
+      "pottySuccesses": 4,
+      "pottyAccidents": 0,
+      "milestones": [],
+      "coverage": "partial",
+      "gapNotes": [
+        "no evening capture"
+      ],
+      "source": "generated"
+    },
+    {
+      "date": "2026-09-09",
+      "dayLabel": "Wednesday",
+      "captures": 1,
+      "eventsByCategory": {
+        "meal": 3,
+        "sleep": 3,
+        "potty": 2,
+        "mood": 1,
+        "school": 1,
+        "milestone": 0
+      },
+      "nightWakings": 1,
+      "napMinutes": 75,
+      "pottySuccesses": 4,
+      "pottyAccidents": 0,
+      "milestones": [],
+      "coverage": "full",
+      "gapNotes": [],
+      "source": "generated"
+    },
+    {
+      "date": "2026-09-10",
+      "dayLabel": "Thursday",
+      "captures": 3,
+      "eventsByCategory": {
+        "meal": 2,
+        "sleep": 2,
+        "potty": 1,
+        "mood": 0,
+        "school": 1,
+        "milestone": 0
+      },
+      "nightWakings": 0,
+      "napMinutes": 90,
+      "pottySuccesses": 5,
+      "pottyAccidents": 0,
+      "milestones": [],
+      "coverage": "full",
+      "gapNotes": [],
+      "source": "generated"
+    },
+    {
+      "date": "2026-09-11",
+      "dayLabel": "Friday",
+      "captures": 2,
+      "eventsByCategory": {
+        "meal": 2,
+        "sleep": 1,
+        "potty": 1,
+        "mood": 0,
+        "school": 1,
+        "milestone": 0
+      },
+      "nightWakings": 0,
+      "napMinutes": 0,
+      "pottySuccesses": 4,
+      "pottyAccidents": 0,
+      "milestones": [],
+      "coverage": "partial",
+      "gapNotes": [
+        "no evening capture"
+      ],
+      "source": "generated"
+    },
+    {
+      "date": "2026-09-12",
+      "dayLabel": "Saturday",
+      "captures": 1,
+      "eventsByCategory": {
+        "meal": 2,
+        "sleep": 1,
+        "potty": 2,
+        "mood": 0,
+        "school": 0,
+        "milestone": 1
+      },
+      "nightWakings": 0,
+      "napMinutes": 0,
+      "pottySuccesses": 5,
+      "pottyAccidents": 2,
+      "milestones": [
+        "used the big slide alone"
+      ],
+      "coverage": "partial",
+      "gapNotes": [
+        "no evening capture"
+      ],
+      "source": "generated"
+    },
+    {
+      "date": "2026-09-13",
+      "dayLabel": "Sunday",
+      "captures": 3,
+      "eventsByCategory": {
+        "meal": 3,
+        "sleep": 2,
+        "potty": 2,
+        "mood": 1,
+        "school": 0,
+        "milestone": 1
+      },
+      "nightWakings": 0,
+      "napMinutes": 45,
+      "pottySuccesses": 4,
+      "pottyAccidents": 0,
+      "milestones": [
+        "built a tower of ten blocks"
+      ],
+      "coverage": "full",
+      "gapNotes": [],
+      "source": "generated"
+    },
+    {
+      "date": "2026-09-14",
+      "dayLabel": "Monday",
+      "captures": 2,
+      "eventsByCategory": {
+        "meal": 2,
+        "sleep": 2,
+        "potty": 1,
+        "mood": 0,
+        "school": 1,
+        "milestone": 0
+      },
+      "nightWakings": 0,
+      "napMinutes": 75,
+      "pottySuccesses": 4,
+      "pottyAccidents": 0,
+      "milestones": [],
+      "coverage": "partial",
+      "gapNotes": [
+        "no evening capture"
+      ],
+      "source": "generated"
+    },
+    {
+      "date": "2026-09-15",
+      "dayLabel": "Tuesday",
+      "captures": 2,
+      "eventsByCategory": {
+        "meal": 1,
+        "sleep": 1,
+        "school": 1,
+        "potty": 2,
+        "milestone": 1,
+        "mood": 1
+      },
+      "nightWakings": 1,
+      "napMinutes": 0,
+      "pottySuccesses": 2,
+      "pottyAccidents": 1,
+      "milestones": [
+        "balance bike — pedaled half a block for the first time"
+      ],
+      "coverage": "partial",
+      "gapNotes": [
+        "day in progress — captures through 08:09"
+      ],
+      "source": "set from HOME-C-S1-DAY (not generated)"
+    }
+  ]
+}

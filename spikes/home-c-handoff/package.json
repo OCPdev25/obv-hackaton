@@ -1,0 +1,15 @@
+{
+  "name": "@journal/spike-home-c-handoff",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Parent home candidate C — handoff-first home lens prototype (rubric art_VyNYOggs, candidate 3 / todo_wZdouzJU). Standalone spike: bun tests decode synthetic S1 fixtures through the contract schemas; RN screens are typechecked, not executed.",
+  "scripts": {
+    "test": "bun test",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "gen": "bun scripts/generate-fixtures.ts"
+  },
+  "devDependencies": {},
+  "notes": {
+    "dependencies": "Intentionally empty. The repo uses a hoisted pnpm layout (.npmrc node-linker=hoisted), so react, react-native, and effect resolve from the workspace root while typechecking (moduleResolution walks up). This keeps the spike outside pnpm-workspace.yaml globs, exactly like security/ and evaluation/."
+  }
+}
