@@ -101,7 +101,9 @@ export function withAbort<T>(promise: Promise<T>, signal?: AbortSignal): Promise
 }
 
 function cancelledError(signal: AbortSignal): TranscriptionError {
-  return new TranscriptionError('cancelled', 'Transcription was cancelled', { cause: signal.reason })
+  // `reason` is ES2022 DOM lib; cast keeps the spike typecheck-clean under
+  // older lib configs (the app's compile graph pulls this file in).
+  return new TranscriptionError('cancelled', 'Transcription was cancelled', { cause: (signal as AbortSignal & { reason?: unknown }).reason })
 }
 
 /** Record-then-transcribe convenience: transcribe and join to composer text. */
