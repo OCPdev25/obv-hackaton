@@ -1,0 +1,67 @@
+#!/usr/bin/env python3
+"""Lint vendored agent skills under .obvious/skills/.
+
+Checks every SKILL.md has parseable YAML frontmatter containing non-empty
+`name` and `description` fields, and that known cross-references between
+vendored skills resolve. Exits non-zero on any failure.
+"""
+
+import re
+import sys
+from pathlib import Path
+
+SKILLS_ROOT = Path(__file__).resolve().parent.parent / ".obvious" / "skills"
+
+# Skills referenced by name from other vendored skills; the referenced skill
+# must exist somewhere under SKILLS_ROOT.
+REQUIRED_SKILLS = ["grilling"]
+
+FRONTMATTER_RE = re.compile(r"\A---\s*\n(.*?)\n---\s*\n", re.DOTALL)
+
+
+def parse_frontmatter(text: str) -> dict:
+    match = FRONTMATTER_RE.match(text)
+    if not match:
+        raise ValueError("missing or malformed YAML frontmatter (--- ... ---)")
+    fields = {}
+    for line in match.group(1).splitlines():
+        key, sep, value = line.partition(":")
+        if sep:
+            fields[key.strip()] = value.strip()
+    return fields
+
+
+def main() -> int:
+    failures = []
+    names = set()
+
+    for skill_md in sorted(SKILLS_ROOT.rglob("SKILL.md")):
+        rel = skill_md.relative_to(SKILLS_ROOT)
+        try:
+            fields = parse_frontmatter(skill_md.read_text(encoding="utf-8"))
+        except ValueError as exc:
+            failures.append(f"{rel}: {exc}")
+            continue
+        for required in ("name", "description"):
+            if not fields.get(required):
+                failures.append(f"{rel}: frontmatter field '{required}' is missing or empty")
+        if fields.get("name"):
+            names.add(fields["name"])
+
+    for required in REQUIRED_SKILLS:
+        if required not in names:
+            failures.append(f"cross-reference: skill '{required}' is referenced but not vendored")
+
+    if failures:
+        print("FAIL")
+        for failure in failures:
+            print(f"  - {failure}")
+        return 1
+
+    count = len(list(SKILLS_ROOT.rglob("SKILL.md")))
+    print(f"OK: {count} SKILL.md files, all frontmatter valid, cross-references resolve")
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())
