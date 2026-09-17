@@ -1,10 +1,7 @@
 # CI pipeline for pull requests targeting master.
 #
-# Package-level steps (install, typecheck, test, build) require the monorepo
-# scaffold (root package.json, pnpm-lock.yaml, turbo tasks) which lands via
-# feat/monorepo-scaffold. Until that PR merges and this branch is rebased,
-# those steps are expected to fail here; everything up to and including
-# pnpm setup runs green.
+# Package-level steps assume the monorepo scaffold (root package.json,
+# pnpm-lock.yaml, turbo tasks) from feat/monorepo-scaffold.
 name: CI
 
 on:
