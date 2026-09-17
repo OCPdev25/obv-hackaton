@@ -1,0 +1,10 @@
+{
+  "expo": {
+    "name": "Journal",
+    "slug": "shared-child-journal",
+    "version": "0.1.0",
+    "platforms": ["ios", "android", "web"],
+    "ios": { "supportsTablet": false },
+    "scheme": "journal"
+  }
+}

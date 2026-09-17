@@ -1,0 +1,14 @@
+{
+  "name": "obv-hackaton",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "typecheck": "cd packages/contracts && tsc --noEmit && cd ../../packages/backend && tsc --noEmit && cd ../../apps/mobile && tsc --noEmit",
+    "test": "cd packages/contracts && vitest run",
+    "backend:dev": "cd packages/backend && convex dev --local",
+    "demo": "node scripts/demo.mjs"
+  }
+}
