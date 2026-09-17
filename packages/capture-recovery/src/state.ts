@@ -1,5 +1,5 @@
 import { Schema } from "effect"
-import { CaptureId, ExtractionAttempt, ExtractionStatus } from "@journal/domain"
+import { AttemptNumber, CaptureId, ExtractionStatus } from "@journal/domain"
 
 /**
  * Interrupted-capture recovery state (proposal toward contract v0.3 — bounded
@@ -31,7 +31,7 @@ export type SubmissionId = typeof SubmissionId["Type"]
 export const DiscardReceipt = Schema.Struct({
   at: Schema.Number,
   transcriptLength: Schema.Int,
-  attempt: ExtractionAttempt,
+  attempt: AttemptNumber,
   submissionId: Schema.optionalKey(SubmissionId),
 })
 export type DiscardReceipt = typeof DiscardReceipt["Type"]
@@ -52,8 +52,8 @@ export const CaptureRecoveryState = Schema.Struct({
   phase: CapturePhase,
   /** Stable idempotency key: assigned at first submit, reused on retries. */
   submissionId: Schema.optionalKey(SubmissionId),
-  /** Extraction attempt counter (canonical envelope), monotonic per capture. */
-  attempt: ExtractionAttempt,
+  /** Extraction attempt counter (canonical `AttemptNumber`), monotonic per capture. */
+  attempt: AttemptNumber,
   /** Mirror of Entry.extractionStatus for pending captures. */
   extractionStatus: Schema.optionalKey(ExtractionStatus),
   lastFailure: Schema.optionalKey(LastFailure),

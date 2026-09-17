@@ -2,6 +2,7 @@ import { describe, expect, test } from "bun:test"
 import { readdirSync, readFileSync } from "node:fs"
 import { join } from "node:path"
 import { Schema } from "effect"
+import { CaptureId } from "@journal/domain"
 
 import {
   CaptureEvent,
@@ -18,6 +19,9 @@ import {
   type CaptureRecovery,
   type FixtureRunResult,
 } from "../src/index.js"
+
+/** Canonical identifier space: brand fixture/test literals the same way createCapture does. */
+const asCaptureId = Schema.decodeSync(CaptureId)
 
 const fixturesDir = join(import.meta.dir, "..", "fixtures")
 
@@ -267,8 +271,8 @@ describe("storage contract", () => {
     dead = reduce(dead, { _tag: "DiscardRequested", at: 4_000 })
     storage.save(live)
     storage.save(dead)
-    expect(storage.listUnresolved().map((s) => s.captureId)).toEqual(["cap-live"])
-    expect(storage.listReceipts().map((s) => s.captureId)).toEqual(["cap-dead"])
+    expect(storage.listUnresolved().map((s) => s.captureId)).toEqual([asCaptureId("cap-live")])
+    expect(storage.listReceipts().map((s) => s.captureId)).toEqual([asCaptureId("cap-dead")])
   })
 
   test("fail-closed read: a corrupt stored record cannot enter the machine", () => {
