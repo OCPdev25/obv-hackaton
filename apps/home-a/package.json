@@ -1,0 +1,29 @@
+{
+  "name": "@journal/home-a",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Parent Home Candidate A — conversation-first home prototype (synthetic data only). A/B candidate; see PR description for DO NOT AUTO-MERGE.",
+  "main": "index.ts",
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run",
+    "start": "expo start",
+    "web": "expo start --web",
+    "android": "expo start --android",
+    "ios": "expo start --ios"
+  },
+  "dependencies": {
+    "@journal/domain": "workspace:*",
+    "effect": "4.0.0-rc.115",
+    "expo": "~57.0.23",
+    "react": "19.2.3",
+    "react-native": "0.86.3"
+  },
+  "devDependencies": {
+    "@types/node": "^20.19.0",
+    "@types/react": "~19.2.2",
+    "typescript": "~6.0.3",
+    "vitest": "^3.2.4"
+  }
+}

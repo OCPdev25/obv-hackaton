@@ -1,0 +1,11 @@
+{
+  "expo": {
+    "name": "Parent Home — Candidate A",
+    "slug": "parent-home-candidate-a",
+    "version": "0.1.0",
+    "scheme": "parenthomecandidatea",
+    "platforms": ["ios", "android", "web"],
+    "newArchEnabled": true,
+    "description": "Conversation-first parent home prototype on synthetic data only (A/B candidate A)"
+  }
+}
