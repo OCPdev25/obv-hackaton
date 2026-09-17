@@ -1,0 +1,223 @@
+{
+  "kind": "knowledge-negative",
+  "id": "knowledge-06-invalid-items",
+  "description": "Negative acceptance cases: structurally invalid knowledge items that must be rejected. rejectAt \"decode\" = the Effect schema rejects the wire shape; rejectAt \"invariants\" = the shape decodes but violates the family-knowledge contract rules. Notably: no invented 'medical' kind exists, fused audience/visibility values are rejected (contract v0.2), and model output may never claim caregiver-confirmed certainty.",
+  "cases": [
+    {
+      "name": "medical kind invented by extraction",
+      "rejectAt": "decode",
+      "item": {
+        "householdId": "synthetic-household-0001",
+        "childId": "synthetic-child-0001",
+        "kind": "medical",
+        "topic": "rash",
+        "statement": "Probably roseola — the rash pattern is classic.",
+        "status": "current",
+        "validFrom": 1789588800000,
+        "statedBy": "extraction-model",
+        "recordedBy": "extraction-model",
+        "provenanceKind": "model-extracted",
+        "confidence": 0.7,
+        "sourceType": "entry",
+        "sourceEntryId": "synthetic-entry-0006",
+        "visibility": "published",
+        "createdAt": 1789588800000
+      }
+    },
+    {
+      "name": "fused audience visibility value",
+      "rejectAt": "decode",
+      "item": {
+        "householdId": "synthetic-household-0001",
+        "childId": "synthetic-child-0001",
+        "kind": "settling",
+        "topic": "bedtime",
+        "statement": "Bedtime is 7:30 pm.",
+        "status": "current",
+        "validFrom": 1789588800000,
+        "statedBy": "caregiver-mom",
+        "recordedBy": "caregiver-mom",
+        "provenanceKind": "caregiver-stated",
+        "confidence": 0.8,
+        "sourceType": "entry",
+        "sourceEntryId": "synthetic-entry-0005",
+        "visibility": "published:grandparents",
+        "createdAt": 1789588800000
+      }
+    },
+    {
+      "name": "confidence out of range",
+      "rejectAt": "decode",
+      "item": {
+        "householdId": "synthetic-household-0001",
+        "childId": "synthetic-child-0001",
+        "kind": "preference",
+        "topic": "milk-cup",
+        "statement": "Prefers the open cup.",
+        "status": "current",
+        "validFrom": 1789588800000,
+        "statedBy": "caregiver-dad",
+        "recordedBy": "caregiver-dad",
+        "provenanceKind": "caregiver-stated",
+        "confidence": 1.5,
+        "sourceType": "conversation",
+        "sourceRef": "synthetic-conversation-0009",
+        "visibility": "published",
+        "createdAt": 1789588800000
+      }
+    },
+    {
+      "name": "empty statement",
+      "rejectAt": "decode",
+      "item": {
+        "householdId": "synthetic-household-0001",
+        "childId": "synthetic-child-0001",
+        "kind": "preference",
+        "topic": "milk-cup",
+        "statement": "",
+        "status": "current",
+        "validFrom": 1789588800000,
+        "statedBy": "caregiver-dad",
+        "recordedBy": "caregiver-dad",
+        "provenanceKind": "caregiver-stated",
+        "confidence": 0.8,
+        "sourceType": "conversation",
+        "sourceRef": "synthetic-conversation-0009",
+        "visibility": "published",
+        "createdAt": 1789588800000
+      }
+    },
+    {
+      "name": "topic not normalized",
+      "rejectAt": "invariants",
+      "item": {
+        "householdId": "synthetic-household-0001",
+        "childId": "synthetic-child-0001",
+        "kind": "settling",
+        "topic": "Bedtime!!",
+        "statement": "Bedtime is 7:30 pm.",
+        "status": "current",
+        "validFrom": 1789588800000,
+        "statedBy": "caregiver-mom",
+        "recordedBy": "caregiver-mom",
+        "provenanceKind": "caregiver-stated",
+        "confidence": 0.8,
+        "sourceType": "entry",
+        "sourceEntryId": "synthetic-entry-0005",
+        "visibility": "published",
+        "createdAt": 1789588800000
+      }
+    },
+    {
+      "name": "quote without quoteText",
+      "rejectAt": "invariants",
+      "item": {
+        "householdId": "synthetic-household-0001",
+        "childId": "synthetic-child-0001",
+        "kind": "quote",
+        "topic": "sayings",
+        "statement": "Something funny at breakfast.",
+        "status": "current",
+        "validFrom": 1789588800000,
+        "spokenBy": "child",
+        "statedBy": "caregiver-mom",
+        "recordedBy": "caregiver-mom",
+        "provenanceKind": "caregiver-confirmed",
+        "confidence": 1,
+        "sourceType": "manual",
+        "visibility": "published",
+        "createdAt": 1789588800000
+      }
+    },
+    {
+      "name": "superseded without validUntil",
+      "rejectAt": "invariants",
+      "item": {
+        "householdId": "synthetic-household-0001",
+        "childId": "synthetic-child-0001",
+        "kind": "preference",
+        "topic": "milk-cup",
+        "statement": "Still wants the bottle at every meal.",
+        "status": "superseded",
+        "validFrom": 1787248800000,
+        "statedBy": "caregiver-dad",
+        "recordedBy": "caregiver-dad",
+        "provenanceKind": "caregiver-stated",
+        "confidence": 0.8,
+        "sourceType": "conversation",
+        "sourceRef": "synthetic-conversation-0002",
+        "visibility": "published",
+        "createdAt": 1787248800000
+      }
+    },
+    {
+      "name": "model output claiming caregiver-confirmed certainty",
+      "rejectAt": "invariants",
+      "item": {
+        "householdId": "synthetic-household-0001",
+        "childId": "synthetic-child-0001",
+        "kind": "settling",
+        "topic": "settle-white-noise",
+        "statement": "Falls asleep fastest with white noise on.",
+        "status": "current",
+        "validFrom": 1789588800000,
+        "statedBy": "caregiver-mom",
+        "recordedBy": "extraction-model",
+        "provenanceKind": "caregiver-confirmed",
+        "confidence": 1,
+        "sourceType": "entry",
+        "sourceEntryId": "synthetic-entry-0001",
+        "visibility": "published",
+        "createdAt": 1789588800000
+      }
+    },
+    {
+      "name": "entry source missing",
+      "rejectAt": "invariants",
+      "item": {
+        "householdId": "synthetic-household-0001",
+        "childId": "synthetic-child-0001",
+        "kind": "routine",
+        "topic": "bedtime-routine",
+        "statement": "Fixed order, every night.",
+        "steps": ["warm bath", "pajamas", "books", "lights out"],
+        "status": "current",
+        "validFrom": 1789588800000,
+        "statedBy": "caregiver-mom",
+        "recordedBy": "extraction-model",
+        "provenanceKind": "model-extracted",
+        "confidence": 0.78,
+        "sourceType": "entry",
+        "visibility": "published",
+        "createdAt": 1789588800000
+      }
+    },
+    {
+      "name": "document superseding itself",
+      "rejectAt": "invariants",
+      "item": {
+        "householdId": "synthetic-household-0001",
+        "childId": "synthetic-child-0001",
+        "kind": "preference",
+        "topic": "milk-cup",
+        "statement": "Drinks from the open cup at meals now.",
+        "status": "current",
+        "validFrom": 1789066800000,
+        "supersedes": "synthetic-knowledge-0610",
+        "_id": "synthetic-knowledge-0610",
+        "_creationTime": 1789588800000,
+        "statedBy": "caregiver-dad",
+        "recordedBy": "caregiver-dad",
+        "provenanceKind": "caregiver-stated",
+        "confidence": 0.9,
+        "sourceType": "conversation",
+        "sourceRef": "synthetic-conversation-0009",
+        "visibility": "published",
+        "createdAt": 1789588800000
+      }
+    }
+  ],
+  "expected": {
+    "allMustBeRejected": true
+  }
+}

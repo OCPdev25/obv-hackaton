@@ -48,9 +48,23 @@ export {
   UnresolvedReference,
   WriteProposal,
 } from "./operations.js"
+export {
+  KnowledgeFields,
+  KnowledgeSchema,
+  KnowledgeSourceSpan,
+  KnowledgeStatus,
+  KnowledgeProvenanceKind,
+  KnowledgeSourceType,
+  KnowledgeDocument,
+  KnowledgeShapeError,
+  assertKnowledgeInvariants,
+} from "./knowledge.js"
 export { toolSchemaFor } from "./jsonSchema.js"
 
 export type { Child } from "./child.js"
 export type { Household } from "./household.js"
 export type { Entry } from "./entry.js"
 export type { Event, EventCategory } from "./event.js"
+// KnowledgeKind / KnowledgeStatus / KnowledgeProvenanceKind / KnowledgeSourceType
+// are merged value+type symbols — exported once by value above.
+export type { Knowledge } from "./knowledge.js"
