@@ -25,7 +25,12 @@ evaluation/
     run.ts                      ← CLI entry (manifest-driven)
     example/example-adapter.ts  ← worked example adapter (in-memory, contract-shaped)
     example/broken-adapter.ts   ← deliberate negative control (must fail the corpus)
+  src/corrections/              ← conversational corrections corpus (independent; see below)
+    adapter.ts · fixture-types.ts · fixtures.ts · runner.ts · run.ts
+    example/example-adapter.ts  ← reference rule adapter (15/15)
+    example/broken-adapter.ts   ← five-fault negative control
   fixtures/                     ← fixture areas (data only); registration in fixtures/manifest.json
+  corrections/                  ← the corrections corpus: household env + 6 case files (data only)
 ```
 
 ## The adapter contract
@@ -249,3 +254,100 @@ Observed per-fixture results are printed by the runner; nothing was skipped.
   this judges all candidates identically on capture-pipeline semantics.
 - No publish/review transitions, multi-child scoping, or authz — corpus scope
   is one child's draft timeline.
+
+---
+
+# Conversational Corrections Challenge Corpus (`src/corrections/`)
+
+A second, independent corpus for the conversational correction problem:
+caregivers issue spoken follow-ups ("Actually, two thirty.", "That was actually
+Mia, not Nora.", "Undo that.") and the candidate decides, per turn, whether the
+utterance is **applied** (correction appended), **rejected** (write
+authorization fails — state must not change), or a **clarification** (ambiguous
+or unresolvable — nothing written). Same design rules as the capture corpus:
+fixtures are data only, the runner is fixed and deterministic, and any adapter
+that exports the factory can be driven through it.
+
+```bash
+bun src/corrections/run.ts                                            # reference adapter: 15/15, exit 0
+bun src/corrections/run.ts --adapter=./src/corrections/example/broken-adapter.ts --expect-failure   # control: must fail, exit 0
+```
+
+## The correction adapter contract
+
+Implement `CorrectionCandidateAdapter` (see `src/corrections/adapter.ts`) and
+export an **environment-dependent factory** from one module:
+
+```ts
+import type { CorrectionCandidateAdapter, HouseholdEnv } from '../../evaluation/src/corrections/adapter.ts'
+
+export function createCorrectionAdapter(env: HouseholdEnv): CorrectionCandidateAdapter {
+  return {
+    name: 'my-candidate',
+    async processTurn(turn) { /* ... */ },
+    async publishEntry(captureId) { /* ... */ },
+    async readJournal() { /* ... */ },
+  }
+}
+```
+
+- **`processTurn`** consumes one full utterance turn (speaker, verbatim text,
+  capture instant, correctionId when known) and resolves to `applied`,
+  `rejected`, or `clarification` with a reason.
+- **`readJournal`** returns the wire journal: entries (raw transcript,
+  original author, status, events) plus the append-only revision lineage.
+- **`publishEntry`** is the ONLY status transition and is runner-driven —
+  corrections never publish, retract, or change visibility, exactly like the
+  capture corpus's publish separation.
+
+## The corpus (household env + 6 case files, 15 cases, data only)
+
+| Family | Cases | Pins |
+|---|---|---|
+| Time corrections | CC-01, CC-02 | spoken absolute times retarget the event in the capture timezone (DST-safe), even on a published entry (status unchanged), with the original author preserved |
+| Wrong child | CC-03, CC-04 | retarget "was actually X, not Y" moves the entry (supersede, never duplicate) — or is rejected, read-only, when the actor lacks write grants |
+| Wrong prior event | CC-05, CC-06 | ambiguous or missing referents clarify with **zero writes**; an unambiguous content referent corrects only the intended entry |
+| Multiple authors / stale | CC-07, CC-08, CC-12 | compound time+content turns append one revision; a replayed `correctionId` is an applied no-op (stale suppression); repeated corrections stay idempotent |
+| Negation | CC-09, CC-10, CC-11 | negations reverse notes (verbatim wording preserved), zero-care reports ("didn't nap") are **captured** as reviewable records — never a 0-duration quantity — and pending entries can be cancelled |
+| Undo | CC-13, CC-14, CC-15 | undo restores the state before the last mutation ("undo everything": the capture state) as an appended undo revision; undo is read-only-rejected without write grants |
+
+Semantics enforced mechanically on every turn and at final state: raw
+transcripts and original `authorId`s are immutable; corrections append
+revisions and never delete or duplicate entries; entry count deltas are exact;
+revision lineage (kind + author per entry) is pinned end-to-end.
+
+Each case also declares the **forbidden-op vocabulary** it guards
+(`entry.duplicate_without_supersession`, `lineage.truncate`, `stale.clobber`,
+`write.without_grant`, `write.suppressed_when_due`,
+`quantity.zero_duration_sleep_representation`, …) so cross-review can name the
+failure class, not just the case.
+
+- **Reference adapter** (`src/corrections/example/example-adapter.ts`): a
+  mechanical rule interpreter — regex dispatch, lexical child/entry resolution,
+  snapshot-stack undo, timezone-safe wall-clock retargeting via `Intl` — no
+  I/O, no LLM, no clock. Passes **15/15**.
+- **Negative control** (`src/corrections/example/broken-adapter.ts`): the
+  reference with five named faults (duplicate-on-retarget, lineage truncation,
+  stale clobber on replay, skipped grant check, suppressed zero-care write).
+  The corpus fails it on **7/15 cases**, one per fault, and
+  `--expect-failure` inverts the exit code.
+
+## Validation evidence (observed, this branch)
+
+| Command | Result |
+|---|---|
+| `bun src/corrections/run.ts` | **15/15 cases PASS**, exit 0 — all five families, every replay probe clean |
+| `bun src/corrections/run.ts --adapter=./src/corrections/example/broken-adapter.ts` | **7/15** — CC-03/04 (duplicate + missing grant check), CC-08/12 (stale clobber), CC-13/14 (lineage truncation), CC-10 (suppressed zero-care write); exit 1 |
+| same + `--expect-failure` | faults caught, exit 0 |
+| `bun x tsc --noEmit` | exit 0 — strict, `noUncheckedIndexedAccess`, `verbatimModuleSyntax` |
+
+## Scope note
+
+Proposal-level evaluation tooling: it does not change `packages/domain` (no
+correction/revision schema exists there yet — lineage shapes remain owned by
+the contract lane) and does not ship product correction behavior. It pins the
+semantics a product implementation must satisfy when that work starts. The
+corrections corpus is **not** a manifest-registered fixture area: it has its
+own runner and turn-protocol adapter contract, so the fixture-area manifest
+(see above) does not govern it. If cross-review later wants one CLI, a
+dedicated `correction-protocol` fixture class would be the seam.
