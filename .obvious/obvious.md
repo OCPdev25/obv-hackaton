@@ -25,15 +25,30 @@ install next to Effect v4 (ERESOLVE). See README "Confect decision".
 
 ```
 apps/mobile          Expo app; ConvexProvider reads EXPO_PUBLIC_CONVEX_URL
-backend/convex       Convex schema + functions (children, households, entries, events)
-packages/domain      Effect v4 schemas + Convex-validator adapter + JSON Schema (draft 2020-12) derivation
+backend/convex       Convex schema + functions (children, households, entries, events, knowledge,
+                     extraction lineage, retractions, care profiles, raw-access grants)
+packages/domain      Effect v4 schemas (contract v0.4) + Convex-validator adapter + JSON Schema
+                     (draft 2020-12) derivation
 packages/extraction  Transcript → typed events pipeline (stub, no LLM call yet)
 packages/month-history  Deterministic month-history view model + executable journeys (28-check rubric, `bun src/run.ts`)
 packages/ui          Shared RN primitives
 evaluation/          Acceptance corpus (6 fixtures) + candidate-agnostic cross-review harness
-security/            THREAT-MODEL.md + executable fail-closed access cases (17 tests)
+security/            THREAT-MODEL.md + executable fail-closed access cases (fail-closed negative + positive cases)
 deploy/              Thin-path deployment evidence (dev deployment reliable-panther-823)
 ```
+
+Contract v0.4 (Gil settlements, 2026-09-17): retraction is an append-only
+receipt (`retractions`) with `Entry.retractedAt` as its materialized
+read-model — household queries exclude retracted entries via the
+`RetractionFilter` hook (`excludesRetracted`), operator scope is the only
+include path. CareProfile (`care_profiles`) is standing care context
+(allergy / nap-schedule / emergency), caregiver-confirmed only —
+`model-extracted` cannot encode, the extraction model can never record.
+Raw-access-by-grant (`raw_access_grants`) is default-off for cross-household
+viewers: structured entries only (`StructuredEntryView` omits
+`rawTranscript`); verbatim transcripts require an active grant
+(`rawTranscriptVisible`). Publication state, audience, retraction, and
+raw-access stay independent dimensions — never fused into one enum.
 
 Merged history this scaffold absorbed: CI pipeline (PR #3), security negative
 cases (PR #4), thin-path deploy evidence (PR #5), acceptance corpus/harness
@@ -57,7 +72,7 @@ Backend dev needs `npx convex login` then `npx convex dev`.
 pnpm typecheck                                # turbo typecheck across all packages
 pnpm test                                     # domain contract round-trip tests (bun)
 pnpm build                                    # buildable packages
-bun test ./security                           # 17 fail-closed access cases (13 negative + 4 positive)
+bun test ./security                           # fail-closed access cases (negative + positive)
 cd evaluation && bun src/run.ts               # corpus vs the worked example adapter
 bun src/run.ts --adapter=./src/example/broken-adapter.ts --expect-failure   # negative control must fail
 pnpm --filter @journal/month-history journeys   # month-history 28-check rubric (runner + coverage both directions)

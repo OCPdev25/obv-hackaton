@@ -40,6 +40,14 @@ export const EntryFields = {
   photoId: Schema.optional(Schema.String),
   /** v0.3 (art_rBKvvzIa SS4 + art_lyBemdV9 SS2): supersedes photoId going forward; the scalar stays until its readers migrate. */
   attachments: Schema.optionalKey(Schema.Array(Attachment)),
+  /**
+   * v0.4 retraction state (Gil settlement 1): materialized read-model of the
+   * append-only receipt in `./retraction.ts` — set exactly when a retraction
+   * receipt is appended, absent otherwise. Household queries exclude
+   * retracted entries via `RetractionFilter`; the original row is retained at
+   * the storage layer and stays reachable through the receipt.
+   */
+  retractedAt: Schema.optionalKey(Schema.Number),
   createdAt: Schema.Number,
 } satisfies Schema.Struct.Fields
 
