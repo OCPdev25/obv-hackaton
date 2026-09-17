@@ -34,8 +34,8 @@ function record(step: string, detail: string, ok: boolean): void {
   console.log(`[${ok ? "ok" : "FAIL"}] ${step}: ${detail}`)
 }
 
-async function callConvex(fnPath: string, args: Record<string, unknown>): Promise<unknown> {
-  const response = await fetch(`${deploymentUrl}/api/${fnPath.startsWith("photoStorage:") ? "mutation" : "query"}`, {
+async function callConvex(fnPath: string, args: Record<string, unknown>, endpoint: "mutation" | "query" = "mutation"): Promise<unknown> {
+  const response = await fetch(`${deploymentUrl}/api/${endpoint}`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ path: fnPath, args, format: "json" }),
@@ -88,7 +88,7 @@ try {
   record("flow", `storePhotoCapture completed: storageId=${result.storageId}`, true)
 
   // Byte-integrity read-back.
-  const photoUrl = (await callConvex("photoStorage:getPhotoUrl", { storageId: result.storageId })) as unknown
+  const photoUrl = (await callConvex("photoStorage:getPhotoUrl", { storageId: result.storageId }, "query")) as unknown
   if (typeof photoUrl !== "string") throw new Error(`getPhotoUrl returned ${JSON.stringify(photoUrl)}`)
   const readBack = new Uint8Array(await (await fetch(photoUrl)).arrayBuffer())
   const readBackSha256 = createHash("sha256").update(readBack).digest("hex")
@@ -98,7 +98,9 @@ try {
     readBackSha256 === expectedSha256,
   )
 
-  // Negative control: the entry-carrying commit path (F1 probe).
+  // Negative control: the entry-carrying commit path (F1 probe). Outcome is
+  // recorded neutrally — the interesting question is whether `_tag` or any
+  // other field causes rejection at the raw /api protocol layer.
   try {
     const entryResult = (await callConvex("photoStorage:commitPhotoCapture", {
       storageId: result.storageId,
@@ -113,9 +115,9 @@ try {
         events: [],
       },
     })) as unknown
-    record("f1-probe-entry-commit", `entry commit SUCCEEDED: ${JSON.stringify(entryResult)} — F1 does not reproduce here (refines PR #5 F1 scope)`, true)
+    record("f1-probe-entry-commit", `entry commit SUCCEEDED: ${JSON.stringify(entryResult)} — raw protocol accepts the entry (check stored doc for _tag handling)`, true)
   } catch (error) {
-    record("f1-probe-entry-commit", `entry commit REJECTED (as F1 predicts): ${String(error)}`, true)
+    record("f1-probe-entry-commit", `entry commit REJECTED: ${String(error)}`, true)
   }
 } catch (error) {
   record("flow", String(error), false)

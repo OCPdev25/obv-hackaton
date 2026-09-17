@@ -20,15 +20,14 @@ export default defineSchema({
     entryId: v.optional(v.union(v.id("entries"), v.null())),
     createdAt: v.number(),
   }),
-  // Minimal entries shape for the optional Entry-commit path. NOTE: the
-  // reference module's entry validator carries `_tag: v.literal("Entry")` —
-  // per the PR #5 finding (F1) Convex rejects underscore-prefixed stored
-  // fields, so the entry path is expected to fail; the driver probes both
-  // paths and records the observed behavior.
+  // Minimal entries shape for the optional Entry-commit path. The events
+  // field mirrors the reference validator so the F1 probe isolates the
+  // `_tag` question instead of failing on missing columns.
   entries: defineTable({
     transcript: v.string(),
     authorId: v.string(),
     createdAt: v.number(),
     status: v.union(v.literal("draft"), v.literal("published")),
+    events: v.optional(v.array(v.any())),
   }),
 })

@@ -46,7 +46,7 @@ exact reproduction script for the moment an Apple machine exists.
 | 6 | `prepare(locale)` model assets + failure mapping | SIMULATOR | prepared, not executed — blocked |
 | 7 | Locale availability matrix | SIMULATOR | prepared, not executed — blocked |
 | 8 | Recording hardware path (preset, bytes) | SIMULATOR (byte stream to bridge) | prepared, not executed — blocked |
-| 9 | Live Convex 3-request upload flow | **LOCAL-REAL-BACKEND** — real flow code + real fetch + byte SHA-256 read-back on a real Convex server | executable NOW on any machine (driver); see below |
+| 9 | Live Convex 3-request upload flow | **LOCAL-REAL-BACKEND — EXECUTED 2026-09-17, EVIDENCE GREEN 7/7** against an anonymous local-real backend (anonymous-qa-convex): upload URL issued → photo POST accepted (storageId) → commit persisted (photoId), using the spike's real `storePhotoCapture` flow code; read-back SHA-256 matched (`49779094…`), byte integrity through file storage proven | executed — see below |
 | 10 | Live streaming transcription | out of spike scope (batch-only MVP) | unchanged — hardware-only |
 
 Item 9 evidence runs from the CLI against a local-real Convex backend
