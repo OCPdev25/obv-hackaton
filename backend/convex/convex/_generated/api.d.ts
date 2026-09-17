@@ -10,6 +10,7 @@
 
 import type * as children from "../children.js";
 import type * as entries from "../entries.js";
+import type * as entriesInput from "../entriesInput.js";
 import type * as households from "../households.js";
 import type * as knowledge from "../knowledge.js";
 import type * as knowledgeInput from "../knowledgeInput.js";
@@ -25,6 +26,7 @@ import type {
 declare const fullApi: ApiFromModules<{
   children: typeof children;
   entries: typeof entries;
+  entriesInput: typeof entriesInput;
   households: typeof households;
   knowledge: typeof knowledge;
   knowledgeInput: typeof knowledgeInput;
