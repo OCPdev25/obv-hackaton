@@ -3,6 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
+  "exports": {
+    "./_generated/api": "./convex/_generated/api.js",
+    "./convex/*": "./convex/*"
+  },
   "dependencies": {
     "@journal/contracts": "workspace:*",
     "convex": "1.19.3",

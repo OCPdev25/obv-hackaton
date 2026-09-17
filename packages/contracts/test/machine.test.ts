@@ -224,6 +224,19 @@ describe("deterministic extractor (CONTROLLED TEST DOUBLE)", () => {
     expect(extract("She napped for 45 minutes")).toEqual({ _tag: "sleep", kind: "nap", minutes: 45, occurredAt: NOW })
   })
 
+  it("classifies 'slept' as sleep (regression: slept is not sleep+t)", () => {
+    expect(extract("She slept from one thirty to three")).toEqual({
+      _tag: "sleep",
+      kind: "nap",
+      occurredAt: NOW,
+    })
+    expect(extract("He slept through the night")).toEqual({
+      _tag: "sleep",
+      kind: "night",
+      occurredAt: NOW,
+    })
+  })
+
   it("classifies milestones", () => {
     expect(extract("first time riding the balance bike")).toMatchObject({ _tag: "milestone" })
   })

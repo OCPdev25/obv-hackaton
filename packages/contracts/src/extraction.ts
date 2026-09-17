@@ -82,7 +82,7 @@ export const extractDeterministic = (request: ExtractionRequest): JournalEvent |
         : "some"
     return { _tag: "meal", food: foodFrom(t), amount, occurredAt }
   }
-  if (/\bnap(ped|ping)?\b|\bsleep(t|ing)?\b|\basleep\b|\bbedtime\b/.test(t)) {
+  if (/\bnap(ped|ping)?\b|\bsleep(s|ing)?\b|\bslept\b|\basleep\b|\bbedtime\b/.test(t)) {
     const minutesMatch = /(\d+)\s*(min|minutes|mins)/.exec(t)
     const minutes = minutesMatch?.[1] !== undefined ? Number.parseInt(minutesMatch[1], 10) : undefined
     const isNight = /\bbedtime\b|\bnight\b|\bslept through\b/.test(t)

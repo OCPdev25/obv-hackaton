@@ -3,7 +3,7 @@
   "compilerOptions": {
     "jsx": "react-jsx",
     "lib": ["ES2022", "DOM"],
-    "types": ["expo/types/files"]
+    "types": []
   },
   "include": ["**/*.ts", "**/*.tsx"]
 }
