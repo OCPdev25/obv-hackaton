@@ -16,23 +16,30 @@ import { EventFields } from "./event.js"
  * (c) idempotent completion — applying the same (captureId, attempt) twice is
  *     a no-op.
  */
-export const CaptureId = Schema.NonEmptyString
+/**
+ * Capture-session identity, branded at the type level only (contract v0.3,
+ * adaptation A4): the Convex adapter maps it to `v.string()` and the wire
+ * format is unchanged. The flat four-table model has no captures table to
+ * reference, so this stays a client-side session identifier.
+ */
+export const CaptureId = Schema.NonEmptyString.pipe(Schema.brand("CaptureId"))
 export type CaptureId = typeof CaptureId["Type"]
 
-/** Monotonic per-capture attempt counter, starting at 0. */
-export const ExtractionAttempt = Schema.Int
-export type ExtractionAttempt = typeof ExtractionAttempt["Type"]
+/** Monotonic per-capture attempt counter, starting at 0. (v0.3: renamed from
+ * `ExtractionAttempt`, which now names the attempt RECORD — adaptation A5.) */
+export const AttemptNumber = Schema.Int
+export type AttemptNumber = typeof AttemptNumber["Type"]
 
 export const ExtractionRequest = Schema.Struct({
   captureId: CaptureId,
-  attempt: ExtractionAttempt,
+  attempt: AttemptNumber,
   transcript: Schema.NonEmptyString,
 })
 export type ExtractionRequest = typeof ExtractionRequest["Type"]
 
 export const ExtractionResult = Schema.Struct({
   captureId: CaptureId,
-  attempt: ExtractionAttempt,
+  attempt: AttemptNumber,
   events: Schema.Array(Schema.Struct(EventFields)),
 })
 export type ExtractionResult = typeof ExtractionResult["Type"]
