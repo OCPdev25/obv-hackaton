@@ -1,0 +1,174 @@
+{
+  "version": "0.1",
+  "description": "Month-history journeys: every row MUST have an executing check with the same id, and every executed check MUST have a row here. The runner (src/run.ts) fails on either direction of the gap.",
+  "checks": [
+    {
+      "id": "J1-A1",
+      "journey": "parent-retrieval",
+      "criterion": "A household member passes the one shared fail-closed access gate for a month-history read",
+      "measure": "monthAccess returns allowed for Mom on the fixture household; denial codes come from the security policy, not month-history"
+    },
+    {
+      "id": "J1-A2",
+      "journey": "parent-retrieval",
+      "criterion": "A sparse month renders every calendar day explicitly, with honest gap copy and correct totals",
+      "measure": "September 2026 (Mom): 30 day cells, 25 gap days, message '25 of 30 days have no entries recorded.' + disclaimer; totals entries=5 events=5 late=1 corrected=1 orphans=0"
+    },
+    {
+      "id": "J1-A3",
+      "journey": "parent-retrieval",
+      "criterion": "A late entry lands on the day the care HAPPENED, with explicit capture attribution",
+      "measure": "Sep 12 cell holds the nap event at 10:00 AM with capture label 'Captured September 20, 2026 at 8:14 AM' and the late label 'Recorded Sep 20 — about Sep 12'"
+    },
+    {
+      "id": "J1-A4",
+      "journey": "parent-retrieval",
+      "criterion": "A failed extraction never blocks or hides the capture",
+      "measure": "Sep 20 cell shows the raw note with status failed and label 'Extraction failed — raw note preserved'; zero structured events that day"
+    },
+    {
+      "id": "J1-A5",
+      "journey": "parent-retrieval",
+      "criterion": "Gap days never imply care did not happen",
+      "measure": "Sep 3 cell reads 'Thursday, September 3, 2026. No entries recorded.' and the month gap statement carries 'Gaps in the journal are not evidence about care.'"
+    },
+    {
+      "id": "J1-A6",
+      "journey": "parent-retrieval",
+      "criterion": "Draft isolation inside the month view",
+      "measure": "Mom sees her own Sep 25 draft (and its mood event); Sep 26 shows no entries (Ana's draft is invisible to Mom)"
+    },
+    {
+      "id": "J1-A7a",
+      "journey": "parent-retrieval",
+      "criterion": "Month boundaries bucket by the household timezone, both directions",
+      "measure": "In America/New_York the 23:50 EDT Sep 30 entry/event land on Sep 30 in the SEPTEMBER view and are absent from the October 2026 view (31 cells, exactly 1 event: Oct 1 00:10 EDT)"
+    },
+    {
+      "id": "J1-A7b",
+      "journey": "parent-retrieval",
+      "criterion": "The same instant falls in different months under different household timezones",
+      "measure": "In Asia/Kolkata the same data puts both boundary events on 2026-10-01 (2 events, 31 cells)"
+    },
+    {
+      "id": "J1-A8",
+      "journey": "parent-retrieval",
+      "criterion": "DST fall-back does not duplicate or lose a day",
+      "measure": "November 2026 (NY): both 1:30 AM events render on 2026-11-01 in timestamp order; month span is 721 hours; 30 cells"
+    },
+    {
+      "id": "J1-A9",
+      "journey": "parent-retrieval",
+      "criterion": "A corrected entry shows corrected text WITH lineage, who/when/reason",
+      "measure": "Sep 2 card shows Dad's corrected text, lineage step 'Dad — Sunday, September 27, 2026 at 10:00 AM' with reason, and the original-preserved label"
+    },
+    {
+      "id": "J1-A10",
+      "journey": "parent-retrieval",
+      "criterion": "Raw captures are immutable: projections never rewrite the dataset",
+      "measure": "Original tower transcript byte-identical after all view/digest builds; full JSON snapshot of entries+events unchanged"
+    },
+    {
+      "id": "J1-A11",
+      "journey": "parent-retrieval",
+      "criterion": "Text input for corrections is quiet (never fights or startles the typist)",
+      "measure": "QUIET_TEXT_INPUT equals { autoCorrect:false, autoCapitalize:'none', spellCheck:false, autoFocus:false, keyboardType:'default', multiline:true, blurOnSubmit:false, textContentType:'none' }"
+    },
+    {
+      "id": "J1-A12",
+      "journey": "parent-retrieval",
+      "criterion": "Large-text accessibility: body text scales uncapped, chrome capped, no fixed heights, no truncation",
+      "measure": "FONT_SCALING body max=null / chrome max=1.5; LAYOUT_POLICY fixedHeightsOnTextRows=false, truncatesEntryText=false, expand affordance 'Show full text'"
+    },
+    {
+      "id": "J1-A13",
+      "journey": "parent-retrieval",
+      "criterion": "Every day cell is screen-reader reachable with role, hint, and label",
+      "measure": "All 30 cells expose a11yRole 'button', DAY_CELL_A11Y_HINT, non-empty label; header reads 'Month history: September 2026'"
+    },
+    {
+      "id": "J1-A14",
+      "journey": "parent-retrieval",
+      "criterion": "An empty month is honest, never accusatory",
+      "measure": "Empty view: kind 'empty-month', message 'No entries were recorded this month.' + disclaimer, all 30 days listed as gaps"
+    },
+    {
+      "id": "J2-B1",
+      "journey": "parent-correction",
+      "criterion": "Household members may correct published entries",
+      "measure": "correctionAccess(Dad, published tower entry) returns ALLOW via the shared policy"
+    },
+    {
+      "id": "J2-B2",
+      "journey": "parent-correction",
+      "criterion": "Corrections form an append-only, deterministically ordered lineage",
+      "measure": "Two-step chain (Mom then Dad), listed out of order in input, sorts to [co_chain_1, co_chain_2]; supersedes must reference an earlier entry or construction throws"
+    },
+    {
+      "id": "J2-B3",
+      "journey": "parent-correction",
+      "criterion": "Corrections are disclosed to screen readers on the entry and its events",
+      "measure": "Entry a11y label contains 'Corrected entry.'; each event of the corrected entry contains 'Includes a correction.'"
+    },
+    {
+      "id": "J2-B4",
+      "journey": "parent-correction",
+      "criterion": "Drafts are author-only even for correction writes; anonymous principals denied",
+      "measure": "Ana on Mom's draft: DENY_DRAFT_AUTHOR_ONLY; anonymous on published: DENY_ANONYMOUS; Mom on her own draft: ALLOW"
+    },
+    {
+      "id": "J2-B5",
+      "journey": "parent-correction",
+      "criterion": "Attribution is server-bound; claiming another author's id fails",
+      "measure": "Write action with asAuthorId=Mom from Dad's principal returns DENY_ATTRIBUTION_MISMATCH"
+    },
+    {
+      "id": "J2-B6",
+      "journey": "parent-correction",
+      "criterion": "Non-members are denied the whole month view at the timeline gate",
+      "measure": "Outsider: DENY_NO_HOUSEHOLD_PATH; anonymous: DENY_ANONYMOUS — both before any entry-level filtering"
+    },
+    {
+      "id": "J3-C1",
+      "journey": "caregiver-handoff",
+      "criterion": "The handoff digest is built from the RECEIVER's authorization, not the preparer's",
+      "measure": "Dad's view: 6 visible entries all 'published' (no draft content), 2 drafts excluded for principal; September view places 4 entries"
+    },
+    {
+      "id": "J3-C2",
+      "journey": "caregiver-handoff",
+      "criterion": "Digest lines cover exactly the receiver-visible days with deterministic summaries",
+      "measure": "Lines for 2026-09-02/12/20/30 only; summaries '2× potty, 1× milestone', '1× sleep (45 min)', the failed-extraction note text, and '1× potty'"
+    },
+    {
+      "id": "J3-C3",
+      "journey": "caregiver-handoff",
+      "criterion": "Every handoff line is source-linked",
+      "measure": "Each line has non-empty sourceEntryIds; Sep 12 links exactly to the late nap entry"
+    },
+    {
+      "id": "J3-C4",
+      "journey": "caregiver-handoff",
+      "criterion": "Corrections surface in the handoff with attribution",
+      "measure": "Sep 2 line lists the tower entry as corrected; its authors include 'Mom'"
+    },
+    {
+      "id": "J3-C5",
+      "journey": "caregiver-handoff",
+      "criterion": "Excluded drafts are disclosed as a count, never as content",
+      "measure": "excludedDraftCount=2 with note '2 draft entries are not included in this handoff (visible only to their authors).'"
+    },
+    {
+      "id": "J3-C6",
+      "journey": "caregiver-handoff",
+      "criterion": "Gap disclosure in the handoff matches the receiver's view",
+      "measure": "26 gap days; statement '26 of 30 days have no entries recorded.' + disclaimer"
+    },
+    {
+      "id": "J3-C7",
+      "journey": "caregiver-handoff",
+      "criterion": "The digest carries audience, preparer metadata, and source-preservation disclaimer",
+      "measure": "audience 'published-only', preparedByName 'Mom', preparedForName 'Dad', sourceDisclaimer includes verbatim-transcript preservation and the gap disclaimer"
+    }
+  ]
+}
