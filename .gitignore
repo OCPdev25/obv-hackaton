@@ -1,0 +1,10 @@
+node_modules/
+dist/
+build/
+.turbo/
+*.tsbuildinfo
+.convex/
+.env*.local
+.DS_Store
+expo-env.d.ts
+.expo/
