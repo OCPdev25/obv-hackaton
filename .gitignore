@@ -1,0 +1,14 @@
+node_modules/
+dist/
+coverage/
+.expo/
+.turbo/
+*.tsbuildinfo
+
+# Convex generated code and local deployment config
+convex/_generated/
+.env.local
+.env*.local
+
+# OS / editor
+.DS_Store

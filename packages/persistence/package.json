@@ -1,0 +1,30 @@
+{
+  "name": "@journal/persistence",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "CaptureStore implementations: in-memory controlled double and live Convex adapter, with schema-derived wire codecs",
+  "main": "./dist/src/index.js",
+  "types": "./dist/src/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/src/index.d.ts",
+      "default": "./dist/src/index.js"
+    }
+  },
+  "scripts": {
+    "convex:codegen": "convex codegen",
+    "build": "tsc -p tsconfig.json && mkdir -p dist/convex && cp -r convex/_generated dist/convex/",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@journal/domain": "workspace:*",
+    "convex": "1.46.0",
+    "effect": "4.0.0-rc.115"
+  },
+  "devDependencies": {
+    "typescript": "5.9.3",
+    "vitest": "5.0.1"
+  }
+}

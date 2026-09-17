@@ -1,0 +1,26 @@
+{
+  "name": "@journal/cli",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "bin": {
+    "journal-demo": "./dist/main.js"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "demo:memory": "pnpm build && node dist/main.js --store=memory",
+    "demo:convex": "pnpm build && node dist/main.js --store=convex --url=http://127.0.0.1:3210"
+  },
+  "dependencies": {
+    "@journal/domain": "workspace:*",
+    "@journal/extraction": "workspace:*",
+    "@journal/persistence": "workspace:*",
+    "convex": "1.46.0",
+    "effect": "4.0.0-rc.115"
+  },
+  "devDependencies": {
+    "@types/node": "24.10.9",
+    "typescript": "5.9.3"
+  }
+}

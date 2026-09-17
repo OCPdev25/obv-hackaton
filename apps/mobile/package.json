@@ -1,0 +1,26 @@
+{
+  "name": "@journal/mobile",
+  "version": "0.1.0",
+  "private": true,
+  "main": "App.tsx",
+  "scripts": {
+    "start": "expo start",
+    "ios": "expo run:ios",
+    "android": "expo run:android",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@journal/domain": "workspace:*",
+    "@journal/extraction": "workspace:*",
+    "@journal/persistence": "workspace:*",
+    "effect": "4.0.0-rc.115",
+    "expo": "54.0.28",
+    "expo-status-bar": "3.0.9",
+    "react": "19.3.0",
+    "react-native": "0.83.0"
+  },
+  "devDependencies": {
+    "@types/react": "19.3.0",
+    "typescript": "5.9.3"
+  }
+}
