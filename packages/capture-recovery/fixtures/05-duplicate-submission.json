@@ -1,0 +1,22 @@
+{
+  "id": "duplicate-submission",
+  "kind": "duplicate-submission",
+  "description": "Double-tap and late re-tap submit the same capture three times with one stable submissionId. The machine suppresses duplicates while pending AND after save; duplicate server acks are idempotent no-ops. Exactly one saved capture results.",
+  "capture": { "captureId": "cap-recover-005", "authorId": "caregiver-1", "at": 1789564000000 },
+  "steps": [
+    { "event": { "_tag": "TranscriptChanged", "at": 1789564001000, "text": "Leo had two naps at school today" } },
+    { "event": { "_tag": "SubmitRequested", "at": 1789564002000, "submissionId": "sub-recover-005" } },
+    { "event": { "_tag": "SubmitRequested", "at": 1789564002100, "submissionId": "sub-recover-005" } },
+    { "event": { "_tag": "SubmitAccepted", "at": 1789564003000 } },
+    { "event": { "_tag": "SubmitRequested", "at": 1789564003100, "submissionId": "sub-recover-005" } },
+    { "event": { "_tag": "SubmitAccepted", "at": 1789564004000 } }
+  ],
+  "expect": {
+    "phase": "saved",
+    "tone": "success",
+    "bannerVisible": false,
+    "rawTranscript": "Leo had two naps at school today",
+    "duplicateSubmissionsSuppressed": 2,
+    "attempt": 0
+  }
+}

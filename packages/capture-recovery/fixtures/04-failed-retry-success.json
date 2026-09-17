@@ -1,0 +1,24 @@
+{
+  "id": "failed-retry-success",
+  "kind": "network-loss",
+  "description": "A submission is explicitly rejected (network). The capture moves to failed with the raw transcript intact; a one-handed retry reuses the SAME submissionId (idempotent server replay) and bumps the extraction attempt (canonical envelope). The retry is accepted.",
+  "capture": { "captureId": "cap-recover-004", "authorId": "caregiver-1", "at": 1789563900000 },
+  "steps": [
+    { "event": { "_tag": "TranscriptChanged", "at": 1789563901000, "text": "Mia tried the big slide all by herself" } },
+    { "event": { "_tag": "SubmitRequested", "at": 1789563902000, "submissionId": "sub-recover-004" } },
+    { "event": { "_tag": "SubmitRejected", "at": 1789563903000, "attempt": 0, "reason": "network" } },
+    { "event": { "_tag": "NetworkRestored", "at": 1789563933000 } },
+    { "event": { "_tag": "RetryRequested", "at": 1789563934000 } },
+    { "event": { "_tag": "SubmitAccepted", "at": 1789563937000 } },
+    { "event": { "_tag": "ExtractionResultArrived", "at": 1789563940000, "attempt": 1, "outcome": "structured" } }
+  ],
+  "expect": {
+    "phase": "saved",
+    "tone": "success",
+    "bannerVisible": false,
+    "rawTranscript": "Mia tried the big slide all by herself",
+    "submissionId": "sub-recover-004",
+    "attempt": 1,
+    "extractionStatus": "structured"
+  }
+}
