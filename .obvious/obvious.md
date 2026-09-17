@@ -28,6 +28,7 @@ apps/mobile          Expo app; ConvexProvider reads EXPO_PUBLIC_CONVEX_URL
 backend/convex       Convex schema + functions (children, households, entries, events)
 packages/domain      Effect v4 schemas + Convex-validator adapter + JSON Schema (draft 2020-12) derivation
 packages/extraction  Transcript → typed events pipeline (stub, no LLM call yet)
+packages/month-history  Deterministic month-history view model + executable journeys (28-check rubric, `bun src/run.ts`)
 packages/ui          Shared RN primitives
 evaluation/          Acceptance corpus (6 fixtures) + candidate-agnostic cross-review harness
 security/            THREAT-MODEL.md + executable fail-closed access cases (17 tests)
@@ -59,6 +60,7 @@ pnpm build                                    # buildable packages
 bun test ./security                           # 17 fail-closed access cases (13 negative + 4 positive)
 cd evaluation && bun src/run.ts               # corpus vs the worked example adapter
 bun src/run.ts --adapter=./src/example/broken-adapter.ts --expect-failure   # negative control must fail
+pnpm --filter @journal/month-history journeys   # month-history 28-check rubric (runner + coverage both directions)
 ```
 
 The security suite and evaluation harness are standalone (`security/` and

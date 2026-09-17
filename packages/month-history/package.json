@@ -1,0 +1,26 @@
+{
+  "name": "@journal/month-history",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Deterministic month-history journeys (parent retrieval, correction, caregiver handoff): pure view model, timezone-correct month bucketing, synthetic fixtures, journey harness, and a machine-checked acceptance rubric. Proposal tier — canonical ownership is tracked in the 30-slot delivery map.",
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "default": "./src/index.ts"
+    }
+  },
+  "scripts": {
+    "test": "bun test",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "journeys": "bun src/run.ts"
+  },
+  "dependencies": {
+    "@journal/domain": "workspace:*",
+    "effect": "4.0.0-rc.115"
+  },
+  "devDependencies": {
+    "@types/bun": "^1.3.14",
+    "typescript": "~6.0.3"
+  }
+}
