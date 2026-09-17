@@ -120,7 +120,7 @@ describe("month history consistency", () => {
     const last = month.days.at(-1)
     expect(last?.source).toContain("HOME-C-S1-DAY")
     expect(last?.nightWakings).toBe(1)
-    expect(last?.napMinutes).toBe(0) // fact 4: no nap today
+    expect(last?.napMinutes).toBe(0) // fact 4: "No nap recorded" — napMinutes is internal state; the brief text must not claim a confirmed absence
     expect(last?.pottySuccesses).toBe(2)
     expect(last?.pottyAccidents).toBe(1)
     expect(last?.captures).toBe(2)

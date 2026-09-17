@@ -5,6 +5,7 @@ import { ExtractionResult, type ExtractionResult as TExtractionResult } from "..
 import { applyExtractionResult, currentEvents as contractCurrentEvents } from "../src/contract"
 import { canSeeEntry, eventCue, type HouseholdMember } from "../src/grants"
 import { cueFor, currentEvents, day, eventById, feedForMember, memberByUserId, restrictionFor, supersededEvents } from "../src/data"
+import dayJson from "../fixtures/s1-day.json"
 
 const parent = (userId: string): HouseholdMember | undefined => memberByUserId(userId)
 const rosa = (): HouseholdMember | undefined => memberByUserId("rosa")
@@ -100,10 +101,11 @@ describe("corrections and pinning (art_rBKvvzIa §3.2 semantics in the home lens
     expect(currentEvents().find((e) => e.eventId === "ev-sleep-1")).toBeUndefined()
   })
 
-  test("the correction is what makes five-fact #4 true (no nap today)", () => {
+  test("the correction is what makes five-fact #4 true (No nap recorded — absence of record, not a confirmed absence)", () => {
     const fact4 = day.takeover.fiveFacts[3]
-    expect(fact4?.headline).toContain("No nap today")
+    expect(fact4?.headline).toBe("No nap recorded")
     expect(fact4?.refs.some((r) => r.kind === "correction")).toBe(true)
+    expect(fact4?.refs.some((r) => r.kind === "fixture" && r.ref.startsWith("coverage:"))).toBe(true)
   })
 })
 
@@ -113,6 +115,64 @@ describe("read-only questions never write", () => {
     expect(q?.question).toBe("Did she nap?")
     expect(q?.askedBy).toBe("marco")
     expect(q?.sources.length).toBeGreaterThanOrEqual(2)
-    expect(q?.sources.some((s) => s.kind === "fixture" && s.ref.startsWith("absence:"))).toBe(true)
+    expect(q?.sources.some((s) => s.kind === "fixture" && s.ref.startsWith("coverage:"))).toBe(true)
+    expect(q?.answer).toContain("No nap recorded today")
+  })
+})
+
+describe("missing-data semantics (product-owner ruling: absence of record ≠ confirmed absence)", () => {
+  // The ruling: missing data reads "No nap recorded" — it may never imply a
+  // confirmed absence, and no behavioral prediction may be shown without a
+  // supported source event. Negative control: fails if any prediction-capable
+  // surface (brief headlines/details, plan note, Q&A answer) starts
+  // forecasting behavior from missing data again.
+  test("no behavioral prediction appears in the brief, plan, or answers without a supported source event", () => {
+    const fact4 = day.takeover.fiveFacts[3]
+    const plan = day.takeover.plan
+    const answer = day.readOnlyQuestions[0]?.answer ?? ""
+    const surfaces = [fact4?.headline, fact4?.detail, plan?.note, answer].filter(
+      (s): s is string => s !== undefined,
+    )
+
+    for (const text of surfaces) {
+      expect(text).not.toMatch(/no nap today/i) // confirmed-absence phrasing is banned
+      expect(text).not.toMatch(/meltdown/i) // forecast vocabulary is banned on missing data
+      expect(text).not.toMatch(/expect an early/i)
+      expect(text).not.toMatch(/consider an early/i)
+    }
+    expect(fact4?.headline).toBe("No nap recorded")
+    expect(plan?.note).toContain("no behavioral prediction is offered without a supported source")
+    expect(answer).toContain("No nap recorded today")
+
+    // Sweep the WHOLE fixture: every "meltdown" mention must sit in the
+    // drop-off event's own context (its parents-only restriction note) — a
+    // recorded event, never a prediction about missing data:
+    const meltdownPaths: Array<string> = []
+    const walk = (node: unknown, path: string): void => {
+      if (typeof node === "string") {
+        if (node.toLowerCase().includes("meltdown")) meltdownPaths.push(path)
+        return
+      }
+      if (Array.isArray(node)) return node.forEach((v, i) => walk(v, `${path}[${i}]`))
+      if (typeof node === "object" && node !== null) {
+        for (const [k, v] of Object.entries(node)) walk(v, path === "" ? k : `${path}.${k}`)
+      }
+    }
+    walk(dayJson, "")
+    expect(meltdownPaths.length).toBeGreaterThan(0)
+    for (const path of meltdownPaths) {
+      expect(path.startsWith("audienceRestrictions")).toBe(true)
+    }
+    expect(
+      day.audienceRestrictions.some(
+        (r) => r.eventId === "ev-school-1" && r.note?.toLowerCase().includes("meltdown"),
+      ),
+    ).toBe(true)
+
+    // The plan's basis is non-empty and every id resolves to a real source event:
+    expect((plan?.basis ?? []).length).toBeGreaterThan(0)
+    for (const id of plan?.basis ?? []) {
+      expect(eventById(id)).toBeDefined()
+    }
   })
 })

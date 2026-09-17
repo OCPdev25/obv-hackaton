@@ -371,17 +371,21 @@ const reviewSessions = [
   },
 ]
 
+// Product-owner ruling (binding): missing data reads "No nap recorded" —
+// absence of record is never phrased as a confirmed absence, and no
+// behavioral prediction is shown without a supported source event.
+// Citation refs for absence-of-record use the "coverage:" prefix.
 const readOnlyQuestions = [
   {
     question: "Did she nap?",
     askedBy: "marco",
     askedAt: T.marcoAsked,
     answer:
-      "No — no nap today. The night waking (23:00–00:30) was first misread as an afternoon nap; Elena corrected it at 07:44. With no nap, expect an early meltdown and consider an early bedtime.",
+      "No nap recorded today. The only sleep event is the corrected night waking (23:00–00:30) — first misread as an afternoon nap, corrected by Elena at 07:44.",
     sources: [
       { kind: "correction", ref: "ev-sleep-2", excerpt: "night waking 23:00–00:30 — corrected from the afternoon-nap misread" },
       { kind: "event", ref: "ev-sleep-2" },
-      { kind: "fixture", ref: "absence: no nap event during 2026-09-15 daytime" },
+      { kind: "fixture", ref: "coverage: no nap event in today's log — absence of record, not a confirmed absence" },
     ],
   },
 ]
@@ -390,7 +394,7 @@ const takeover = {
   confirmedBy: "marco",
   confirmedAt: T.marcoConfirmed,
   plan: {
-    note: "Expect an early meltdown; consider an early bedtime (no nap today).",
+    note: "No nap recorded in today's log. Bedtime plan is the parents' call; no behavioral prediction is offered without a supported source.",
     basis: ["ev-sleep-2"],
   },
   fiveFacts: [
@@ -409,9 +413,9 @@ const takeover = {
       refs: [{ kind: "event", ref: "ev-school-1" }],
     },
     {
-      headline: "No nap today — expect an early meltdown, consider an early bedtime",
+      headline: "No nap recorded",
       detail: "Reads from the correction: what looked like a nap was the night waking.",
-      refs: [{ kind: "correction", ref: "ev-sleep-1 → ev-sleep-2" }, { kind: "fixture", ref: "absence: no nap event 2026-09-15 daytime" }],
+      refs: [{ kind: "correction", ref: "ev-sleep-1 → ev-sleep-2" }, { kind: "fixture", ref: "coverage: no nap event in today's log (absence of record, not a confirmed absence)" }],
     },
     {
       headline: "Pedaled the balance bike halfway down the block — worth celebrating",
