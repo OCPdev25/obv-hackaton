@@ -1,0 +1,157 @@
+{
+  "cases": [
+    {
+      "id": "CC-07-multi-author-correction",
+      "category": "multi-author",
+      "description": "Dad corrects Mom's entry. Attribution splits: the entry keeps its original author (Mom) and the revision is attributed to the corrector (Dad).",
+      "exercises": ["cross-author correction allowed within grants", "original authorship never rewritten", "revision attributed to the corrector"],
+      "setup": {
+        "turns": [
+          {
+            "turnId": "s1",
+            "captureId": "fx_cc07_dinner",
+            "speakerId": "fx_u_mom",
+            "capturedAt": 1789508100000,
+            "text": "Nora ate mac and cheese at 5:30.",
+            "seedEvents": [
+              { "category": "meal", "occurredAt": 1789507800000, "note": "mac and cheese" }
+            ]
+          }
+        ],
+        "baseline": { "entryCount": 1 }
+      },
+      "turns": [
+        {
+          "turnId": "t1",
+          "speakerId": "fx_u_dad",
+          "capturedAt": 1789508400000,
+          "text": "Actually that was at Grandma's — make it 5:00.",
+          "correctionId": "cc07-t1",
+          "expect": {
+            "responseClass": "applied",
+            "stateDelta": {
+              "entryChanges": [
+                {
+                  "ofCaptureId": "fx_cc07_dinner",
+                  "authorIdMustRemain": "fx_u_mom",
+                  "transcriptUnchanged": true,
+                  "events": [{ "category": "meal", "occurredAt": 1789506000000, "noteContains": ["grandma"] }]
+                }
+              ],
+              "appendedRevisions": [
+                { "ofCaptureId": "fx_cc07_dinner", "kind": "correction", "authorId": "fx_u_dad", "count": 1 }
+              ]
+            }
+          }
+        }
+      ],
+      "final": {
+        "entryCount": 1,
+        "entries": [
+          {
+            "ofCaptureId": "fx_cc07_dinner",
+            "childId": "fx_child_nora",
+            "authorId": "fx_u_mom",
+            "status": "draft",
+            "transcriptByteEquals": "Nora ate mac and cheese at 5:30.",
+            "events": [{ "category": "meal", "occurredAt": 1789506000000, "noteContains": ["grandma"] }],
+            "revisionKinds": ["capture", "correction"],
+            "lastRevisionAuthorId": "fx_u_dad"
+          }
+        ]
+      },
+      "forbidden": [
+        "revision.attribution_rewrite",
+        "entry.delete",
+        "entry.duplicate_without_supersession",
+        "raw.mutate"
+      ]
+    },
+    {
+      "id": "CC-08-multi-author-stale-suppression",
+      "category": "multi-author",
+      "description": "Two authors correct the same field, then Mom's earlier correction (same correctionId) replays out of order after Dad's later one. Final value must stay Dad's 15:00; the replay must be a no-op.",
+      "exercises": ["out-of-order arrival", "stale-result suppression at the correction layer", "correctionId idempotent replay", "append-only lineage of both real corrections"],
+      "setup": {
+        "turns": [
+          {
+            "turnId": "s1",
+            "captureId": "fx_cc08_nap",
+            "speakerId": "fx_u_dad",
+            "capturedAt": 1789496400000,
+            "text": "Nora went down for her nap at 2:15.",
+            "seedEvents": [
+              { "category": "sleep", "occurredAt": 1789496100000, "note": "nap" }
+            ]
+          }
+        ],
+        "baseline": { "entryCount": 1 }
+      },
+      "turns": [
+        {
+          "turnId": "t1",
+          "speakerId": "fx_u_mom",
+          "capturedAt": 1789496700000,
+          "text": "Actually, two thirty.",
+          "correctionId": "cc08-t1",
+          "expect": {
+            "responseClass": "applied",
+            "stateDelta": {
+              "entryChanges": [
+                { "ofCaptureId": "fx_cc08_nap", "events": [{ "category": "sleep", "occurredAt": 1789497000000 }] }
+              ],
+              "appendedRevisions": [
+                { "ofCaptureId": "fx_cc08_nap", "kind": "correction", "authorId": "fx_u_mom", "count": 1 }
+              ]
+            }
+          }
+        },
+        {
+          "turnId": "t2",
+          "speakerId": "fx_u_dad",
+          "capturedAt": 1789497300000,
+          "text": "Make it 3:00.",
+          "correctionId": "cc08-t2",
+          "expect": {
+            "responseClass": "applied",
+            "stateDelta": {
+              "entryChanges": [
+                { "ofCaptureId": "fx_cc08_nap", "events": [{ "category": "sleep", "occurredAt": 1789498800000 }] }
+              ],
+              "appendedRevisions": [
+                { "ofCaptureId": "fx_cc08_nap", "kind": "correction", "authorId": "fx_u_dad", "count": 1 }
+              ]
+            }
+          }
+        }
+      ],
+      "replay": {
+        "turnIndex": 0,
+        "note": "Mom's cc08-t1 arrives again, out of order, after t2 — same correctionId, same capturedAt.",
+        "expectResponseClass": "applied"
+      },
+      "final": {
+        "entryCount": 1,
+        "entries": [
+          {
+            "ofCaptureId": "fx_cc08_nap",
+            "childId": "fx_child_nora",
+            "authorId": "fx_u_dad",
+            "status": "draft",
+            "transcriptByteEquals": "Nora went down for her nap at 2:15.",
+            "events": [{ "category": "sleep", "occurredAt": 1789498800000 }],
+            "revisionKinds": ["capture", "correction", "correction"],
+            "lastRevisionAuthorId": "fx_u_dad"
+          }
+        ]
+      },
+      "forbidden": [
+        "stale.clobber",
+        "idempotent.duplicate_revision",
+        "revision.attribution_rewrite",
+        "lineage.truncate",
+        "entry.delete"
+      ]
+    }
+  ]
+}

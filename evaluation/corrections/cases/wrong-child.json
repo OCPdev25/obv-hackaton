@@ -1,0 +1,128 @@
+{
+  "cases": [
+    {
+      "id": "CC-03-wrong-child-sibling",
+      "category": "wrong-child",
+      "description": "A capture logged under the wrong sibling is retargeted conversationally. The raw transcript still says \"Leo\" — raw is preserved even though the structured record moves.",
+      "exercises": ["child retarget with lineage", "raw transcript keeps the original name", "no duplicate entry per child", "retarget authorization within grants"],
+      "setup": {
+        "turns": [
+          {
+            "turnId": "s1",
+            "captureId": "fx_cc03_meal",
+            "speakerId": "fx_u_mom",
+            "capturedAt": 1789489200000,
+            "text": "Leo ate all his pasta at noon.",
+            "seedEvents": [
+              { "category": "meal", "occurredAt": 1789488000000, "note": "pasta at noon" }
+            ]
+          }
+        ],
+        "baseline": { "entryCount": 1 }
+      },
+      "turns": [
+        {
+          "turnId": "t1",
+          "speakerId": "fx_u_mom",
+          "capturedAt": 1789489500000,
+          "text": "That was actually Mia, not Leo.",
+          "correctionId": "cc03-t1",
+          "expect": {
+            "responseClass": "applied",
+            "stateDelta": {
+              "entryChanges": [
+                {
+                  "ofCaptureId": "fx_cc03_meal",
+                  "childId": "fx_child_mia",
+                  "authorIdMustRemain": "fx_u_mom",
+                  "transcriptUnchanged": true,
+                  "events": [{ "category": "meal", "occurredAt": 1789488000000 }]
+                }
+              ],
+              "appendedRevisions": [
+                { "ofCaptureId": "fx_cc03_meal", "kind": "correction", "authorId": "fx_u_mom", "count": 1 }
+              ]
+            }
+          }
+        }
+      ],
+      "final": {
+        "entryCount": 1,
+        "entries": [
+          {
+            "ofCaptureId": "fx_cc03_meal",
+            "childId": "fx_child_mia",
+            "authorId": "fx_u_mom",
+            "status": "draft",
+            "transcriptByteEquals": "Leo ate all his pasta at noon.",
+            "events": [{ "category": "meal", "occurredAt": 1789488000000 }],
+            "revisionKinds": ["capture", "correction"],
+            "lastRevisionAuthorId": "fx_u_mom"
+          }
+        ]
+      },
+      "forbidden": [
+        "entry.duplicate_without_supersession",
+        "event.retarget_without_lineage",
+        "raw.mutate",
+        "entry.delete",
+        "revision.attribution_rewrite"
+      ]
+    },
+    {
+      "id": "CC-04-wrong-child-unauthorized",
+      "category": "wrong-child",
+      "description": "Rosa holds a read-write grant on Leo only. Her retarget to Mia (no grant at all) must fail closed: rejection, zero writes, no partial application.",
+      "exercises": ["authorization fail-closed on retarget", "zero state delta on rejection", "no partial retarget"],
+      "setup": {
+        "turns": [
+          {
+            "turnId": "s1",
+            "captureId": "fx_cc04_nap",
+            "speakerId": "fx_u_rosa",
+            "capturedAt": 1789492800000,
+            "text": "Leo refused his nap at 1.",
+            "seedEvents": [
+              { "category": "sleep", "occurredAt": 1789491600000, "note": "refused his nap" }
+            ]
+          }
+        ],
+        "baseline": { "entryCount": 1 }
+      },
+      "turns": [
+        {
+          "turnId": "t1",
+          "speakerId": "fx_u_rosa",
+          "capturedAt": 1789493100000,
+          "text": "That was actually Mia, not Leo.",
+          "correctionId": "cc04-t1",
+          "expect": {
+            "responseClass": "rejected",
+            "stateDelta": "none"
+          }
+        }
+      ],
+      "final": {
+        "entryCount": 1,
+        "entries": [
+          {
+            "ofCaptureId": "fx_cc04_nap",
+            "childId": "fx_child_leo",
+            "authorId": "fx_u_rosa",
+            "status": "draft",
+            "transcriptByteEquals": "Leo refused his nap at 1.",
+            "events": [{ "category": "sleep", "occurredAt": 1789491600000 }],
+            "revisionKinds": ["capture"]
+          }
+        ]
+      },
+      "forbidden": [
+        "write.without_grant",
+        "entry.duplicate_without_supersession",
+        "event.retarget_without_lineage",
+        "entry.delete",
+        "raw.mutate"
+      ]
+    }
+  ]
+}

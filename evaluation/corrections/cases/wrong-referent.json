@@ -1,0 +1,150 @@
+{
+  "cases": [
+    {
+      "id": "CC-05-wrong-prior-event-missing",
+      "category": "wrong-prior-event",
+      "description": "\"Scratch the swim lesson\" — no swim lesson was ever logged. The candidate must clarify, write nothing, and must not misread the missing log as a zero-care observation.",
+      "exercises": ["missing referent → clarification", "missing log ≠ zero care", "no fabricated cancellation", "missing ≠ no-data marker"],
+      "setup": {
+        "turns": [
+          {
+            "turnId": "s1",
+            "captureId": "fx_cc05_breakfast",
+            "speakerId": "fx_u_dad",
+            "capturedAt": 1789478400000,
+            "text": "Nora had pancakes at 9.",
+            "seedEvents": [
+              { "category": "meal", "occurredAt": 1789477200000, "note": "pancakes" }
+            ]
+          }
+        ],
+        "baseline": { "entryCount": 1 }
+      },
+      "turns": [
+        {
+          "turnId": "t1",
+          "speakerId": "fx_u_dad",
+          "capturedAt": 1789480800000,
+          "text": "Scratch the swim lesson from today.",
+          "correctionId": "cc05-t1",
+          "expect": {
+            "responseClass": "clarification",
+            "stateDelta": "none"
+          }
+        }
+      ],
+      "final": {
+        "entryCount": 1,
+        "entries": [
+          {
+            "ofCaptureId": "fx_cc05_breakfast",
+            "childId": "fx_child_nora",
+            "authorId": "fx_u_dad",
+            "status": "draft",
+            "transcriptByteEquals": "Nora had pancakes at 9.",
+            "events": [{ "category": "meal", "occurredAt": 1789477200000, "noteContains": ["pancakes"] }],
+            "revisionKinds": ["capture"]
+          }
+        ]
+      },
+      "forbidden": [
+        "event.create_fabricated",
+        "entry.delete",
+        "zero_care.assert_without_capture",
+        "entry.duplicate_without_supersession",
+        "raw.mutate"
+      ]
+    },
+    {
+      "id": "CC-06-wrong-prior-event-ambiguous-referent",
+      "category": "wrong-prior-event",
+      "description": "Two same-day meal entries from different authors. The correction names distinguishing content (\"not pasta\"), which binds it to Mom's lunch — not the most recent entry overall (Dad's dinner). Binding proposal: content-mention filter first, then speaker's most recent; ambiguous beyond that → clarify.",
+      "exercises": ["content-referent binding over recency", "wrong-entry application forbidden", "untouched sibling entry unchanged"],
+      "setup": {
+        "turns": [
+          {
+            "turnId": "s1",
+            "captureId": "fx_cc06_lunch",
+            "speakerId": "fx_u_mom",
+            "capturedAt": 1789489200000,
+            "text": "Nora had pasta at noon.",
+            "seedEvents": [
+              { "category": "meal", "occurredAt": 1789488000000, "note": "pasta at noon" }
+            ]
+          },
+          {
+            "turnId": "s2",
+            "captureId": "fx_cc06_dinner",
+            "speakerId": "fx_u_dad",
+            "capturedAt": 1789510800000,
+            "text": "Nora had chicken at 6.",
+            "seedEvents": [
+              { "category": "meal", "occurredAt": 1789509600000, "note": "chicken at 6" }
+            ]
+          }
+        ],
+        "baseline": { "entryCount": 2 }
+      },
+      "turns": [
+        {
+          "turnId": "t1",
+          "speakerId": "fx_u_mom",
+          "capturedAt": 1789511100000,
+          "text": "Actually, it was rigatoni, not pasta.",
+          "correctionId": "cc06-t1",
+          "expect": {
+            "responseClass": "applied",
+            "stateDelta": {
+              "entryChanges": [
+                {
+                  "ofCaptureId": "fx_cc06_lunch",
+                  "transcriptUnchanged": true,
+                  "events": [{ "category": "meal", "occurredAt": 1789488000000, "noteContains": ["rigatoni"] }]
+                },
+                {
+                  "ofCaptureId": "fx_cc06_dinner",
+                  "transcriptUnchanged": true,
+                  "events": [{ "category": "meal", "occurredAt": 1789509600000, "noteContains": ["chicken"] }]
+                }
+              ],
+              "appendedRevisions": [
+                { "ofCaptureId": "fx_cc06_lunch", "kind": "correction", "authorId": "fx_u_mom", "count": 1 }
+              ]
+            }
+          }
+        }
+      ],
+      "final": {
+        "entryCount": 2,
+        "entries": [
+          {
+            "ofCaptureId": "fx_cc06_lunch",
+            "childId": "fx_child_nora",
+            "authorId": "fx_u_mom",
+            "status": "draft",
+            "transcriptByteEquals": "Nora had pasta at noon.",
+            "events": [{ "category": "meal", "occurredAt": 1789488000000, "noteContains": ["rigatoni"] }],
+            "revisionKinds": ["capture", "correction"],
+            "lastRevisionAuthorId": "fx_u_mom"
+          },
+          {
+            "ofCaptureId": "fx_cc06_dinner",
+            "childId": "fx_child_nora",
+            "authorId": "fx_u_dad",
+            "status": "draft",
+            "transcriptByteEquals": "Nora had chicken at 6.",
+            "events": [{ "category": "meal", "occurredAt": 1789509600000, "noteContains": ["chicken"] }],
+            "revisionKinds": ["capture"]
+          }
+        ]
+      },
+      "forbidden": [
+        "revision.wrong_target",
+        "entry.duplicate_without_supersession",
+        "raw.mutate",
+        "entry.delete",
+        "revision.attribution_rewrite"
+      ]
+    }
+  ]
+}
