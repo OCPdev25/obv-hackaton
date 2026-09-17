@@ -1,7 +1,10 @@
 import { Schema } from "effect"
 import { convexId } from "./ids.js"
+import { ChildFields } from "./child.js"
 import { EntryFields, EntrySchema } from "./entry.js"
 import { EventFields } from "./event.js"
+import { HouseholdFields } from "./household.js"
+import { CaptureId } from "./extraction.js"
 
 /**
  * Operation contracts for Convex queries/mutations. These are the single
@@ -13,9 +16,46 @@ import { EventFields } from "./event.js"
 export const CreateEntryInput = Schema.Struct({
   childId: convexId("children"),
   rawTranscript: EntryFields.rawTranscript,
+  authorId: EntryFields.authorId,
+  /** Retried captures with the same captureId return the original entry. */
+  captureId: Schema.optional(CaptureId),
   photoId: EntryFields.photoId,
 })
 export type CreateEntryInput = typeof CreateEntryInput["Type"]
+
+export const CreateEntryOutput = Schema.Struct({
+  status: Schema.Literals(["created", "idempotent_hit"]),
+  entryId: convexId("entries"),
+  captureId: Schema.optional(CaptureId),
+})
+export type CreateEntryOutput = typeof CreateEntryOutput["Type"]
+
+export const CreateChildInput = Schema.Struct({
+  householdId: convexId("households"),
+  name: ChildFields.name,
+  birthDate: ChildFields.birthDate,
+})
+export type CreateChildInput = typeof CreateChildInput["Type"]
+
+export const CreateChildOutput = Schema.Struct({
+  status: Schema.Literals(["created"]),
+  childId: convexId("children"),
+  name: Schema.String,
+})
+export type CreateChildOutput = typeof CreateChildOutput["Type"]
+
+/** Minimal household creation — the full membership/invitation flow supersedes it. */
+export const CreateHouseholdInput = Schema.Struct({
+  name: HouseholdFields.name,
+})
+export type CreateHouseholdInput = typeof CreateHouseholdInput["Type"]
+
+export const CreateHouseholdOutput = Schema.Struct({
+  status: Schema.Literals(["created"]),
+  householdId: convexId("households"),
+  name: Schema.String,
+})
+export type CreateHouseholdOutput = typeof CreateHouseholdOutput["Type"]
 
 export const ListEntriesByChildInput = Schema.Struct({
   childId: convexId("children"),

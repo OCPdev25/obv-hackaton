@@ -2,12 +2,17 @@ import { describe, expect, test } from "bun:test"
 import { Schema } from "effect"
 
 import {
+  CaptureId,
+  CreateChildInput,
   CreateEntryInput,
+  CreateEntryOutput,
+  CreateHouseholdInput,
   EntrySchema,
   EventSchema,
   ExtractionRequest,
   ExtractionResult,
   ListEntriesByChildInput,
+  ListEntriesByChildOutput,
   toolSchemaFor,
 } from "../src/index.js"
 import { convexFields } from "../src/convexAdapter.js"
@@ -161,13 +166,94 @@ describe("Effect -> Convex validator adapter", () => {
     expect(childId.kind).toBe("id")
     expect(childId.tableName).toBe("children")
 
+    const authorId = createEntry.authorId as { kind: string; isOptional: string }
+    expect(authorId.kind).toBe("string")
+    expect(authorId.isOptional).toBe("required")
+
+    // captureId is optional on the wire: manual entries have no capture session.
+    const captureId = createEntry.captureId as { kind: string; isOptional: string }
+    expect(captureId.kind).toBe("string")
+    expect(captureId.isOptional).toBe("optional")
+
     const photoId = createEntry.photoId as { kind: string; isOptional: string }
+    expect(photoId.kind).toBe("string")
     expect(photoId.isOptional).toBe("optional")
 
     const listArgs = convexFields(ListEntriesByChildInput)
     const limit = listArgs.limit as { kind: string; isOptional: string }
     expect(limit.kind).toBe("float64")
     expect(limit.isOptional).toBe("optional")
+  })
+
+  test("derives validators for the create outputs and child/household inputs", () => {
+    const entryOutput = convexFields(CreateEntryOutput)
+    const entryId = entryOutput.entryId as { kind: string; tableName: string }
+    expect(entryId.kind).toBe("id")
+    expect(entryId.tableName).toBe("entries")
+    const status = entryOutput.status as { kind: string; members: unknown[] }
+    expect(status.kind).toBe("union")
+    expect(status.members).toHaveLength(2)
+
+    const childInput = convexFields(CreateChildInput)
+    const householdId = childInput.householdId as { kind: string; tableName: string }
+    expect(householdId.kind).toBe("id")
+    expect(householdId.tableName).toBe("households")
+    const birthDate = childInput.birthDate as { kind: string; isOptional: string }
+    expect(birthDate.kind).toBe("float64")
+    expect(birthDate.isOptional).toBe("optional")
+
+    const householdInput = convexFields(CreateHouseholdInput)
+    expect((householdInput.name as { kind: string }).kind).toBe("string")
+  })
+
+  test("Entry decode treats captureId as optional and rejects an empty one", () => {
+    const base = {
+      householdId: "jd7civil0000000000000000",
+      childId: "jd7cchild00000000000000000",
+      authorId: "caregiver-1",
+      rawTranscript: "She napped 45 minutes after lunch.",
+      structuredEventIds: [],
+      extractionStatus: "pending",
+      visibility: "draft",
+      createdAt: 1758136800000,
+    }
+    const without = Schema.decodeUnknownSync(EntrySchema)(base)
+    expect(without.captureId).toBeUndefined()
+
+    const withCapture = Schema.decodeUnknownSync(EntrySchema)({ ...base, captureId: "cap-001" })
+    expect(withCapture.captureId).toBe(Schema.decodeUnknownSync(CaptureId)("cap-001"))
+
+    expect(() => Schema.decodeUnknownSync(EntrySchema)({ ...base, captureId: "" })).toThrow()
+  })
+
+  test("timeline read boundary: stored rows decode to contract output, system fields stripped", () => {
+    const row = {
+      _id: "jd7centry00000000000000000",
+      _creationTime: 1758136800000,
+      householdId: "jd7civil0000000000000000",
+      childId: "jd7cchild00000000000000000",
+      authorId: "caregiver-1",
+      rawTranscript: "She napped 45 minutes after lunch.",
+      structuredEventIds: [],
+      extractionStatus: "pending",
+      visibility: "draft",
+      captureId: "cap-001",
+      createdAt: 1758136800000,
+    }
+    const decoded = Schema.decodeUnknownSync(ListEntriesByChildOutput)([row])
+    expect(decoded).toHaveLength(1)
+    expect(decoded[0]).toEqual({
+      householdId: "jd7civil0000000000000000",
+      childId: "jd7cchild00000000000000000",
+      authorId: "caregiver-1",
+      rawTranscript: "She napped 45 minutes after lunch.",
+      structuredEventIds: [],
+      extractionStatus: "pending",
+      visibility: "draft",
+      captureId: Schema.decodeUnknownSync(CaptureId)("cap-001"),
+      createdAt: 1758136800000,
+    })
+    expect(JSON.stringify(decoded[0])).not.toContain("_id")
   })
 
   test("rejects schema vocabulary outside the supported subset", () => {
