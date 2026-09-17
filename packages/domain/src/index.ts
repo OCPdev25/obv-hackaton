@@ -64,6 +64,23 @@ export {
   KnowledgeShapeError,
   assertKnowledgeInvariants,
 } from "./knowledge.js"
+// Since-last-seen catch-up (art_6qhBut41): read-state + report contracts,
+// deterministic reducer, watermark advance, EventRevision proposal.
+export {
+  AdvanceReadStateInput,
+  CaregiverReadStateFields,
+  CatchUpItem,
+  CatchUpQueryInput,
+  CatchUpReport,
+  CatchUpSource,
+  CoverageDay,
+  EventRevisionFields,
+  EventRevisionStruct,
+  advanceReadState,
+  computeCatchUp,
+  gapDisclosure,
+  utcDayKey,
+} from "./catchup.js"
 export { toolSchemaFor } from "./jsonSchema.js"
 
 export type { Child } from "./child.js"
@@ -73,3 +90,14 @@ export type { Event, EventCategory } from "./event.js"
 // KnowledgeKind / KnowledgeStatus / KnowledgeProvenanceKind / KnowledgeSourceType
 // are merged value+type symbols — exported once by value above.
 export type { Knowledge } from "./knowledge.js"
+// Catch-up pure types — schema constants above are merged value+type symbols.
+export type {
+  CatchUpEntry,
+  CatchUpError,
+  CatchUpGrants,
+  CatchUpHistory,
+  CatchUpItemKind,
+  CatchUpRevision,
+  DayKeyOf,
+  EventRevision,
+} from "./catchup.js"

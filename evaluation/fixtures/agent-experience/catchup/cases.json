@@ -1,0 +1,235 @@
+{
+  "cases": [
+    {
+      "caseId": "AC-01",
+      "readerId": "reader_mom",
+      "childId": "child_alpha",
+      "watermarkIso": null,
+      "nowIso": "2026-09-15T12:00:00Z",
+      "horizonDays": 14,
+      "expected": {
+        "windowStartIso": "2026-09-01T12:00:00Z",
+        "horizonClipped": true,
+        "allCaughtUp": false,
+        "kinds": ["new", "new", "new", "new", "late", "new"],
+        "expectedItemEntryIds": [
+          "entries_test_2",
+          "entries_test_4",
+          "entries_test_3",
+          "entries_test_5",
+          "entries_test_6",
+          "entries_test_7"
+        ],
+        "counts": { "gapDays": 9, "confirmedEvents": 2, "inferredEvents": 3 },
+        "notes": "First-time reader, 20d history, horizon 14: windowStart = now-14d, horizonClipped, every item new/late, every source.rawTranscript verbatim non-empty, coverage + confirmation present."
+      }
+    },
+    {
+      "caseId": "AC-02",
+      "readerId": "reader_mom",
+      "childId": "child_alpha",
+      "watermarkIso": "2026-09-05T00:00:00Z",
+      "nowIso": "2026-09-15T12:00:00Z",
+      "horizonDays": 14,
+      "expected": {
+        "kinds": ["new", "late", "new", "corrected"],
+        "expectedItemEntryIds": [
+          "entries_test_5",
+          "entries_test_6",
+          "entries_test_7",
+          "entries_test_2"
+        ],
+        "boundaryExcludedEntryId": "entries_test_3",
+        "notes": "Strictly-after rule for new items: entry at exactly W (entries_test_3) and before W (entries_test_2, entries_test_4) are not new items; entries after W are. entries_test_2 appears only as a CORRECTED item (its revision landed after W) — never as new."
+      }
+    },
+    {
+      "caseId": "AC-03",
+      "readerId": "reader_mom",
+      "childId": "child_alpha",
+      "watermarkIso": "2026-09-01T00:00:00Z",
+      "nowIso": "2026-09-15T12:00:00Z",
+      "horizonDays": 14,
+      "expected": {
+        "kinds": ["new", "new", "new", "new", "late", "new"],
+        "lateSpec": {
+          "entryId": "entries_test_6",
+          "daysLate": 2,
+          "occurredAtIso": "2026-09-08T19:30:00Z",
+          "recordedAtIso": "2026-09-10T16:00:00Z"
+        },
+        "notes": "Entry captured Sep 10 with event timestamped Sep 8: kind late, daysLate 2, occurredAt = the Sep 8 event timestamp."
+      }
+    },
+    {
+      "caseId": "AC-04",
+      "readerId": "reader_mom",
+      "childId": "child_alpha",
+      "watermarkIso": "2026-09-05T00:00:00Z",
+      "nowIso": "2026-09-15T12:00:00Z",
+      "horizonDays": 14,
+      "expected": {
+        "correctedSpec": {
+          "entryId": "entries_test_2",
+          "originalEventId": "events_test_2",
+          "revisionIds": ["revisions_test_1"],
+          "correctedBy": "reader_dad",
+          "revisedPayload": { "portions": 3 },
+          "revisedConfidence": 0.95
+        },
+        "notes": "Event E existed at W, revision R (Sep 8) lands after W: corrected item on the ORIGINAL entry, revisionIds [R], correctedBy R.actorId, events show revised values, source keeps the original entry + verbatim transcript."
+      }
+    },
+    {
+      "caseId": "AC-05",
+      "readerId": "reader_mom",
+      "childId": "child_alpha",
+      "watermarkIso": "2026-09-12T00:00:00Z",
+      "nowIso": "2026-09-15T12:00:00Z",
+      "horizonDays": 14,
+      "expected": {
+        "kinds": ["new"],
+        "expectedItemEntryIds": ["entries_test_7"],
+        "correctedItemCount": 0,
+        "absentFromOutput": ["revisions_test_1", "entries_test_2", "events_test_2"],
+        "notes": "Same correction but R (Sep 8) landed before W (Sep 12): NO corrected item — already seen."
+      }
+    },
+    {
+      "caseId": "AC-06",
+      "readerId": "reader_mom",
+      "childId": "child_alpha",
+      "watermarkIso": "2026-09-01T00:00:00Z",
+      "nowIso": "2026-09-15T12:00:00Z",
+      "horizonDays": 14,
+      "expected": {
+        "kinds": ["new", "new", "new", "new", "late", "new"],
+        "draftEntryIds": ["entries_test_8", "entries_test_9"],
+        "notes": "Drafts sit inside the window: zero draft items anywhere in the report."
+      }
+    },
+    {
+      "caseId": "AC-07",
+      "readerId": "reader_stranger",
+      "childId": "child_alpha",
+      "watermarkIso": null,
+      "nowIso": "2026-09-15T12:00:00Z",
+      "horizonDays": 14,
+      "expected": {
+        "errorTag": "UnauthorizedReader",
+        "notes": "Reader has no grant on the child's household; hh_beta data is present in history. Result is { _tag: 'UnauthorizedReader' } and NOTHING else."
+      }
+    },
+    {
+      "caseId": "AC-08",
+      "readerId": "reader_mom",
+      "childId": "child_alpha",
+      "watermarkIso": null,
+      "nowIso": "2026-09-15T12:00:00Z",
+      "horizonDays": 14,
+      "expected": {
+        "kinds": ["new", "new", "new", "new", "late", "new"],
+        "absentFromOutput": ["entries_test_11", "events_test_11", "child_beta", "hh_beta"],
+        "notes": "Authorized reader with a cross-household entry present in history: every source.entryId belongs to a reader-visible entry; the cross-household entry appears nowhere."
+      }
+    },
+    {
+      "caseId": "AC-09",
+      "readerId": "reader_mom",
+      "childId": "child_alpha",
+      "watermarkIso": "2026-09-04T00:00:00Z",
+      "nowIso": "2026-09-08T00:00:00Z",
+      "horizonDays": 14,
+      "expected": {
+        "kinds": ["new", "new"],
+        "expectedItemEntryIds": ["entries_test_3", "entries_test_5"],
+        "gapDayCount": 3,
+        "gapDayKeys": ["2026-09-04", "2026-09-07", "2026-09-08"],
+        "coverageDayCount": 5,
+        "disclosure": "No entries recorded for 2026-09-04, 2026-09-07, 2026-09-08",
+        "notes": "Window with zero-entry days: gapDays correct, coverageDays lists them, disclosure string is exactly 'No entries recorded for ' + the day list."
+      }
+    },
+    {
+      "caseId": "AC-10",
+      "readerId": "reader_mom",
+      "childId": "child_alpha",
+      "watermarkIso": null,
+      "nowIso": "2026-11-02T12:00:00Z",
+      "horizonDays": 14,
+      "expected": {
+        "kinds": ["new", "new"],
+        "expectedItemEntryIds": ["entries_test_12", "entries_test_13"],
+        "dayKeyPolicy": "america-new-york-fallback",
+        "singleBucketDay": "2026-11-01",
+        "singleBucketCount": 2,
+        "coverageDayCount": 15,
+        "notes": "DST fall-back day key (offset -240 before 2026-11-01T06:00:00Z, then -300): the 05:00Z and 06:00Z entries both bucket to local day 2026-11-01; exactly one bucket for that day; no 23/25h skew."
+      }
+    },
+    {
+      "caseId": "AC-11",
+      "readerId": "reader_mom",
+      "childId": "child_alpha",
+      "watermarkIso": "2026-09-15T12:00:00Z",
+      "nowIso": "2026-09-15T12:00:00Z",
+      "horizonDays": 14,
+      "expected": {
+        "kinds": [],
+        "expectedItemEntryIds": [],
+        "allCaughtUp": true,
+        "coverageDayCount": 1,
+        "notes": "No items after W: items [], allCaughtUp true, coverageDays still non-empty."
+      }
+    },
+    {
+      "caseId": "AC-12",
+      "readerId": "reader_mom",
+      "childId": "child_alpha",
+      "watermarkIso": null,
+      "nowIso": "2026-09-15T12:00:00Z",
+      "horizonDays": 14,
+      "expected": {
+        "advanceSpec": {
+          "t1Iso": "2026-09-10T00:00:00Z",
+          "t2Iso": "2026-09-12T00:00:00Z"
+        },
+        "notes": "advanceReadState(undefined, t2) = t2; advance(t2, t1) with t1 < t2 stays t2; advancing twice with the same at is a no-op."
+      }
+    },
+    {
+      "caseId": "AC-13",
+      "readerId": "reader_mom",
+      "childId": "child_alpha",
+      "watermarkIso": "2026-08-25T00:00:00Z",
+      "nowIso": "2026-09-15T12:00:00Z",
+      "horizonDays": 14,
+      "expected": {
+        "windowStartIso": "2026-09-01T12:00:00Z",
+        "horizonClipped": true,
+        "kinds": ["new", "new", "new", "new", "late", "new"],
+        "expectedItemEntryIds": [
+          "entries_test_2",
+          "entries_test_4",
+          "entries_test_3",
+          "entries_test_5",
+          "entries_test_6",
+          "entries_test_7"
+        ],
+        "absentFromOutput": ["revisions_test_2", "entries_test_10"],
+        "notes": "Watermark older than horizon: windowStart = now - horizon (not the watermark), horizonClipped true, corrections to pre-window events (revisions_test_2 on the Aug 20 entry) do not surface. The Aug 26 entry (after the watermark but pre-windowStart) is clipped too."
+      }
+    },
+    {
+      "caseId": "AC-14",
+      "readerId": "reader_mom",
+      "childId": "child_alpha",
+      "watermarkIso": "2026-09-05T00:00:00Z",
+      "nowIso": "2026-09-15T12:00:00Z",
+      "horizonDays": 14,
+      "expected": {
+        "notes": "Report -> encodeSync(CatchUpReport) -> decodeUnknownSync -> deep-equal the original (lossless). Runs on the AC-04-shaped report (corrected + late + eventless + photo) so every optional field round-trips."
+      }
+    }
+  ]
+}
