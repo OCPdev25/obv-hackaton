@@ -1,0 +1,23 @@
+{
+  "name": "@obv-hackaton/spike-effect-compat",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "description": "Bounded compatibility spike: one canonical Effect v4 schema (Entry + Event) proven end-to-end — inferred TS types, JSON Schema derivation, Effect-schema-to-Convex-validators adapter, LLM extraction contract.",
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "probe": "node scripts/probe-effect-exports.mjs"
+  },
+  "//pins": "All versions exact-pinned. effect is the rc dist-tag (4.0.0-rc.115); `latest` is still 3.22.2 as of 2026-09-17. Recorded in FINDINGS.md.",
+  "dependencies": {
+    "convex": "1.46.0",
+    "effect": "4.0.0-rc.115",
+    "openai": "7.17.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.19.0",
+    "typescript": "5.9.3",
+    "vitest": "5.0.1"
+  }
+}
