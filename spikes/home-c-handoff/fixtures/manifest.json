@@ -1,0 +1,64 @@
+{
+  "manifestVersion": "0.1.0",
+  "rubric": {
+    "artifactId": "art_VyNYOggs",
+    "version": "1.0 (frozen 2026-09-17)",
+    "candidate": "3 — handoff-first",
+    "registryTask": "todo_wZdouzJU (folio version superseded by direct worker assignment)",
+    "executingThread": "th_wkbO7wK7",
+    "rootTask": "todo_IpkisZRm"
+  },
+  "contract": {
+    "artifactId": "art_I2TCG08V",
+    "version": "0.2",
+    "effectPin": "4.0.0-rc.115",
+    "note": "Wire shapes follow the contract document (and the evaluation corpus adapter); the merged packages/domain implementation diverges (timestamp/payload vs occurredAt/quantity) — flagged in the evidence document."
+  },
+  "scenario": {
+    "scenarioId": "S1",
+    "personas": [
+      "elena",
+      "marco",
+      "rosa",
+      "sofia"
+    ],
+    "binding": true
+  },
+  "fixtures": [
+    {
+      "id": "HOME-C-S1-DAY",
+      "file": "s1-day.json",
+      "kind": "scenario",
+      "beats": [
+        "S1-A",
+        "S1-B",
+        "S1-C",
+        "S1-D",
+        "S1-E",
+        "S1-F"
+      ]
+    },
+    {
+      "id": "HOME-C-MONTH-HISTORY",
+      "file": "month-history.json",
+      "kind": "history",
+      "days": 30
+    },
+    {
+      "id": "HOME-C-BREAKFAST-PHOTO",
+      "file": "media/breakfast-photo.png",
+      "kind": "media",
+      "bytes": 68,
+      "sha256": "431ced6916a2a21a156e38701afe55bbd7f88969fbbfc56d7fe099d47f265460",
+      "note": "synthetic placeholder image (1×1 PNG)"
+    }
+  ],
+  "transcripts": {
+    "sha256": {
+      "entry-e1": "c3168035d4f94de160775d04e4ff3ef703e5869576e6ac4d6acecc382fc36040",
+      "entry-e2": "cf41358be79c0d5d9f9ed8fda3ea7bc95cda8623eb5722b70b5d4505bf5463d2"
+    },
+    "byteFidelityRule": "transcript bytes are exactly what was dictated; interruption markers are session facts, never transcript bytes"
+  },
+  "allSynthetic": true
+}
