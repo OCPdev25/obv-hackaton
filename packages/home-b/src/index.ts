@@ -30,7 +30,7 @@ export type {
   WorldSeed,
 } from "./store.js"
 export type { CaptureChannel } from "./store.js"
-export { evaluateAccess, type Action, type AudienceIntent, type Decision, type Principal, type Resource } from "./auth.js"
+export { evaluateAccess, type Action, type AudienceIntent, type Decision, type DenyDecision, type DenyCode, type Principal, type Resource } from "./auth.js"
 export { extractProposedEvents, type CaptureContext, type ExtractionOutcome } from "./extractionDouble.js"
 export type { DroppedClause } from "./extractionDouble.js"
 export { HOUSEHOLD_TIMEZONE, wallDateOf, wallToUtc, DEMO_NOW, type WallDate } from "./time.js"
@@ -50,3 +50,5 @@ export {
   type DemoPersona,
   type SeedResult,
 } from "./fixtures.js"
+export { buildStore, MIXED_BOTH_CHILDREN, SEED_SAMPLE, VOICE_SAMPLE } from "./testing.js"
+export { HomeBDemoApp } from "./ui/HomeBDemoApp.js"

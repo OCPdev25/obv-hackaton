@@ -36,7 +36,7 @@ import {
   type HouseholdDocument as HouseholdDoc,
 } from "@journal/domain"
 import { Schema } from "effect"
-import { evaluateAccess, type Action, type AudienceIntent, type Decision, type Principal, type Resource } from "./auth.js"
+import { evaluateAccess, type Action, type AudienceIntent, type Decision, type DenyDecision, type Principal, type Resource } from "./auth.js"
 import { extractProposedEvents, type CaptureContext, type DroppedClause } from "./extractionDouble.js"
 import { nextIdFrom } from "./ids.js"
 import { HOUSEHOLD_TIMEZONE, wallDateOf } from "./time.js"
@@ -91,7 +91,7 @@ export type SubmitCaptureResult =
   | { readonly _tag: "Created"; readonly entryId: string; readonly proposedEventIds: readonly string[]; readonly dropped: readonly DroppedClause[] }
   | { readonly _tag: "IdempotentReplay"; readonly entryId: string }
   | { readonly _tag: "Rejected"; readonly reason: string }
-  | { readonly _tag: "Denied"; readonly decision: Decision }
+  | { readonly _tag: "Denied"; readonly decision: DenyDecision }
 
 export type ProposedEventPatch = {
   readonly category?: EventDoc["category"]
@@ -106,13 +106,13 @@ export type UpdateProposedResult =
   | { readonly _tag: "InvalidEvent"; readonly issues: readonly string[] }
   | { readonly _tag: "NotDraft" }
   | { readonly _tag: "NotFound" }
-  | { readonly _tag: "Denied"; readonly decision: Decision }
+  | { readonly _tag: "Denied"; readonly decision: DenyDecision }
 
 export type PublishResult =
   | { readonly _tag: "Published"; readonly entryId: string; readonly audience: AudienceIntent; readonly publishedEventIds: readonly string[] }
   | { readonly _tag: "NotDraft" }
   | { readonly _tag: "NotFound" }
-  | { readonly _tag: "Denied"; readonly decision: Decision }
+  | { readonly _tag: "Denied"; readonly decision: DenyDecision }
 
 export type CorrectEventInput = {
   readonly eventId: string
@@ -125,25 +125,25 @@ export type CorrectEventResult =
   | { readonly _tag: "InvalidEvent"; readonly issues: readonly string[] }
   | { readonly _tag: "NotPublished" }
   | { readonly _tag: "NotFound" }
-  | { readonly _tag: "Denied"; readonly decision: Decision }
+  | { readonly _tag: "Denied"; readonly decision: DenyDecision }
 
 export type AudienceResult =
   | { readonly _tag: "AudienceSet"; readonly entryId: string; readonly audience: AudienceIntent }
   | { readonly _tag: "NotFound" }
-  | { readonly _tag: "Denied"; readonly decision: Decision }
+  | { readonly _tag: "Denied"; readonly decision: DenyDecision }
 
 export type RerunResult =
   | { readonly _tag: "Rerun"; readonly attempt: number; readonly proposedEventIds: readonly string[]; readonly dropped: readonly DroppedClause[] }
   | { readonly _tag: "NotDraft" }
   | { readonly _tag: "NotFound" }
-  | { readonly _tag: "Denied"; readonly decision: Decision }
+  | { readonly _tag: "Denied"; readonly decision: DenyDecision }
 
 export type ApplyResultResult =
   | { readonly _tag: "Applied"; readonly entryId: string; readonly attempt: number }
   | { readonly _tag: "Superseded" }
   | { readonly _tag: "IdempotentNoop" }
   | { readonly _tag: "NotFound" }
-  | { readonly _tag: "Denied"; readonly decision: Decision }
+  | { readonly _tag: "Denied"; readonly decision: DenyDecision }
 
 export interface FeedEventView {
   readonly eventId: string
@@ -181,20 +181,20 @@ export interface FeedFilter {
 
 export type FeedResult =
   | { readonly _tag: "Feed"; readonly published: readonly FeedEventView[]; readonly drafts: readonly FeedEventView[] }
-  | { readonly _tag: "Denied"; readonly decision: Decision }
+  | { readonly _tag: "Denied"; readonly decision: DenyDecision }
 
 export type CatchUpResult =
   | { readonly _tag: "CatchUp"; readonly since: number; readonly events: readonly FeedEventView[] }
-  | { readonly _tag: "Denied"; readonly decision: Decision }
+  | { readonly _tag: "Denied"; readonly decision: DenyDecision }
 
 export type MonthSummary =
   | { readonly _tag: "MonthSummary"; readonly days: readonly { readonly day: number; readonly count: number }[] }
-  | { readonly _tag: "Denied"; readonly decision: Decision }
+  | { readonly _tag: "Denied"; readonly decision: DenyDecision }
 
 export type EventDetailResult =
   | { readonly _tag: "Detail"; readonly detail: EventDetailView }
   | { readonly _tag: "NotFound" }
-  | { readonly _tag: "Denied"; readonly decision: Decision }
+  | { readonly _tag: "Denied"; readonly decision: DenyDecision }
 
 export type RawSourceResult =
   | {
@@ -208,7 +208,7 @@ export type RawSourceResult =
       readonly photoId?: string
     }
   | { readonly _tag: "NotFound" }
-  | { readonly _tag: "Denied"; readonly decision: Decision }
+  | { readonly _tag: "Denied"; readonly decision: DenyDecision }
 
 export interface WorldSeed {
   readonly household: HouseholdDoc
@@ -379,7 +379,7 @@ export class HomeBStore {
   }
 
   /** Visible, published event views for a principal, optionally filtered by day/child. Newest first. */
-  private visiblePublishedViews(principal: Principal, filter: FeedFilter): readonly FeedEventView[] | Decision {
+  private visiblePublishedViews(principal: Principal, filter: FeedFilter): readonly FeedEventView[] | DenyDecision {
     const firstChild = this.children[0]
     if (firstChild === undefined) {
       return { outcome: "DENY", code: "DENY_UNKNOWN_CHILD_SCOPE", detail: "no children are registered in this household" }
@@ -889,8 +889,8 @@ export class HomeBStore {
 // Module-scope helpers (no store state)
 // ---------------------------------------------------------------------------
 
-/** Type predicate: a lookup helper returns views on success, a Decision on denial. */
-function isDecision(x: Decision | readonly FeedEventView[]): x is Decision {
+/** Type predicate: a lookup helper returns views on success, a DENY decision on denial. */
+function isDecision(x: DenyDecision | readonly FeedEventView[]): x is DenyDecision {
   return !Array.isArray(x)
 }
 

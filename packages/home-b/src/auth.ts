@@ -55,6 +55,9 @@ export type DenyCode =
 
 export type Decision = { readonly outcome: "ALLOW" } | { readonly outcome: "DENY"; readonly code: DenyCode; readonly detail: string }
 
+/** A result tagged "Denied" always carries a DENY decision — never an ALLOW. */
+export type DenyDecision = Extract<Decision, { readonly outcome: "DENY" }>
+
 const deny = (code: DenyCode, detail: string): Decision => ({ outcome: "DENY", code, detail })
 
 /**
