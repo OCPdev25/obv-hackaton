@@ -1,0 +1,24 @@
+{
+  "name": "@journal/extraction",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Effect pipeline turning raw transcripts into typed journal events (stub — no LLM call yet)",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@journal/domain": "workspace:*",
+    "effect": "4.0.0-rc.115"
+  },
+  "devDependencies": {
+    "typescript": "~6.0.3"
+  }
+}
