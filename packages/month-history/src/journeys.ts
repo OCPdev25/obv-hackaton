@@ -83,7 +83,7 @@ const ANON_PRINCIPAL: Principal = { kind: "anonymous" }
 /** Pristine-dataset fingerprint, captured BEFORE any projection runs. */
 const DATASET_SNAPSHOT = JSON.stringify({ entries: ENTRIES, events: EVENTS })
 
-const SCOPE_ENTRY_IDS = ENTRIES.map((entry) => entry._id)
+const SCOPE_ENTRIES = ENTRIES.map(entryViewInputFromDocument)
 const ALL_EVENTS = EVENTS.map(eventViewInputFromDocument)
 
 export function buildAuthorizedView(
@@ -96,7 +96,7 @@ export function buildAuthorizedView(
   if (access.outcome !== "allowed") {
     return {
       access,
-      view: buildMonthHistoryView({ monthKey, timeZone, entries: [], events: [], corrections, authors: AUTHORS, scopeEntryIds: SCOPE_ENTRY_IDS }),
+      view: buildMonthHistoryView({ monthKey, timeZone, entries: [], events: [], corrections, authors: AUTHORS, scopeEntries: SCOPE_ENTRIES }),
     }
   }
   return {
@@ -108,7 +108,7 @@ export function buildAuthorizedView(
       events: ALL_EVENTS,
       corrections,
       authors: AUTHORS,
-      scopeEntryIds: SCOPE_ENTRY_IDS,
+      scopeEntries: SCOPE_ENTRIES,
     }),
   }
 }

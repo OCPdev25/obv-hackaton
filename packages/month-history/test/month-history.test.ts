@@ -148,9 +148,66 @@ describe("view builder export", () => {
       events: [],
       corrections: [],
       authors: {},
-      scopeEntryIds: [],
+      scopeEntries: [],
     })
     expect(view.gap.kind).toBe("empty-month")
     expect(view.days.length).toBe(30)
+  })
+})
+
+describe("orphan accounting", () => {
+  test("events of in-scope-but-invisible entries are excluded without counting as orphans; truly unclaimed events are orphans", () => {
+    // Dad's perspective: Mom's draft entry exists in the child's scope but is
+    // invisible to him. Its event must render nowhere AND not inflate the
+    // orphan count (the event is claimed — by an entry he cannot see). An
+    // event no scope entry claims IS an orphan. This is the divergence no
+    // fixture exercises — pinned here per the PR #27 round-1 review.
+    const sepMs = Date.parse("2026-09-15T10:00:00-04:00")
+    const category = eventViewInputFromDocument(FIXTURE_EVENTS[0]!).category
+    const momDraftEntry = {
+      entryId: "ent_probe_draft",
+      householdId: HOUSEHOLD_ID,
+      childId: CHILD_ID,
+      authorId: MOM,
+      rawTranscript: "draft probe",
+      structuredEventIds: ["ev_probe_hidden"],
+      extractionStatus: "structured" as const,
+      visibility: "draft" as const,
+      createdAt: sepMs,
+    }
+    const publishedEntry = {
+      ...momDraftEntry,
+      entryId: "ent_probe_published",
+      authorId: DAD,
+      rawTranscript: "published probe",
+      structuredEventIds: [],
+      visibility: "published" as const,
+    }
+    const hiddenEvent = { eventId: "ev_probe_hidden", householdId: HOUSEHOLD_ID, childId: CHILD_ID, category, timestamp: sepMs, confidence: 0.9 }
+    const orphanEvent = { eventId: "ev_probe_orphan", householdId: HOUSEHOLD_ID, childId: CHILD_ID, category, timestamp: sepMs, confidence: 0.9 }
+    const base = { monthKey: "2026-09", timeZone: HOUSEHOLD_ZONE, authors: { [MOM]: "Mom", [DAD]: "Dad" } }
+
+    const scoped = buildMonthHistoryView({
+      ...base,
+      entries: [publishedEntry],
+      events: [hiddenEvent, orphanEvent],
+      scopeEntries: [publishedEntry, momDraftEntry],
+    })
+    expect(scoped.orphanEventCount).toBe(1)
+    expect(scoped.totalEvents).toBe(0)
+    for (const day of scoped.days) {
+      expect(day.events.some((event) => event.eventId === "ev_probe_hidden")).toBe(false)
+      expect(day.events.some((event) => event.eventId === "ev_probe_orphan")).toBe(false)
+    }
+
+    // Without scopeEntries the claim universe defaults to the authorized
+    // entries, so BOTH events count as orphans — the draft claim is unknown.
+    const unscoped = buildMonthHistoryView({
+      ...base,
+      entries: [publishedEntry],
+      events: [hiddenEvent, orphanEvent],
+    })
+    expect(unscoped.orphanEventCount).toBe(2)
+    expect(unscoped.totalEvents).toBe(0)
   })
 })

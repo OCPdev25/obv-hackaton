@@ -107,7 +107,10 @@ export function buildMonthHistoryView(input: BuildMonthHistoryInput): MonthHisto
   for (const entry of input.entries) {
     for (const eventId of entry.structuredEventIds) entryIdByEventId.set(eventId, entry.entryId)
   }
-  const linkableEntryIds = new Set<string>(input.scopeEntryIds ?? input.entries.map((entry) => entry.entryId))
+  // Claim universe: every entry in scope (visible or not). Events claimed by
+  // in-scope-but-invisible entries are excluded without counting as orphans.
+  const scopeEntries = input.scopeEntries ?? input.entries
+  const scopeClaimedEventIds = new Set<string>(scopeEntries.flatMap((entry) => entry.structuredEventIds))
 
   const cardFor = (entry: EntryViewInput): EntryCardCore => {
     const lin = lineage.get(entry.entryId)
@@ -139,8 +142,10 @@ export function buildMonthHistoryView(input: BuildMonthHistoryInput): MonthHisto
     .sort((a, b) => a.timestamp - b.timestamp || (a.eventId < b.eventId ? -1 : a.eventId > b.eventId ? 1 : 0))
   const eventsByDay = new Map<string, EventViewInput[]>()
   let orphanEventCount = 0
+  let hiddenEventCount = 0
   for (const event of eventsInMonth) {
-    if (!entryIdByEventId.has(event.eventId)) orphanEventCount += 1
+    if (!scopeClaimedEventIds.has(event.eventId)) orphanEventCount += 1
+    else if (!entryIdByEventId.has(event.eventId)) hiddenEventCount += 1
     const key = localDateKey(event.timestamp, timeZone)
     const bucket = eventsByDay.get(key) ?? []
     bucket.push(event)
@@ -268,7 +273,7 @@ export function buildMonthHistoryView(input: BuildMonthHistoryInput): MonthHisto
   const placedEntryIds = new Set<string>(days.flatMap((day) => day.entries.map((entry) => entry.entryId)))
   const correctedEntries = [...placedEntryIds].filter((entryId) => lineage.has(entryId)).length
   const totalEntries = placedEntryIds.size
-  const totalEvents = eventsInMonth.length - orphanEventCount
+  const totalEvents = eventsInMonth.length - orphanEventCount - hiddenEventCount
   const gap: MonthGapStatement =
     totalEntries === 0
       ? {

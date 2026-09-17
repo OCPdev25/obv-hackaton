@@ -125,7 +125,7 @@ export interface MonthHistoryView {
   readonly totalEvents: number
   readonly lateEvents: number
   readonly correctedEntries: number
-  /** Events in the month not linked to any authorized entry — surfaced, never hidden. */
+  /** Events in the month no entry in scope claims — surfaced, never hidden. */
   readonly orphanEventCount: number
   readonly gap: MonthGapStatement
 }
@@ -141,11 +141,12 @@ export interface BuildMonthHistoryInput {
   /** authorId → display name ("Mom", "Dad", "Ana"). Unmapped ids fall back to the id. */
   readonly authors: Readonly<Record<string, string>>
   /**
-   * Entry ids that exist in the child's scope (visible or not). Events whose
-   * entry is in scope but invisible to this principal are excluded WITHOUT
-   * counting as orphans; orphans are events no entry in scope claims.
+   * Every entry in the child's scope, visible or not — the claim universe.
+   * Events whose claiming entry is in scope but invisible to this principal
+   * are excluded from the view WITHOUT counting as orphans; orphans are
+   * events no entry in scope claims. Defaults to the authorized entries.
    */
-  readonly scopeEntryIds?: readonly string[]
+  readonly scopeEntries?: readonly EntryViewInput[]
 }
 
 export type CorrectionInput = import("./corrections.js").CorrectionRecord

@@ -12,7 +12,7 @@
       "id": "J1-A2",
       "journey": "parent-retrieval",
       "criterion": "A sparse month renders every calendar day explicitly, with honest gap copy and correct totals",
-      "measure": "September 2026 (Mom): 30 day cells, 25 gap days, message '25 of 30 days have no entries recorded.' + disclaimer; totals entries=5 events=5 late=1 corrected=1 orphans=0"
+      "measure": "September 2026 (Mom): 30 day cells, 25 gap days, message '25 of 30 days have no entries recorded.' + disclaimer; totals entries=5 events=6 late=1 corrected=1 orphans=0"
     },
     {
       "id": "J1-A3",
