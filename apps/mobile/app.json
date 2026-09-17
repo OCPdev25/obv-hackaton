@@ -5,6 +5,26 @@
     "version": "0.1.0",
     "scheme": "sharedchildjournal",
     "platforms": ["ios", "android"],
-    "newArchEnabled": true
+    "ios": {
+      "bundleIdentifier": "com.obvhackaton.sharedchildjournal",
+      "infoPlist": {
+        "NSSpeechRecognitionUsageDescription": "Transcribes your spoken journal updates on-device so care notes become text without sending audio off the device."
+      }
+    },
+    "newArchEnabled": true,
+    "plugins": [
+      [
+        "expo-audio",
+        {
+          "microphonePermission": "Allows recording short voice notes for your family's journal entries."
+        }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Allows attaching photos of documents, drawings, and moments to journal entries."
+        }
+      ]
+    ]
   }
 }
