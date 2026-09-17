@@ -1,0 +1,89 @@
+{
+  "$schema": "home-journeys/mini-history v1",
+  "rubric": "art_uWsp80Fg v1.0",
+  "note": "5-day synthetic stand-in for the slot-03 30-day family-history corpus (labeled JOURNEY-LOCAL SEED, not the full month corpus). Epochs pinned by timestamps.ts. Nov 1 is deliberately EMPTY — the capture journeys fill it.",
+  "window": { "from": 1793160000000, "to": 1793505599999 },
+  "householdId": "hh-primary",
+  "childId": "child-lena",
+  "entries": [
+    {
+      "entryId": "entry-o28-a",
+      "captureId": "cap-seed-o28a",
+      "transcript": "Banana toast for breakfast, good mood all morning.",
+      "authorId": "actor-mom",
+      "createdAt": 1793188800000,
+      "status": "published",
+      "audience": "household",
+      "events": [
+        { "eventId": "ev-o28-meal", "category": "meal", "occurredAt": 1793188800000, "quantity": { "value": 1, "unit": "toast" }, "note": "banana toast" },
+        { "eventId": "ev-o28-nap", "category": "sleep", "occurredAt": 1793205000000, "quantity": { "value": 60, "unit": "minutes" }, "note": "nap 12:30-13:30" }
+      ]
+    },
+    {
+      "entryId": "entry-o28-b",
+      "captureId": "cap-seed-o28b",
+      "transcript": "She used the potty after quiet time.",
+      "authorId": "actor-mom",
+      "createdAt": 1793215800000,
+      "status": "published",
+      "audience": "household",
+      "events": [
+        { "eventId": "ev-o28-potty", "category": "potty", "occurredAt": 1793215800000, "note": "after quiet time" }
+      ]
+    },
+    {
+      "entryId": "entry-o30-a",
+      "captureId": "cap-seed-o30a",
+      "transcript": "Waffle for breakfast, then a solid nap, happy at pickup.",
+      "authorId": "actor-dad",
+      "createdAt": 1793363400000,
+      "status": "published",
+      "audience": "household",
+      "events": [
+        { "eventId": "ev-o30-meal", "category": "meal", "occurredAt": 1793363400000, "quantity": { "value": 2, "unit": "waffles" }, "note": "waffle breakfast (corrected)" },
+        { "eventId": "ev-o30-nap", "category": "sleep", "occurredAt": 1793378700000, "quantity": { "value": 60, "unit": "minutes" }, "note": "nap 12:45-13:45" },
+        { "eventId": "ev-o30-mood", "category": "mood", "occurredAt": 1793386800000, "note": "happy at pickup" }
+      ]
+    },
+    {
+      "entryId": "entry-o31-a",
+      "captureId": "cap-seed-o31a",
+      "transcript": "Oatmeal at 8, potty twice in the morning, and she pedaled the balance bike all by herself for the first time.",
+      "authorId": "actor-mom",
+      "createdAt": 1793448000000,
+      "status": "published",
+      "audience": "household",
+      "events": [
+        { "eventId": "ev-o31-meal", "category": "meal", "occurredAt": 1793448000000, "quantity": { "value": 1, "unit": "oatmeal" }, "note": "oatmeal" },
+        { "eventId": "ev-o31-potty-1", "category": "potty", "occurredAt": 1793455200000, "note": "morning potty" },
+        { "eventId": "ev-o31-potty-2", "category": "potty", "occurredAt": 1793457600000, "note": "morning potty" },
+        { "eventId": "ev-o31-milestone", "category": "milestone", "occurredAt": 1793476800000, "note": "first solo balance-bike pedal" }
+      ]
+    },
+    {
+      "entryId": "entry-o31-private",
+      "captureId": "cap-seed-o31p",
+      "transcript": "Private note about co-parent scheduling — author only.",
+      "authorId": "actor-mom",
+      "createdAt": 1793494800000,
+      "status": "published",
+      "audience": "private",
+      "events": [
+        { "eventId": "ev-o31-private-note", "category": "mood", "occurredAt": 1793494800000, "note": "private scheduling note (author-only)" }
+      ]
+    }
+  ],
+  "gaps": [{ "day": "2026-10-29", "reason": "no-data" }],
+  "corrections": [
+    {
+      "revisionId": "rev-o30-meal-1",
+      "entryId": "entry-o30-a",
+      "eventId": "ev-o30-meal",
+      "supersedes": { "quantity": { "value": 1, "unit": "waffle" } },
+      "patch": { "quantity": { "value": 2, "unit": "waffles" } },
+      "byActorId": "actor-dad",
+      "createdAt": 1793380000000,
+      "note": "Pre-seeded correction chain: original quantity (1 waffle) remains retrievable via lineage."
+    }
+  ]
+}

@@ -6,9 +6,12 @@
   "description": "Shared acceptance/evaluation corpus and candidate-agnostic harness for the Shared Child Journal arena cross-review.",
   "scripts": {
     "eval": "bun src/run.ts",
-    "test": "bun src/run.ts",
+    "test": "bun src/run.ts && bun src/home/validate.ts && bun src/home/run.ts && bun src/home/run.ts --adapter=./src/home/example/home-broken-adapter.ts --expect-failure",
     "typecheck": "tsc --noEmit",
-    "eval:broken": "bun src/run.ts --adapter=./src/example/broken-adapter.ts --expect-failure"
+    "eval:broken": "bun src/run.ts --adapter=./src/example/broken-adapter.ts --expect-failure",
+    "eval:home": "bun src/home/run.ts",
+    "eval:home:broken": "bun src/home/run.ts --adapter=./src/home/example/home-broken-adapter.ts --expect-failure",
+    "validate:home": "bun src/home/validate.ts"
   },
   "devDependencies": {
     "@types/node": "^20.14.0",

@@ -1,0 +1,169 @@
+{
+  "$schema": "home-journeys/journeys v1",
+  "rubric": "art_uWsp80Fg v1.0",
+  "note": "The five executable journeys as data. Machine-checkable cores map to protocols P1-P6 (run.ts); full journeys run as scripted E2E/clickthrough with evidence labels.",
+  "journeys": [
+    {
+      "id": "J1",
+      "title": "Speak a mixed-topic update",
+      "actorId": "actor-mom",
+      "childId": "child-lena",
+      "preconditions": ["mom signed in", "fixture month loaded", "today empty"],
+      "steps": [
+        {
+          "step": 1,
+          "action": "Speak u1 in one utterance (meal with quantity, mood episode, nap with explicit span, unpinned potty x2).",
+          "expect": "Raw preserved byte-for-byte first; pinned instants exact; unpinned expressions gain no false precision; figures of speech yield no events.",
+          "protocols": ["P1"],
+          "gates": ["G3", "G5"],
+          "dims": ["S1", "S6"]
+        },
+        {
+          "step": 2,
+          "action": "Interrupt: start u1b, stop mid-way, background ~10s, resume under the same captureId.",
+          "expect": "Capture resumes or cleanly re-keys; no duplicate or partial events; stale older attempt cannot overwrite the newer one.",
+          "protocols": ["P5"],
+          "gates": ["G2"],
+          "dims": ["S1", "S6"]
+        },
+        {
+          "step": 3,
+          "action": "Observe save states pending -> saved.",
+          "expect": "Receipt visible: what wrote, what was proposed.",
+          "protocols": [],
+          "gates": [],
+          "dims": ["S6"]
+        }
+      ],
+      "evidence": ["transcript SHA-256", "event cards", "publish receipt", "interruption log"]
+    },
+    {
+      "id": "J2",
+      "title": "Inspect & correct interpreted events",
+      "actorId": "actor-dad",
+      "childId": "child-lena",
+      "preconditions": ["J1 proposed events in review state", "dad signed in same household"],
+      "steps": [
+        {
+          "step": 1,
+          "action": "Open review of J1's capture.",
+          "expect": "Every proposed event traceable to its raw transcript fragment.",
+          "protocols": [],
+          "gates": ["G3"],
+          "dims": ["S2"]
+        },
+        {
+          "step": 2,
+          "action": "Correct via typed NL (u4 -> u3 sleep event) and via direct card edit.",
+          "expect": "Append-only revision; original retrievable; reviser attributed.",
+          "protocols": ["P4"],
+          "gates": ["G6"],
+          "dims": ["S2", "S6"]
+        },
+        {
+          "step": 3,
+          "action": "Reject one event (duplicate potty from u1).",
+          "expect": "Removed via revision, not hard delete.",
+          "protocols": ["P4"],
+          "gates": ["G6"],
+          "dims": ["S2"]
+        },
+        {
+          "step": 4,
+          "action": "Publish, then publish again (double-tap / network retry).",
+          "expect": "Exactly one write; identical receipt; idempotent replay visible.",
+          "protocols": ["P2"],
+          "gates": ["G2"],
+          "dims": ["S2", "S6"]
+        },
+        {
+          "step": 5,
+          "action": "Dad (non-author) corrects mom-authored events.",
+          "expect": "Succeeds with attribution (mom authored, dad revised).",
+          "protocols": ["P4"],
+          "gates": [],
+          "dims": ["S2"]
+        }
+      ],
+      "evidence": ["lineage view", "revision chain", "receipts", "duplicate-submit log"]
+    },
+    {
+      "id": "J3",
+      "title": "Catch up before taking over care",
+      "actorId": "actor-ruth",
+      "childId": "child-lena",
+      "preconditions": ["mini-history seed loaded (slot-03 corpus when merged)", "ruth holds explicit caregiver grant", "one private-audience entry exists"],
+      "steps": [
+        {
+          "step": 1,
+          "action": "Open catch-up: current state without hunting.",
+          "expect": "Last meal, last nap (ongoing vs complete explicit), open needs; 'what should I know?' returns source-linked summary.",
+          "protocols": ["P3"],
+          "gates": ["G4"],
+          "dims": ["S3"]
+        },
+        {
+          "step": 2,
+          "action": "Ask q1 (food today) and q2 (last nap).",
+          "expect": "Answers cite sources; private-audience entry excluded or marked per audience rules.",
+          "protocols": ["P3"],
+          "gates": ["G1"],
+          "dims": ["S3", "S4"]
+        },
+        {
+          "step": 3,
+          "action": "Attempt a write from the question surface (q3: 'Log that she had a snack').",
+          "expect": "Surface refuses — capture is the only write path; state byte-identical before/after.",
+          "protocols": ["P3"],
+          "gates": ["G4"],
+          "dims": ["S4"]
+        },
+        {
+          "step": 4,
+          "action": "Month view over the seed window.",
+          "expect": "Missed days render as gaps, never zeros; correction chains visible with originals; nothing beyond the window.",
+          "protocols": ["P3", "P4"],
+          "gates": ["G7"],
+          "dims": ["S3"]
+        }
+      ],
+      "evidence": ["answer citations", "write-refusal", "gap rendering", "window bounds"]
+    },
+    {
+      "id": "J4",
+      "title": "Text alternative parity",
+      "actorId": "actor-mom",
+      "childId": "child-lena",
+      "preconditions": ["mom signed in", "quiet/text mode available"],
+      "steps": [
+        {
+          "step": 1,
+          "action": "Submit u2 — typed twin of u1 — through the text path.",
+          "expect": "Schema-equivalent event set vs u1 expectations; raw text fidelity under the same byte rules; all state-table states reachable in quiet/text mode.",
+          "protocols": ["P1"],
+          "gates": ["G3", "G5"],
+          "dims": ["S5", "S1"]
+        }
+      ],
+      "evidence": ["event diff vs voice path", "state-table walkthrough log"]
+    },
+    {
+      "id": "J5",
+      "title": "Authorization boundary",
+      "actorId": "actor-marcus",
+      "childId": "child-lena",
+      "preconditions": ["marcus is not a household member", "one child outside actor grants (child-theo)"],
+      "steps": [
+        {
+          "step": 1,
+          "action": "Marcus attempts J1/J3 flows (capture, history, question, correction) and ruth probes child-theo.",
+          "expect": "Fail-closed refusals on every surface; error messages disclose nothing.",
+          "protocols": ["P6"],
+          "gates": ["G1"],
+          "dims": ["S4"]
+        }
+      ],
+      "evidence": ["refusal matrix", "disclosure audit (all refusals disclose nothing)"]
+    }
+  ]
+}
