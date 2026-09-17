@@ -174,6 +174,69 @@ describe("F-AX-CLARIFY-001", () => {
   })
 })
 
+// ---- F-AX-CLARIFY-002 (review finding F1: dedup BEFORE the count checks) ----
+
+describe("F-AX-CLARIFY-002", () => {
+  const fixture = loadFixture("F-AX-CLARIFY-002")
+  const expected = fixture.expected as {
+    outcomeTag: string
+    targetId: string
+    kind: "child" | "entry" | "event" | "message"
+    provenance: ProvenanceSource
+    basis: string
+    clarifyQuestionEmitted: boolean
+    zeroWrites: boolean
+  }
+
+  test("two visible references to the same child collapse to ONE candidate — a resolved binding, never a 1-option question", () => {
+    const envelope = decodeEnvelope(fixture.input.envelope)
+    const snapshot = structuredClone(envelope)
+    const outcome = computeClarify(envelope)
+
+    expect((outcome._tag === "clarify-question")).toBe(expected.clarifyQuestionEmitted)
+    const resolved = expectTag(outcome, "resolved")
+    expect(resolved.targetId).toBe(expected.targetId)
+    expect(resolved.kind).toBe(expected.kind)
+    expect(resolved.provenance).toBe(expected.provenance)
+    expect(resolved.basis).toBe(expected.basis)
+
+    // the outcome decodes against the read-only union and writes nothing
+    expect(Schema.decodeUnknownSync(ClarifyOutcome)(outcome)).toEqual(outcome)
+    expect(envelope).toEqual(snapshot)
+  })
+})
+
+// ---- F-AX-CLARIFY-003 (review finding F1: dedup AFTER the currentChild tiebreak) ----
+
+describe("F-AX-CLARIFY-003", () => {
+  const fixture = loadFixture("F-AX-CLARIFY-003")
+  const expected = fixture.expected as {
+    outcomeTag: string
+    targetId: string
+    kind: "child" | "entry" | "event" | "message"
+    provenance: ProvenanceSource
+    basis: string
+    clarifyQuestionEmitted: boolean
+    zeroWrites: boolean
+  }
+
+  test("with currentChild asserted, tiebreak keeps both same-child candidates and dedup still resolves — never a 1-option question", () => {
+    const envelope = decodeEnvelope(fixture.input.envelope)
+    const snapshot = structuredClone(envelope)
+    const outcome = computeClarify(envelope)
+
+    expect((outcome._tag === "clarify-question")).toBe(expected.clarifyQuestionEmitted)
+    const resolved = expectTag(outcome, "resolved")
+    expect(resolved.targetId).toBe(expected.targetId)
+    expect(resolved.kind).toBe(expected.kind)
+    expect(resolved.provenance).toBe(expected.provenance)
+    expect(resolved.basis).toBe(expected.basis)
+
+    expect(Schema.decodeUnknownSync(ClarifyOutcome)(outcome)).toEqual(outcome)
+    expect(envelope).toEqual(snapshot)
+  })
+})
+
 // ---- F-AX-CORRECT-ANSWER-001 ----
 
 describe("F-AX-CORRECT-ANSWER-001", () => {
@@ -432,6 +495,23 @@ describe("F-AX-LEAK-001", () => {
 // ---- invariants beyond the six fixtures ----
 
 describe("invariants beyond the fixtures", () => {
+  test("no emitted clarify question ever has fewer than two or more than four options (F1 invariant, all fixtures)", () => {
+    const envelopeInputs = [
+      loadFixture("F-AX-CLARIFY-001").input.envelope,
+      loadFixture("F-AX-CLARIFY-002").input.envelope,
+      loadFixture("F-AX-CLARIFY-003").input.envelope,
+      loadFixture("F-AX-CORRECT-ANSWER-001").input.envelopeCorrect,
+      loadFixture("F-AX-RESUME-REFS-001").input.resumedEnvelope,
+      loadFixture("F-AX-UNRESOLVED-CORRECTION-001").input.envelope,
+      loadFixture("F-AX-LEAK-001").input.envelope,
+    ]
+    for (const value of envelopeInputs) {
+      const outcome = computeClarify(decodeEnvelope(value))
+      if (outcome._tag === "clarify-question") {
+        expect(outcome.options.length >= 2 && outcome.options.length <= 4).toBe(true)
+      }
+    }
+  })
   test("changedRecordSet covers the event and its containing entry", () => {
     const withEntry = decodeRevision({
       revisionId: "fx_rev_t001",

@@ -246,7 +246,20 @@ export const computeClarify = (envelope: ReferenceEnvelope): ClarifyOutcome => {
     }
   }
 
-  const only = working.length === 1 ? working[0] : undefined
+  // Dedup by kind:targetId BEFORE the sole-candidate and bound checks: two
+  // visible references to the same candidate collapse to one, and one
+  // candidate is a resolved binding — never a 1-option question (the
+  // clarification schema pins options to 2–4; art_gCDrtx4S: one candidate =
+  // resolved binding).
+  const seen = new Set<string>()
+  const distinct = working.filter((candidate) => {
+    const key = `${candidate.kind}:${candidate.targetId}`
+    if (seen.has(key)) return false
+    seen.add(key)
+    return true
+  })
+
+  const only = distinct.length === 1 ? distinct[0] : undefined
   if (only !== undefined) {
     return {
       _tag: "resolved",
@@ -260,30 +273,22 @@ export const computeClarify = (envelope: ReferenceEnvelope): ClarifyOutcome => {
     }
   }
 
-  if (working.length > MAX_OPTIONS) {
+  if (distinct.length > MAX_OPTIONS) {
     return {
       _tag: "unresolved-reference",
       envelopeId: envelope.envelopeId,
       reason: "ambiguous",
-      detail: `reference bound exceeded: ${working.length} candidates, maximum ${MAX_OPTIONS}`,
+      detail: `reference bound exceeded: ${distinct.length} candidates, maximum ${MAX_OPTIONS}`,
       retryable: false,
     }
   }
 
-  const seen = new Set<string>()
-  const options = working
-    .map((candidate) => ({
-      targetId: candidate.targetId,
-      kind: candidate.kind,
-      label: candidate.label,
-      provenance: candidate.provenance,
-    }))
-    .filter((option) => {
-      const key = `${option.kind}:${option.targetId}`
-      if (seen.has(key)) return false
-      seen.add(key)
-      return true
-    })
+  const options = distinct.map((candidate) => ({
+    targetId: candidate.targetId,
+    kind: candidate.kind,
+    label: candidate.label,
+    provenance: candidate.provenance,
+  }))
 
   const ambiguousReferenceIds = [...new Set(working.flatMap((c) => (c.viaRecordId ? [c.viaRecordId] : [])))]
   const question: ClarifyQuestion = {

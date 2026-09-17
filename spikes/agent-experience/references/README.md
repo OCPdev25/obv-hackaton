@@ -20,7 +20,7 @@ deterministic reducers over typed contracts.
 schema.ts          Effect v4 contract schemas (the proposal's deltas, standalone)
 reducer.ts         Pure reducers: computeClarify, bumpWatermark, commitRevision,
                    invalidateAnswers, serveAnswer
-fixtures/          6 deterministic JSON cases (F-AX-*)
+fixtures/            8 deterministic JSON cases (F-AX-*)
 references.test.ts bun suite: round-trips, per-case outcomes, invariants
 ```
 
@@ -34,7 +34,9 @@ Implements the proposal's contract deltas as Effect v4 schemas pinned to
 - `ClarifyOption` / `ClarifyQuestion` / `ClarifyOutcome` — bounded (≤ 4 options),
   read-only; carries no write payload.
 - `ResolvedBinding` — the resolved arm of the outcome (provenance-qualified).
-- `RevisionLink` — correction revision with an explicit `changedRecordIds` set.
+- `RevisionLink` — correction revision carrying `targetRecordId` (+ optional
+  `containingEntryId`) exactly as art_gCDrtx4S §3 specifies; the changed-record
+  set is derived by the tested pure `changedRecordSet(revision)`.
 - `Answered` additive fields — `answerId`, `readWatermark` (keyed by
   `(envelopeId, readWatermark.version)`), `status`, `supersededByRevisionId`,
   `citations` (citation-intersection inputs).
@@ -61,16 +63,20 @@ Pure, deterministic TypeScript — no Convex, no LLM, no clock, no randomness:
 - `bumpWatermark` + `commitRevision` — strictly monotonic +1 watermark bump;
   idempotent, append-only revision commit.
 - `invalidateAnswers` — an `Answered` is superseded **iff** its cited record ids
-  intersect the revision's `changedRecordIds` (entry-level citations cover
-  contained events); exhausts every match.
-- `serveAnswer` — returns the answer only when not superseded and the stored
-  watermark matches the current one; otherwise a typed
-  `watermark-moved`/superseded error that **never** includes the old content.
-  Never-serve-superseded is the hard rule.
+  intersect the revision's derived `changedRecordSet(revision)` (entry-level
+  citations cover contained events); exhausts every match.
+- `serveAnswer` — serves a stored answer while its `status` is `current`,
+  **even when the watermark has moved**: invalidation is citation-intersection,
+  not version comparison, so a revision to unrelated records must not retire a
+  truthful answer. A superseded answer is never served — the caller gets a
+  typed, retryable `watermark-moved` error that **never** includes the old
+  content, and recomputes at the current watermark. Never-serve-superseded is
+  the hard rule.
 
 ## Fixtures (fixtures/)
 
-The proposal's six cases as pure-data JSON with fixed ISO-8601 UTC times
+The proposal's six canonical cases plus two dedup-refinement cases from the
+PR #28 review (finding F1), all pure-data JSON with fixed ISO-8601 UTC times
 (`2026-09-17T18:30:00Z` family), synthetic `fx_*` ids only, no real names, no
 medical content. Every `expected` block is derivable from scenario semantics
 alone:
@@ -83,24 +89,30 @@ alone:
 | `F-AX-STALE-ANSWER-001` | answer predates a committed revision | typed retryable stale error, never the old value |
 | `F-AX-UNRESOLVED-CORRECTION-001` | correction names nothing resolvable | typed unresolved error, zero writes |
 | `F-AX-LEAK-001` | private sibling reference in viewContext | fails typed without leaking id or content |
+| `F-AX-CLARIFY-002` | two visible references to the same child, currentChild absent | dedup before count checks → resolved, never a 1-option question |
+| `F-AX-CLARIFY-003` | same, with currentChild asserted | tiebreak then dedup → resolved via currentChild, never a 1-option question |
 
 ## Evidence labels (honest)
 
 - **LOCAL-REAL (deterministic reducer):** `reducer.ts` + `schema.ts` are real,
   running code verified by `bun test` on the exact commit SHA reported in the PR
-  (23 tests, 134 assertions) plus strict `tsc --noEmit`. No provider, no network,
+  (26 tests, 149 assertions) plus strict `tsc --noEmit`. No provider, no network,
   no clock, no randomness anywhere in the module.
-- **DETERMINISTIC DOUBLE (fixtures):** the six fixture cases are pure JSON
-  doubles — they demonstrate reducer semantics, not provider or device behavior.
+- **DETERMINISTIC DOUBLE (fixtures):** the eight fixture cases (six canonical,
+  two dedup-refinement) are pure JSON doubles — they demonstrate reducer
+  semantics, not provider or device behavior.
   Nothing here exercises a real extraction provider or an LLM call.
 - **Nothing device-verified:** no iOS/audio/capture-path verification of any
   kind is claimed by this spike.
 - **Placement pending the v0.4 fold:** this lives under `spikes/` on purpose.
   The fold home for the schemas is `packages/domain/src/clarifyAnswer.ts`
   (per the synthesis); the reducers graduate only with that fold. This module is
-  deliberately **not** a pnpm workspace member, so CI's turbo pipeline covers it
-  via its own `test`/`typecheck` scripts (bun + tsc, hoisted resolution), and the
-  standalone suites (`security/`, `evaluation/`) are unaffected.
+  deliberately **not** a pnpm workspace member: the `pnpm-workspace.yaml` globs
+  (apps/, packages/) exclude `spikes/`, so CI's turbo pipeline does NOT run it,
+  and `.github/workflows/verification.yml` does not run it either. The only
+  execution evidence for this spike is local runs (`bun test` + strict
+  `tsc --noEmit`) — the same treatment `.obvious/obvious.md` gives the
+  standalone `security/` and `evaluation/` suites.
 - **Fixture namespace pending manifest reconciliation:** the `F-AX-*` namespace
   is claimed for the agent-experience area, but registering these cases into
   `evaluation/`'s manifest-driven registry is the harness owner's decision
