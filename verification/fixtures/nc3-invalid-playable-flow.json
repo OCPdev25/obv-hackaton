@@ -1,0 +1,47 @@
+{
+  "manifestVersion": 1,
+  "pr": 98,
+  "prUrl": "https://github.com/OCPdev25/obv-hackaton/pull/98",
+  "testedHeadSha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "classification": "ui",
+  "review": {
+    "result": "pass",
+    "reviewer": "sibling-qa-worker (independent of the PR author)",
+    "reviewedHeadSha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "date": "2026-09-17",
+    "url": "https://github.com/OCPdev25/obv-hackaton/pull/98#review"
+  },
+  "checks": [
+    {
+      "name": "CI / Typecheck, test, build",
+      "status": "green",
+      "headSha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "url": "https://github.com/OCPdev25/obv-hackaton/actions/runs/998001"
+    }
+  ],
+  "evidence": [
+    {
+      "kind": "playable-flow",
+      "name": "capture flow walkthrough",
+      "headSha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "result": "pass",
+      "url": "https://github.com/OCPdev25/obv-hackaton/pull/98#walkthrough"
+    }
+  ],
+  "suites": {
+    "security": {
+      "ran": true,
+      "result": "pass",
+      "headSha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "url": "https://github.com/OCPdev25/obv-hackaton/actions/runs/998003"
+    },
+    "evaluation": {
+      "ran": true,
+      "result": "pass",
+      "headSha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "negativeControl": "fail-as-expected",
+      "url": "https://github.com/OCPdev25/obv-hackaton/actions/runs/998004"
+    }
+  },
+  "notes": "fixture: NEGATIVE CONTROL nc3 — playable-flow item without scenario/assertions/environment; ONLY refusal must be invalid_playable_flow"
+}

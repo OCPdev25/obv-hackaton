@@ -64,7 +64,23 @@ bun src/run.ts --adapter=./src/example/broken-adapter.ts --expect-failure   # ne
 The security suite and evaluation harness are standalone (`security/` and
 `evaluation/` are not pnpm workspace members), so CI's `pnpm turbo run test`
 does not cover them — run them locally whenever you touch `security/`,
-`evaluation/`, or the domain contracts.
+`evaluation/`, or the domain contracts. `.github/workflows/verification.yml`
+runs both suites (plus the evaluation negative control and the
+verification-gate validator tests) on every PR and push to `master`.
+
+## Verification gate (executable merge workflow)
+
+The review → repair → merge workflow below is executable in
+`verification/` (see `verification/README.md`). PRs record a
+`verification-manifest:v1` block (body or comment — review result, check and
+suite runs, behavior/playable-flow evidence, all on the exact tested HEAD).
+`bun verification/src/cli.ts validate-pr --pr=<n>` validates the latest
+manifest against live PR state; the merge owner runs
+`sweep --pr=<n> --owner=<name>` which refuses unless the PR is open on
+master, checks are green on the exact head SHA, and the manifest validates,
+then merges `--squash` and emits the evidence receipt. Arena candidate
+branches are held regardless of evidence. The validator is pinned by
+positive + negative controls (`cd verification && bun test ./test`).
 
 ## CI
 
