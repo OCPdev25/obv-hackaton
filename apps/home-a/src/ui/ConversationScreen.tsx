@@ -6,11 +6,11 @@
 import { useCallback, useState, useSyncExternalStore } from "react"
 import { Pressable, ScrollView, StyleSheet, Text, TextInput, View } from "react-native"
 
-import type { EventEdit } from "../journal/store.js"
-import type { ConversationController } from "../conversation/controller.js"
-import { DEMO_QUESTIONS, DEMO_UTTERANCES } from "../fixtures/demoUtterances.js"
-import { colors, radius, spacing } from "./theme.js"
-import { TurnRow } from "./TurnRow.js"
+import type { EventEdit } from "../journal/store"
+import type { ConversationController } from "../conversation/controller"
+import { DEMO_QUESTIONS, DEMO_UTTERANCES } from "../fixtures/demoUtterances"
+import { colors, radius, spacing } from "./theme"
+import { TurnRow } from "./TurnRow"
 
 interface Props {
   readonly controller: ConversationController

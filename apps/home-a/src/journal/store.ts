@@ -26,8 +26,8 @@
 import { Schema } from "effect"
 import { ChildSchema, EntrySchema, EventSchema, CaptureId, deriveExtractionStatus, type Child, type Entry, type Event, type EventCategory, type ProducedBy } from "@journal/domain"
 
-import { runExtraction, type ExtractionOutcome, type UnstructuredClause } from "../capture/extraction.js"
-import { canSeeAudience, decide, type Decision, type DenyCode, type MemberRole, type Principal } from "./access.js"
+import { runExtraction, type ExtractionOutcome, type UnstructuredClause } from "../capture/extraction"
+import { canSeeAudience, decide, type Decision, type DenyCode, type MemberRole, type Principal } from "./access"
 
 export type Audience = "family" | "parents-only"
 export type CaptureChannel = "text" | "voice-simulated"

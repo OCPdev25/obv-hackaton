@@ -1,7 +1,7 @@
 /** Known-members-only entry: anonymous and non-member paths are demoable. */
 import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native"
 
-import { colors, radius, spacing } from "./theme.js"
+import { colors, radius, spacing } from "./theme"
 
 export interface SignInOption {
   readonly memberId: string

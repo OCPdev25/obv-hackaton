@@ -6,9 +6,9 @@
  * Voice (simulated) and text feed the SAME capture pipeline; questions and
  * catch-up are strictly read-only.
  */
-import { JournalStore, type DenyCode, type EventEdit, type ProposalRecord, type Receipt, type CorrectionRecord, type Audience, type Principal, type Answer } from "../journal/store.js"
-import type { UnstructuredClause } from "../capture/extraction.js"
-import { scriptedVoiceTranscriber, joinedTranscriptText } from "../capture/simulatedVoice.js"
+import { JournalStore, type DenyCode, type EventEdit, type ProposalRecord, type Receipt, type CorrectionRecord, type Audience, type Principal, type Answer } from "../journal/store"
+import type { UnstructuredClause } from "../capture/extraction"
+import { scriptedVoiceTranscriber, joinedTranscriptText } from "../capture/simulatedVoice"
 
 export type CaptureChannel = "voice-simulated" | "text"
 

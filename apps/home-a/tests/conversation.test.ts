@@ -6,10 +6,10 @@
  */
 import { describe, expect, it } from "vitest"
 
-import { ConversationController, isReadOnlyQuestion, type Turn } from "../src/conversation/controller.js"
-import { anonymousPrincipal, at, memberPrincipal } from "../src/fixtures/household.js"
-import { createSeptemberStore } from "../src/fixtures/september.js"
-import { DEMO_UTTERANCES } from "../src/fixtures/demoUtterances.js"
+import { ConversationController, isReadOnlyQuestion, type Turn } from "../src/conversation/controller"
+import { anonymousPrincipal, at, memberPrincipal } from "../src/fixtures/household"
+import { createSeptemberStore } from "../src/fixtures/september"
+import { DEMO_UTTERANCES } from "../src/fixtures/demoUtterances"
 
 const MIXED =
   "Milo ate scrambled eggs and toast at 8, then had a total meltdown when the block tower fell, and Iris napped 45 minutes."

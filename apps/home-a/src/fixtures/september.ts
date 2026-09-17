@@ -8,8 +8,8 @@
  * post-publish correction (Iris's Sep 12 nap 30 → 60 minutes) exercises
  * append-only lineage. 100% synthetic; no real user data.
  */
-import { JournalStore, type Audience, type EventEdit } from "../journal/store.js"
-import { at, HOUSEHOLD_SEED, memberPrincipal } from "./household.js"
+import { JournalStore, type Audience, type EventEdit } from "../journal/store"
+import { at, HOUSEHOLD_SEED, memberPrincipal } from "./household"
 
 interface SeedCapture {
   readonly captureId: string

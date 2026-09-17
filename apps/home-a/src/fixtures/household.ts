@@ -7,7 +7,7 @@
 import { Schema } from "effect"
 import { ChildSchema, type Child } from "@journal/domain"
 
-import type { HouseholdSeed, Member, Principal } from "../journal/store.js"
+import type { HouseholdSeed, Member, Principal } from "../journal/store"
 
 export const HOUSEHOLD_ID = "hh_polanco_household"
 export const HOUSEHOLD_NAME = "Polanco Household"

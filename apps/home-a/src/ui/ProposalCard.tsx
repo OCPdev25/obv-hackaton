@@ -7,9 +7,9 @@ import { useState } from "react"
 import { Pressable, StyleSheet, Text, TextInput, View } from "react-native"
 
 import type { EventCategory } from "@journal/domain"
-import type { EventEdit, ProposalRecord } from "../journal/store.js"
-import { colors, radius, spacing } from "./theme.js"
-import { formatDayTime } from "./format.js"
+import type { EventEdit, ProposalRecord } from "../journal/store"
+import { colors, radius, spacing } from "./theme"
+import { formatDayTime } from "./format"
 
 const CATEGORIES: readonly EventCategory[] = ["meal", "sleep", "mood", "potty", "milestone", "school"]
 

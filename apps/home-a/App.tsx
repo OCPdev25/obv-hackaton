@@ -6,11 +6,11 @@
 import { useState } from "react"
 import { StyleSheet, View } from "react-native"
 
-import { ConversationController } from "./src/conversation/controller.js"
-import { createSeptemberStore } from "./src/fixtures/september.js"
-import { anonymousPrincipal, at as septemberAt, memberPrincipal } from "./src/fixtures/household.js"
-import { SignInScreen } from "./src/ui/SignInScreen.js"
-import { ConversationScreen } from "./src/ui/ConversationScreen.js"
+import { ConversationController } from "./src/conversation/controller"
+import { createSeptemberStore } from "./src/fixtures/september"
+import { anonymousPrincipal, at as septemberAt, memberPrincipal } from "./src/fixtures/household"
+import { SignInScreen } from "./src/ui/SignInScreen"
+import { ConversationScreen } from "./src/ui/ConversationScreen"
 
 // One shared journal store for the demo session (synthetic September data).
 const { store } = createSeptemberStore()

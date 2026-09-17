@@ -5,9 +5,9 @@
  */
 import { describe, expect, it } from "vitest"
 
-import { runExtraction } from "../src/capture/extraction.js"
-import { anonymousPrincipal, at, memberPrincipal } from "../src/fixtures/household.js"
-import { createSeptemberStore } from "../src/fixtures/september.js"
+import { runExtraction } from "../src/capture/extraction"
+import { anonymousPrincipal, at, memberPrincipal } from "../src/fixtures/household"
+import { createSeptemberStore } from "../src/fixtures/september"
 
 const { Schema, CaptureId } = (() => {
   // Local helpers to brand plain capture ids for the double.

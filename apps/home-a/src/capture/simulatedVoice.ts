@@ -8,7 +8,7 @@
  * the capture pipeline receives byte-identical transcripts from either path.
  * The evidence doc discloses this fidelity openly.
  */
-import type { TranscriptSegment } from "./transcript.js"
+import type { TranscriptSegment } from "./transcript"
 
 export type SimulatedVoiceErrorCode =
   | "unavailable"

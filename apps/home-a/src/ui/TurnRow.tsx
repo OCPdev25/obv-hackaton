@@ -5,12 +5,12 @@
 import { useState } from "react"
 import { Pressable, StyleSheet, Text, TextInput, View } from "react-native"
 
-import type { EventEdit, ProposalRecord, Receipt, CorrectionRecord, Citation } from "../journal/store.js"
+import type { EventEdit, ProposalRecord, Receipt, CorrectionRecord, Citation } from "../journal/store"
 import type { Event } from "@journal/domain"
-import type { Turn } from "../conversation/controller.js"
-import { formatDayTime } from "./format.js"
-import { colors, radius, spacing } from "./theme.js"
-import { ProposalCard, type ChildOption } from "./ProposalCard.js"
+import type { Turn } from "../conversation/controller"
+import { formatDayTime } from "./format"
+import { colors, radius, spacing } from "./theme"
+import { ProposalCard, type ChildOption } from "./ProposalCard"
 
 /** Derived summary for a decoded Event (correction before/after lines). */
 function eventSummary(event: Event, options: readonly ChildOption[]): string {
