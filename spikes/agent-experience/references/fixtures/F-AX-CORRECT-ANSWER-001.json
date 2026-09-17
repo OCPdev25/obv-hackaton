@@ -1,0 +1,120 @@
+{
+  "fixtureId": "F-AX-CORRECT-ANSWER-001",
+  "kind": "acceptance",
+  "title": "\"actually 45 minutes,\" then re-ask: the answer cites the revision chain and the prior answer is superseded",
+  "contractSource": "art_gCDrtx4S section 5, F-AX-CORRECT-ANSWER-001",
+  "scenario": {
+    "narrative": "(a) Mom asks how long Mia napped; answer A1 at watermark version 0 states 1 hour citing fx_evt_sleep_001. (b) At 4:30 PM mom says 'actually 45 minutes' with fx_evt_sleep_001 selected in viewContext; revision fx_rev_001 commits and the household watermark bumps to version 1. (c) At 7:00 PM the re-ask produces answer A2 at the new watermark. The only write in the chain is the authorized revision.",
+    "anchors": {
+      "askUtc": "2026-09-17T18:30:00Z",
+      "correctionCommittedUtc": "2026-09-17T20:30:00Z",
+      "reAskUtc": "2026-09-17T23:00:00Z"
+    }
+  },
+  "input": {
+    "envelopeAsk": {
+      "envelopeId": "fx_env_ask_001",
+      "captureId": "fx_capture_ask_001",
+      "capturedAt": 1789669800000,
+      "capturedAtTimezone": {
+        "value": "America/New_York",
+        "source": "app-known",
+        "basis": "device settings at capture time"
+      },
+      "utterance": "how long did Mia nap?",
+      "actor": { "authorId": "fx_parent_a", "role": "parent" },
+      "householdId": "fx_household_1",
+      "references": [
+        {
+          "referenceId": "fx_ref_ask_001",
+          "kind": "event",
+          "targetId": "fx_evt_sleep_001",
+          "relatedChildId": "fx_child_m",
+          "snippet": "Mia - nap, 1 hour",
+          "source": "app-known",
+          "visibleToActor": true
+        }
+      ]
+    },
+    "answerA1": {
+      "_tag": "answered",
+      "envelopeId": "fx_env_ask_001",
+      "response": "Mia napped for 1 hour.",
+      "citations": [{ "recordId": "fx_evt_sleep_001", "recordKind": "event" }],
+      "answerId": "fx_ans_001",
+      "readWatermark": { "householdId": "fx_household_1", "version": 0 },
+      "status": "current"
+    },
+    "revision": {
+      "revisionId": "fx_rev_001",
+      "targetRecordId": "fx_evt_sleep_001",
+      "containingEntryId": "fx_entry_sleep_001",
+      "revisedAt": 1789677000000,
+      "summary": "quantity: 1 hour -> 45 minutes"
+    },
+    "envelopeCorrect": {
+      "envelopeId": "fx_env_correct_001",
+      "captureId": "fx_capture_correct_001",
+      "capturedAt": 1789677000000,
+      "capturedAtTimezone": {
+        "value": "America/New_York",
+        "source": "app-known",
+        "basis": "device settings at capture time"
+      },
+      "utterance": "actually 45 minutes",
+      "actor": { "authorId": "fx_parent_a", "role": "parent" },
+      "householdId": "fx_household_1",
+      "viewContext": {
+        "value": {
+          "screen": "entry-detail",
+          "selectedRecord": { "recordId": "fx_evt_sleep_001", "recordKind": "event" }
+        },
+        "source": "app-known",
+        "basis": "mom confirmed on the event's detail screen"
+      }
+    },
+    "answerA2": {
+      "_tag": "answered",
+      "envelopeId": "fx_env_reask_001",
+      "response": "Mia napped for 45 minutes - corrected from 1 hour.",
+      "citations": [
+        { "recordId": "fx_evt_sleep_001", "recordKind": "event" },
+        { "recordId": "fx_rev_001", "recordKind": "revision" }
+      ],
+      "answerId": "fx_ans_002",
+      "readWatermark": { "householdId": "fx_household_1", "version": 1 },
+      "status": "current",
+      "revisionChain": [
+        {
+          "revisionId": "fx_rev_001",
+          "targetRecordId": "fx_evt_sleep_001",
+          "containingEntryId": "fx_entry_sleep_001",
+          "revisedAt": 1789677000000,
+          "summary": "quantity: 1 hour -> 45 minutes"
+        }
+      ]
+    }
+  },
+  "expected": {
+    "clarifyOnCorrectionEnvelope": {
+      "outcomeTag": "resolved",
+      "targetId": "fx_evt_sleep_001",
+      "kind": "event",
+      "provenance": "app-known"
+    },
+    "a2Status": "current",
+    "a1ReadWatermarkVersion": 0,
+    "a2ReadWatermarkVersion": 1,
+    "a2VersionStrictlyGreaterThanA1": true,
+    "a2ResponseStates": "45 minutes",
+    "a2CitationRecordIds": ["fx_evt_sleep_001", "fx_rev_001"],
+    "a2CitationRecordKinds": ["event", "revision"],
+    "a2RevisionChainLength": 1,
+    "a2RevisionChainSummary": "quantity: 1 hour -> 45 minutes",
+    "a1FinalStatus": "superseded",
+    "a1SupersededByRevisionId": "fx_rev_001",
+    "a1RetrievableAfterRevision": true,
+    "a1ServableAsCurrent": false,
+    "zeroWritesFromAnswerOps": true
+  }
+}

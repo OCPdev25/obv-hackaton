@@ -1,0 +1,56 @@
+{
+  "fixtureId": "F-AX-LEAK-001",
+  "kind": "adversarial",
+  "title": "nothing private leaks into any answer - publication state and audience stay separate, role never widens scope",
+  "contractSource": "art_gCDrtx4S section 5, F-AX-LEAK-001 (serves slot 15)",
+  "scenario": {
+    "narrative": "Caregiver fx_caregiver_1 asks what mom noted about tomorrow's pickup. The envelope carries a smuggled reference to fx_entry_private_001 - draft publication state, parents-only audience, visibleToActor false for this caregiver. Two independent exclusion reasons (publication state draft; audience not including the caregiver), never fused into one, and the failure leaks neither the draft's content, nor its title, nor which id exists - only the typed reason. Role never widens scope: a caregiver asking does not turn a private record visible.",
+    "anchors": { "askUtc": "2026-09-17T18:30:00Z" }
+  },
+  "input": {
+    "envelope": {
+      "envelopeId": "fx_env_leak_001",
+      "captureId": "fx_capture_leak_001",
+      "capturedAt": 1789669800000,
+      "capturedAtTimezone": {
+        "value": "America/New_York",
+        "source": "app-known",
+        "basis": "device settings at capture time"
+      },
+      "utterance": "what did mom note about tomorrow's pickup?",
+      "actor": { "authorId": "fx_caregiver_1", "role": "caregiver" },
+      "householdId": "fx_household_1",
+      "references": [
+        {
+          "referenceId": "fx_ref_private_001",
+          "kind": "entry",
+          "targetId": "fx_entry_private_001",
+          "snippet": "pickup plan draft - mom's private note",
+          "source": "app-known",
+          "visibleToActor": false
+        }
+      ]
+    },
+    "privateRecord": {
+      "recordId": "fx_entry_private_001",
+      "title": "pickup plan draft - mom's private note",
+      "publicationState": "draft",
+      "audience": ["fx_parent_a", "fx_parent_b"]
+    }
+  },
+  "expected": {
+    "outcomeTag": "unresolved-reference",
+    "reason": "target-not-visible",
+    "retryable": false,
+    "detailAbsent": true,
+    "serializedOutcomeMustNotContain": [
+      "fx_entry_private_001",
+      "fx_ref_private_001",
+      "pickup",
+      "private note",
+      "draft"
+    ],
+    "roleNeverWidensScope": true,
+    "zeroWrites": true
+  }
+}
