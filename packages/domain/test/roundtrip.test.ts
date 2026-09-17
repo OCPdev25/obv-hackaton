@@ -90,7 +90,9 @@ describe("Effect schema contracts", () => {
       attempt: 0,
       transcript: "He ate all of his dinner.",
     })
-    expect(request.captureId).toBe("capture-abc-123")
+    // CaptureId is branded at the type level (v0.3) — widen for the runtime
+    // equality check; the wire value is unchanged.
+    expect(request.captureId as string).toBe("capture-abc-123")
 
     const result = Schema.decodeUnknownSync(ExtractionResult)({
       captureId: "capture-abc-123",
