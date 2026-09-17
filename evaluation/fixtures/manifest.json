@@ -5,6 +5,11 @@
       "path": ".",
       "fixtureClass": "extraction-accuracy",
       "runnerBinding": "adapter-corpus"
+    },
+    {
+      "path": "agent-experience/catchup",
+      "fixtureClass": "scenario-and-authorization",
+      "runnerBinding": "bun-test-data"
     }
   ]
 }

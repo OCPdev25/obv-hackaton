@@ -51,11 +51,19 @@ async function checkSeedManifest(): Promise<void> {
   const manifestUrl = pathToFileURL(join(fixturesDir, MANIFEST_FILENAME))
   const manifest = await loadManifest(manifestUrl)
   assert.equal(manifest.version, 1)
-  assert.equal(manifest.areas.length, 1)
+  // Committed manifest shape: the flat seed corpus plus the registered
+  // scenario-and-authorization area consumed by the domain catch-up tests.
+  assert.equal(manifest.areas.length, 2)
   assert.deepEqual(manifest.areas[0], { path: '.', fixtureClass: 'extraction-accuracy', runnerBinding: 'adapter-corpus' })
+  assert.deepEqual(manifest.areas[1], {
+    path: 'agent-experience/catchup',
+    fixtureClass: 'scenario-and-authorization',
+    runnerBinding: 'bun-test-data',
+  })
 
   const resolved = await resolveFixtureAreas(manifestUrl)
-  const [area] = resolved.areas
+  assert.equal(resolved.areas.length, 2)
+  const [area, scenarioArea] = resolved.areas
   assert.ok(area, 'seed manifest must resolve one area')
   assert.equal(area.spec.id, 'extraction-accuracy')
   // The six seed fixtures are present, sorted, and the manifest never lists itself.
@@ -64,7 +72,13 @@ async function checkSeedManifest(): Promise<void> {
   }
   assert.ok(!area.files.includes(MANIFEST_FILENAME), 'manifest must never load as a fixture')
   assert.ok(area.files.every((f, i) => i === 0 || area.files[i - 1]! <= f), 'files must be sorted')
-  console.log(`  ok  seed manifest — 1 area (${area.files.length} corpus files, manifest excluded)`)
+  // Scenario areas resolve as data-only: files listed for the consumer, never executed here.
+  assert.ok(scenarioArea, 'registered scenario area must resolve')
+  assert.equal(scenarioArea.spec.id, 'scenario-and-authorization')
+  assert.deepEqual(scenarioArea.files, ['cases.json', 'grants.json', 'history.json'])
+  console.log(
+    `  ok  committed manifest — 2 areas (${area.files.length} corpus + ${scenarioArea.files.length} scenario files, manifest excluded)`,
+  )
 }
 
 async function checkRejections(tempRoot: string): Promise<void> {
