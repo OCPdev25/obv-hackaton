@@ -1,0 +1,8 @@
+{
+  "memberships": {
+    "reader_mom": ["hh_alpha"],
+    "reader_dad": ["hh_alpha"],
+    "reader_sitter": ["hh_alpha"],
+    "reader_stranger": ["hh_beta"]
+  }
+}

@@ -8,6 +8,7 @@
  * @module
  */
 
+import type * as catchup from "../catchup.js";
 import type * as children from "../children.js";
 import type * as entries from "../entries.js";
 import type * as households from "../households.js";
@@ -23,6 +24,7 @@ import type {
 } from "convex/server";
 
 declare const fullApi: ApiFromModules<{
+  catchup: typeof catchup;
   children: typeof children;
   entries: typeof entries;
   households: typeof households;

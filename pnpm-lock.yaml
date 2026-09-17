@@ -17,6 +17,9 @@ importers:
 
   apps/mobile:
     dependencies:
+      '@journal/domain':
+        specifier: workspace:*
+        version: link:../../packages/domain
       '@journal/month-history':
         specifier: workspace:*
         version: link:../../packages/month-history

@@ -1,0 +1,291 @@
+{
+  "households": [
+    { "_id": "hh_alpha", "name": "Synthetic household alpha", "createdAt": "2026-08-01T00:00:00Z", "_creationTime": "2026-08-01T00:00:00Z" },
+    { "_id": "hh_beta", "name": "Synthetic household beta", "createdAt": "2026-08-01T00:00:00Z", "_creationTime": "2026-08-01T00:00:00Z" }
+  ],
+  "children": [
+    { "_id": "child_alpha", "householdId": "hh_alpha", "name": "Synthetic child A", "createdAt": "2026-08-01T00:00:00Z", "_creationTime": "2026-08-01T00:00:00Z" },
+    { "_id": "child_beta", "householdId": "hh_beta", "name": "Synthetic child B", "createdAt": "2026-08-01T00:00:00Z", "_creationTime": "2026-08-01T00:00:00Z" }
+  ],
+  "entries": [
+    {
+      "_id": "entries_test_1",
+      "householdId": "hh_alpha",
+      "childId": "child_alpha",
+      "authorId": "reader_mom",
+      "rawTranscript": "Synthetic: morning nap, logged late.",
+      "structuredEventIds": ["events_test_1"],
+      "extractionStatus": "structured",
+      "visibility": "published",
+      "createdAt": "2026-08-26T15:00:00Z",
+      "_creationTime": "2026-08-26T15:00:00Z"
+    },
+    {
+      "_id": "entries_test_2",
+      "householdId": "hh_alpha",
+      "childId": "child_alpha",
+      "authorId": "reader_dad",
+      "rawTranscript": "Synthetic: solid lunch, ate well.",
+      "structuredEventIds": ["events_test_2"],
+      "extractionStatus": "structured",
+      "visibility": "published",
+      "createdAt": "2026-09-02T09:00:00Z",
+      "_creationTime": "2026-09-02T09:00:00Z"
+    },
+    {
+      "_id": "entries_test_3",
+      "householdId": "hh_alpha",
+      "childId": "child_alpha",
+      "authorId": "reader_mom",
+      "rawTranscript": "Synthetic: quick note, no events extracted.",
+      "structuredEventIds": [],
+      "extractionStatus": "pending",
+      "visibility": "published",
+      "createdAt": "2026-09-05T00:00:00Z",
+      "_creationTime": "2026-09-05T00:00:00Z"
+    },
+    {
+      "_id": "entries_test_4",
+      "householdId": "hh_alpha",
+      "childId": "child_alpha",
+      "authorId": "reader_dad",
+      "rawTranscript": "Synthetic: cheerful after the park.",
+      "structuredEventIds": ["events_test_4"],
+      "extractionStatus": "structured",
+      "visibility": "published",
+      "createdAt": "2026-09-03T10:00:00Z",
+      "_creationTime": "2026-09-03T10:00:00Z"
+    },
+    {
+      "_id": "entries_test_5",
+      "householdId": "hh_alpha",
+      "childId": "child_alpha",
+      "authorId": "reader_mom",
+      "rawTranscript": "Synthetic: first independent steps in the park.",
+      "structuredEventIds": ["events_test_5"],
+      "extractionStatus": "structured",
+      "visibility": "published",
+      "createdAt": "2026-09-06T08:00:00Z",
+      "_creationTime": "2026-09-06T08:00:00Z"
+    },
+    {
+      "_id": "entries_test_6",
+      "householdId": "hh_alpha",
+      "childId": "child_alpha",
+      "authorId": "reader_mom",
+      "rawTranscript": "Synthetic: bedtime story and lights out.",
+      "structuredEventIds": ["events_test_6"],
+      "extractionStatus": "structured",
+      "visibility": "published",
+      "createdAt": "2026-09-10T16:00:00Z",
+      "_creationTime": "2026-09-10T16:00:00Z"
+    },
+    {
+      "_id": "entries_test_7",
+      "householdId": "hh_alpha",
+      "childId": "child_alpha",
+      "authorId": "reader_sitter",
+      "rawTranscript": "Synthetic: midday bottle, finished most of it.",
+      "structuredEventIds": ["events_test_7"],
+      "extractionStatus": "structured",
+      "visibility": "published",
+      "photoId": "photos_test_1",
+      "createdAt": "2026-09-12T09:30:00Z",
+      "_creationTime": "2026-09-12T09:30:00Z"
+    },
+    {
+      "_id": "entries_test_8",
+      "householdId": "hh_alpha",
+      "childId": "child_alpha",
+      "authorId": "reader_dad",
+      "rawTranscript": "Synthetic: private draft, not published.",
+      "structuredEventIds": [],
+      "extractionStatus": "pending",
+      "visibility": "draft",
+      "createdAt": "2026-09-07T11:00:00Z",
+      "_creationTime": "2026-09-07T11:00:00Z"
+    },
+    {
+      "_id": "entries_test_9",
+      "householdId": "hh_alpha",
+      "childId": "child_alpha",
+      "authorId": "reader_mom",
+      "rawTranscript": "Synthetic: second draft, not published.",
+      "structuredEventIds": [],
+      "extractionStatus": "pending",
+      "visibility": "draft",
+      "createdAt": "2026-09-13T14:00:00Z",
+      "_creationTime": "2026-09-13T14:00:00Z"
+    },
+    {
+      "_id": "entries_test_10",
+      "householdId": "hh_alpha",
+      "childId": "child_alpha",
+      "authorId": "reader_mom",
+      "rawTranscript": "Synthetic: splashing at the pool.",
+      "structuredEventIds": ["events_test_10"],
+      "extractionStatus": "structured",
+      "visibility": "published",
+      "createdAt": "2026-08-20T12:00:00Z",
+      "_creationTime": "2026-08-20T12:00:00Z"
+    },
+    {
+      "_id": "entries_test_11",
+      "householdId": "hh_beta",
+      "childId": "child_beta",
+      "authorId": "reader_stranger",
+      "rawTranscript": "Synthetic: cross-household entry that must never leak.",
+      "structuredEventIds": ["events_test_11"],
+      "extractionStatus": "structured",
+      "visibility": "published",
+      "createdAt": "2026-09-08T10:00:00Z",
+      "_creationTime": "2026-09-08T10:00:00Z"
+    },
+    {
+      "_id": "entries_test_12",
+      "householdId": "hh_alpha",
+      "childId": "child_alpha",
+      "authorId": "reader_mom",
+      "rawTranscript": "Synthetic: daylight-saving probe, first bucket.",
+      "structuredEventIds": ["events_test_12"],
+      "extractionStatus": "structured",
+      "visibility": "published",
+      "createdAt": "2026-11-01T05:00:00Z",
+      "_creationTime": "2026-11-01T05:00:00Z"
+    },
+    {
+      "_id": "entries_test_13",
+      "householdId": "hh_alpha",
+      "childId": "child_alpha",
+      "authorId": "reader_mom",
+      "rawTranscript": "Synthetic: daylight-saving probe, second bucket.",
+      "structuredEventIds": ["events_test_13"],
+      "extractionStatus": "structured",
+      "visibility": "published",
+      "createdAt": "2026-11-01T06:00:00Z",
+      "_creationTime": "2026-11-01T06:00:00Z"
+    }
+  ],
+  "events": [
+    {
+      "_id": "events_test_1",
+      "householdId": "hh_alpha",
+      "childId": "child_alpha",
+      "category": "sleep",
+      "timestamp": "2026-08-26T14:00:00Z",
+      "payload": { "minutes": 45 },
+      "confidence": 1.0,
+      "_creationTime": "2026-08-26T15:00:00Z"
+    },
+    {
+      "_id": "events_test_2",
+      "householdId": "hh_alpha",
+      "childId": "child_alpha",
+      "category": "meal",
+      "timestamp": "2026-09-02T12:30:00Z",
+      "payload": { "portions": 3 },
+      "confidence": 0.95,
+      "_creationTime": "2026-09-02T09:00:00Z"
+    },
+    {
+      "_id": "events_test_4",
+      "householdId": "hh_alpha",
+      "childId": "child_alpha",
+      "category": "mood",
+      "timestamp": "2026-09-03T15:00:00Z",
+      "confidence": 0.8,
+      "_creationTime": "2026-09-03T10:00:00Z"
+    },
+    {
+      "_id": "events_test_5",
+      "householdId": "hh_alpha",
+      "childId": "child_alpha",
+      "category": "milestone",
+      "timestamp": "2026-09-06T08:00:00Z",
+      "confidence": 1.0,
+      "_creationTime": "2026-09-06T08:00:00Z"
+    },
+    {
+      "_id": "events_test_6",
+      "householdId": "hh_alpha",
+      "childId": "child_alpha",
+      "category": "sleep",
+      "timestamp": "2026-09-08T19:30:00Z",
+      "payload": { "minutes": 40 },
+      "confidence": 0.9,
+      "_creationTime": "2026-09-10T16:00:00Z"
+    },
+    {
+      "_id": "events_test_7",
+      "householdId": "hh_alpha",
+      "childId": "child_alpha",
+      "category": "meal",
+      "timestamp": "2026-09-12T09:15:00Z",
+      "confidence": 1.0,
+      "_creationTime": "2026-09-12T09:30:00Z"
+    },
+    {
+      "_id": "events_test_10",
+      "householdId": "hh_alpha",
+      "childId": "child_alpha",
+      "category": "mood",
+      "timestamp": "2026-08-20T11:00:00Z",
+      "confidence": 1.0,
+      "_creationTime": "2026-08-20T12:00:00Z"
+    },
+    {
+      "_id": "events_test_11",
+      "householdId": "hh_beta",
+      "childId": "child_beta",
+      "category": "meal",
+      "timestamp": "2026-09-08T09:00:00Z",
+      "confidence": 1.0,
+      "_creationTime": "2026-09-08T10:00:00Z"
+    },
+    {
+      "_id": "events_test_12",
+      "householdId": "hh_alpha",
+      "childId": "child_alpha",
+      "category": "sleep",
+      "timestamp": "2026-11-01T05:00:00Z",
+      "confidence": 1.0,
+      "_creationTime": "2026-11-01T05:00:00Z"
+    },
+    {
+      "_id": "events_test_13",
+      "householdId": "hh_alpha",
+      "childId": "child_alpha",
+      "category": "sleep",
+      "timestamp": "2026-11-01T06:00:00Z",
+      "confidence": 1.0,
+      "_creationTime": "2026-11-01T06:00:00Z"
+    }
+  ],
+  "revisions": [
+    {
+      "id": "revisions_test_1",
+      "householdId": "hh_alpha",
+      "childId": "child_alpha",
+      "supersedesEventId": "events_test_2",
+      "category": "meal",
+      "timestamp": "2026-09-02T12:30:00Z",
+      "payload": { "portions": 3 },
+      "confidence": 0.95,
+      "actorId": "reader_dad",
+      "note": "Synthetic correction: three portions, not two.",
+      "createdAt": "2026-09-08T10:00:00Z"
+    },
+    {
+      "id": "revisions_test_2",
+      "householdId": "hh_alpha",
+      "childId": "child_alpha",
+      "supersedesEventId": "events_test_10",
+      "category": "mood",
+      "timestamp": "2026-08-20T11:00:00Z",
+      "confidence": 0.85,
+      "actorId": "reader_mom",
+      "note": "Synthetic correction landing in the clipped region.",
+      "createdAt": "2026-08-28T00:00:00Z"
+    }
+  ]
+}

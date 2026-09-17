@@ -1,7 +1,14 @@
 import { defineSchema, defineTable } from "convex/server"
 import { Schema } from "effect"
 
-import { ChildFields, EntryFields, EventFields, HouseholdFields, KnowledgeFields } from "@journal/domain"
+import {
+  CaregiverReadStateFields,
+  ChildFields,
+  EntryFields,
+  EventFields,
+  HouseholdFields,
+  KnowledgeFields,
+} from "@journal/domain"
 import { convexFields } from "@journal/domain/convex"
 
 /**
@@ -31,4 +38,10 @@ export default defineSchema({
     .index("by_household", ["householdId"])
     .index("by_child_topic", ["childId", "topic"])
     .index("by_supersedes", ["supersedes"]),
+  // Since-last-seen read state (catch-up contract delta v0.1, art_6qhBut41):
+  // one monotonic watermark row per (caregiver, child). Additive only.
+  caregiverReadState: tableFrom(CaregiverReadStateFields).index("by_caregiver_child", [
+    "caregiverId",
+    "childId",
+  ]),
 })
