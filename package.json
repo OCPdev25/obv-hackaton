@@ -1,18 +1,26 @@
 {
   "name": "obv-hackaton",
   "private": true,
-  "version": "0.1.0",
-  "scripts": {
-    "typecheck": "tsc --noEmit",
-    "contract:smoke": "tsx deploy/contract-smoke.ts",
-    "deploy:thin-path": "convex deploy"
+  "packageManager": "pnpm@10.34.5",
+  "engines": {
+    "node": ">=20"
   },
-  "dependencies": {
-    "convex": "1.46.0",
-    "effect": "4.0.0-rc.115"
+  "scripts": {
+    "build": "turbo run build",
+    "typecheck": "turbo run typecheck",
+    "test": "turbo run test",
+    "deploy:thin-path": "pnpm --filter @journal/backend exec convex deploy"
   },
   "devDependencies": {
-    "tsx": "^4.19.0",
-    "typescript": "^5.6.0"
+    "turbo": "^2.10.13",
+    "typescript": "~6.0.3"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild",
+      "@swc/core",
+      "core-js",
+      "unrs-resolver"
+    ]
   }
 }

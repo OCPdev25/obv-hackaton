@@ -1,48 +1,87 @@
-# obv-hackaton
+# Shared Child Journal — Monorepo
 
-Shared Child Journal — AI dictation-powered agent companion monorepo.
+Hackathon monorepo for a child-centered shared journal: caregivers capture
+informal voice/photo updates, AI extracts typed care events, and authorized
+household members follow a child's timeline without parent-to-parent chat.
 
-## deploy/thin-path branch — deployment-verification vehicle
+## Stack
 
-> **This branch is a deployment-verification vehicle, not a product stack.** It carries
-> the minimal thin-path Convex functions used to prove deployment + synthetic write→read
-> on the existing dev deployment. Candidates own their own stacks; the winning candidate
-> replaces this branch's `convex/` + `package.json` at integration.
+| Layer | Choice |
+| --- | --- |
+| Tooling | pnpm 10 (via Corepack) + Turborepo 2 |
+| Mobile | Expo 57 / React Native 0.86 (TypeScript) with the Convex client wired |
+| Backend | Convex — schema derived from the Effect domain contracts |
+| Contracts | `packages/domain` — Effect v4 (4.0.0-rc.115) schemas, single source of truth |
+| Extraction | `packages/extraction` — Effect pipeline stub (no LLM call yet) |
+| UI | `packages/ui` — minimal shared React Native components |
 
-Deployed to the **existing** Convex dev deployment `reliable-panther-823`
-(https://reliable-panther-823.convex.cloud — created by Gil; the stored
-`CONVEX_DEPLOY_KEY` scopes to it; no project was created, no login performed).
+## Layout
 
-- Evidence: [`deploy/thin-path-evidence.md`](deploy/thin-path-evidence.md)
-- Deployed code commit: `94e706c`
-- Contract: Shared Child Journal — Effect v4 Schema Contract v0.1 (`art_I2TCG08V`), `effect@4.0.0-rc.115`
-
-Functions (all evidence is **cloud dev + synthetic CLI data** — not live-LLM, not native
-device, not browser UI):
-
-| Function | Type | Contract behavior |
-|---|---|---|
-| `children:create` | mutation | Non-empty name, optional `birthDate` (unix ms) |
-| `entries:createEntry` | mutation | Raw transcript always preserved; events decoded through the canonical Effect schema; idempotent on `captureId` retry (original wins); invalid events return `captured_with_event_errors` — capture is never blocked |
-| `timeline:list` | query | Per-child, chronological |
-
-## Commands
-
-```sh
-npm install
-npm run contract:smoke        # local Effect contract decode/reject/encode checks
-npm run deploy:thin-path      # CONVEX_DEPLOY_KEY=... npx convex deploy
-CONVEX_DEPLOY_KEY=... npx convex run children:create '{"name":"Ada (synthetic)"}'
-CONVEX_DEPLOY_KEY=... npx convex run timeline:list '{"childId":"<id>"}'
+```
+apps/mobile          Expo app; ConvexProvider reads EXPO_PUBLIC_CONVEX_URL
+backend/convex       Convex schema + functions (children, households, entries, events)
+packages/domain      Canonical Effect schemas + Convex-validator adapter + JSON Schema derivation
+packages/extraction  Transcript -> typed events interface (stub)
+packages/ui          Shared RN primitives (placeholder)
 ```
 
-## Deployment-verified findings for other candidates
+## Run
 
-1. **Convex rejects stored fields starting with `_`** (reserved for system fields) — the
-   contract's wire-level `_tag` literal must be stripped on write and re-wrapped on read;
-   it cannot be persisted as the contract's mapping table assumed. See Finding F1 in
-   [`deploy/thin-path-evidence.md`](deploy/thin-path-evidence.md).
-2. **`import { Schema } from 'effect/Schema'` does not resolve on `effect@4.0.0-rc.115`** —
-   the subpath exports members directly; use `import * as Schema from 'effect/Schema'`.
-3. `convex codegen` / `convex deploy` typecheck against bindings generated from the
-   current schema — regenerate before judging type errors after a schema change.
+Requirements: Node 20.20.2, Bun 1.3.14 (tests), Corepack (bundled with Node).
+
+```bash
+corepack enable
+pnpm install
+
+pnpm typecheck        # turbo typecheck across all packages
+pnpm build            # turbo build for buildable packages
+pnpm test             # domain contract round-trip tests (bun)
+
+# Mobile app (real or simulated device)
+cp apps/mobile/.env.example apps/mobile/.env   # set EXPO_PUBLIC_CONVEX_URL
+pnpm --filter @journal/mobile start
+
+# Convex backend
+cd backend/convex
+npx convex dev        # requires `npx convex login` first
+```
+
+## Effect Schema contracts (why it matters)
+
+`packages/domain` defines executable Effect v4 schemas for `Child`,
+`Household`, `Entry`, and `Event` plus operation input/output schemas for
+Convex queries/mutations. TypeScript types are inferred from schemas
+(`typeof Schema.Type`) — never hand-written. All external inputs and LLM
+outputs decode through these schemas with typed error channels. The
+`@journal/domain/convex` adapter derives Convex validators from the same
+schemas (covered by round-trip tests), and `toolSchemaFor` derives JSON Schema
+(draft 2020-12) for LLM tool definitions.
+
+### Confect decision
+
+Confect (`@confect/*` 9.4.3) declares `effect: ^3.21.2` as a peer dependency
+and npm refuses to install it alongside Effect v4 (ERESOLVE). We therefore use
+plain Convex schemas derived from the Effect domain contracts through the
+tested adapter instead of maintaining a parallel Confect layer.
+
+## Thin-path deployment record (PR #5)
+
+Before this monorepo scaffold landed, a standalone deployment-verification
+vehicle (root `convex/` tree + npm `package.json`) proved deployment and
+synthetic write→read on the existing dev deployment `reliable-panther-823`.
+Per that PR's own integration note, the winning monorepo scaffold replaces the
+standalone tree; its function behavior (idempotent `entries:createEntry`,
+per-child `timeline:list`, `children:create`) ports onto
+`backend/convex` in follow-up work against the canonical domain contract.
+
+- Evidence: [`deploy/thin-path-evidence.md`](deploy/thin-path-evidence.md)
+- Deployment-verified findings that still apply: Convex rejects stored fields
+  starting with `_` (F1); `convex codegen`/`deploy` typecheck against bindings
+  generated from the current schema (F3). See the evidence doc for details.
+
+## CI
+
+CI runs `pnpm install --frozen-lockfile` then `pnpm turbo run typecheck`,
+`test`, and `build` on every PR to master (`.github/workflows/ci.yml`). The
+pipeline was merged ahead of this scaffold and its package-level steps are
+designed to go green with it.
