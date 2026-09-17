@@ -1,0 +1,243 @@
+{
+  "id": "FQ-HOUSEHOLD-A-LIFECYCLE",
+  "description": "One household (mom, dad, grandma, nanny), one child (Leo), 2026-09-17. Six questions across the full lifecycle: open-unanswered, answered-awaiting-resolution, resolved-with-explicit-negative, reopened-after-resolution, draft-attached (author-only visibility), and resolved-but-excluded-from-handoff. Two attempted asks must deny (stranger addressee; ask on another author's draft).",
+  "household": {
+    "householdId": "fxhousehold0000000000000",
+    "memberIds": ["caregiver-mom", "caregiver-dad", "caregiver-grandma", "caregiver-nanny"]
+  },
+  "childId": "fxchildleo00000000000000",
+  "entries": [
+    { "householdId": "fxhousehold0000000000000", "childId": "fxchildleo00000000000000", "_id": "fxentrysleep000000000000", "authorId": "caregiver-mom", "visibility": "published" },
+    { "householdId": "fxhousehold0000000000000", "childId": "fxchildleo00000000000000", "_id": "fxentrymeal0000000000000", "authorId": "caregiver-dad", "visibility": "published" },
+    { "householdId": "fxhousehold0000000000000", "childId": "fxchildleo00000000000000", "_id": "fxentrydraft000000000000", "authorId": "caregiver-mom", "visibility": "draft" }
+  ],
+  "questions": [
+    {
+      "_id": "fxqopenwater000000000000",
+      "_creationTime": 1789676100000,
+      "householdId": "fxhousehold0000000000000",
+      "childId": "fxchildleo00000000000000",
+      "targetKind": "event",
+      "entryId": "fxentrymeal0000000000000",
+      "eventId": "fxeventmeal0000000000000",
+      "askedById": "caregiver-nanny",
+      "question": "Did Leo drink water after the playground run?",
+      "audienceKind": "household",
+      "addresseeIds": [],
+      "handoffIncluded": true,
+      "createdAt": 1789676100000
+    },
+    {
+      "_id": "fxqnapcheck0000000000000",
+      "_creationTime": 1789651800000,
+      "householdId": "fxhousehold0000000000000",
+      "childId": "fxchildleo00000000000000",
+      "targetKind": "event",
+      "entryId": "fxentrysleep000000000000",
+      "eventId": "fxeventsleep000000000000",
+      "askedById": "caregiver-mom",
+      "question": "How long was the nap really? 45 minutes looks generous.",
+      "audienceKind": "directed",
+      "addresseeIds": ["caregiver-dad"],
+      "handoffIncluded": true,
+      "sourceCaptureId": "fxentrysleep000000000000",
+      "createdAt": 1789651800000
+    },
+    {
+      "_id": "fxqpottyresolved00000000",
+      "_creationTime": 1789646400000,
+      "householdId": "fxhousehold0000000000000",
+      "childId": "fxchildleo00000000000000",
+      "targetKind": "entry",
+      "entryId": "fxentrymeal0000000000000",
+      "askedById": "caregiver-mom",
+      "question": "Did he have a bowel movement today?",
+      "audienceKind": "household",
+      "addresseeIds": [],
+      "handoffIncluded": true,
+      "createdAt": 1789646400000
+    },
+    {
+      "_id": "fxqreopen000000000000000",
+      "_creationTime": 1789666200000,
+      "householdId": "fxhousehold0000000000000",
+      "childId": "fxchildleo00000000000000",
+      "targetKind": "event",
+      "entryId": "fxentrysleep000000000000",
+      "eventId": "fxeventsleep000000000000",
+      "askedById": "caregiver-grandma",
+      "question": "Was the 2pm sleep a real nap or just drowsy in the stroller?",
+      "audienceKind": "directed",
+      "addresseeIds": ["caregiver-mom", "caregiver-dad"],
+      "handoffIncluded": true,
+      "createdAt": 1789666200000
+    },
+    {
+      "_id": "fxqdraftdeny000000000000",
+      "_creationTime": 1789644600000,
+      "householdId": "fxhousehold0000000000000",
+      "childId": "fxchildleo00000000000000",
+      "targetKind": "entry",
+      "entryId": "fxentrydraft000000000000",
+      "askedById": "caregiver-mom",
+      "question": "Publish this draft with the rash note, or check with the pediatrician first?",
+      "audienceKind": "household",
+      "addresseeIds": [],
+      "handoffIncluded": false,
+      "createdAt": 1789644600000
+    },
+    {
+      "_id": "fxqexcluded0000000000000",
+      "_creationTime": 1789653600000,
+      "householdId": "fxhousehold0000000000000",
+      "childId": "fxchildleo00000000000000",
+      "targetKind": "event",
+      "entryId": "fxentrymeal0000000000000",
+      "eventId": "fxeventmeal0000000000000",
+      "askedById": "caregiver-dad",
+      "question": "Did he refuse the 9am bottle or just want less?",
+      "audienceKind": "household",
+      "addresseeIds": [],
+      "handoffIncluded": false,
+      "createdAt": 1789653600000
+    }
+  ],
+  "activities": [
+    {
+      "_id": "fxact00000000000000000001",
+      "_creationTime": 1789654500000,
+      "householdId": "fxhousehold0000000000000",
+      "childId": "fxchildleo00000000000000",
+      "questionId": "fxqnapcheck0000000000000",
+      "kind": "answered",
+      "actorId": "caregiver-dad",
+      "at": 1789654500000,
+      "answerText": "About 15 minutes in the car, not 45.",
+      "sourceKind": "entry",
+      "sourceId": "fxentrysleep000000000000"
+    },
+    {
+      "_id": "fxact00000000000000000002",
+      "_creationTime": 1789669800000,
+      "householdId": "fxhousehold0000000000000",
+      "childId": "fxchildleo00000000000000",
+      "questionId": "fxqpottyresolved00000000",
+      "kind": "answered",
+      "actorId": "caregiver-dad",
+      "at": 1789669800000,
+      "answerText": "None today."
+    },
+    {
+      "_id": "fxact00000000000000000003",
+      "_creationTime": 1789671600000,
+      "householdId": "fxhousehold0000000000000",
+      "childId": "fxchildleo00000000000000",
+      "questionId": "fxqpottyresolved00000000",
+      "kind": "resolved",
+      "actorId": "caregiver-mom",
+      "at": 1789671600000,
+      "settlesActivityId": "fxact00000000000000000002"
+    },
+    {
+      "_id": "fxact00000000000000000004",
+      "_creationTime": 1789668000000,
+      "householdId": "fxhousehold0000000000000",
+      "childId": "fxchildleo00000000000000",
+      "questionId": "fxqreopen000000000000000",
+      "kind": "answered",
+      "actorId": "caregiver-dad",
+      "at": 1789668000000,
+      "answerText": "Just drowsy in the stroller, no real nap."
+    },
+    {
+      "_id": "fxact00000000000000000005",
+      "_creationTime": 1789675200000,
+      "householdId": "fxhousehold0000000000000",
+      "childId": "fxchildleo00000000000000",
+      "questionId": "fxqreopen000000000000000",
+      "kind": "resolved",
+      "actorId": "caregiver-grandma",
+      "at": 1789675200000,
+      "settlesActivityId": "fxact00000000000000000004"
+    },
+    {
+      "_id": "fxact00000000000000000006",
+      "_creationTime": 1789684200000,
+      "householdId": "fxhousehold0000000000000",
+      "childId": "fxchildleo00000000000000",
+      "questionId": "fxqreopen000000000000000",
+      "kind": "reopened",
+      "actorId": "caregiver-mom",
+      "at": 1789684200000,
+      "reason": "Correction: he did nap 3:15-3:35 in the crib after the stroller."
+    },
+    {
+      "_id": "fxact00000000000000000007",
+      "_creationTime": 1789657200000,
+      "householdId": "fxhousehold0000000000000",
+      "childId": "fxchildleo00000000000000",
+      "questionId": "fxqexcluded0000000000000",
+      "kind": "answered",
+      "actorId": "caregiver-dad",
+      "at": 1789657200000,
+      "answerText": "He refused it - pushed the bottle away twice."
+    },
+    {
+      "_id": "fxact00000000000000000008",
+      "_creationTime": 1789659000000,
+      "householdId": "fxhousehold0000000000000",
+      "childId": "fxchildleo00000000000000",
+      "questionId": "fxqexcluded0000000000000",
+      "kind": "resolved",
+      "actorId": "caregiver-dad",
+      "at": 1789659000000,
+      "settlesActivityId": "fxact00000000000000000007"
+    }
+  ],
+  "expected": {
+    "derived": [
+      { "questionId": "fxqopenwater000000000000", "status": "open", "reopenedCount": 0, "answerCount": 0, "handoffIncluded": true },
+      { "questionId": "fxqnapcheck0000000000000", "status": "answered", "reopenedCount": 0, "answerCount": 1, "handoffIncluded": true },
+      { "questionId": "fxqpottyresolved00000000", "status": "resolved", "reopenedCount": 0, "answerCount": 1, "handoffIncluded": true },
+      { "questionId": "fxqreopen000000000000000", "status": "open", "reopenedCount": 1, "answerCount": 1, "handoffIncluded": true },
+      { "questionId": "fxqdraftdeny000000000000", "status": "open", "reopenedCount": 0, "answerCount": 0, "handoffIncluded": false },
+      { "questionId": "fxqexcluded0000000000000", "status": "resolved", "reopenedCount": 0, "answerCount": 1, "handoffIncluded": false }
+    ],
+    "visibility": [
+      { "questionId": "fxqopenwater000000000000", "allow": ["caregiver-mom", "caregiver-dad", "caregiver-grandma", "caregiver-nanny"], "deny": [] },
+      { "questionId": "fxqnapcheck0000000000000", "allow": ["caregiver-mom", "caregiver-dad"], "deny": [ { "caregiverId": "caregiver-grandma", "code": "DENY_Q_NOT_ADDRESSEE" }, { "caregiverId": "caregiver-nanny", "code": "DENY_Q_NOT_ADDRESSEE" } ] },
+      { "questionId": "fxqpottyresolved00000000", "allow": ["caregiver-mom", "caregiver-dad", "caregiver-grandma", "caregiver-nanny"], "deny": [] },
+      { "questionId": "fxqreopen000000000000000", "allow": ["caregiver-mom", "caregiver-dad", "caregiver-grandma"], "deny": [ { "caregiverId": "caregiver-nanny", "code": "DENY_Q_NOT_ADDRESSEE" } ] },
+      { "questionId": "fxqdraftdeny000000000000", "allow": ["caregiver-mom"], "deny": [ { "caregiverId": "caregiver-dad", "code": "DENY_Q_DRAFT_AUTHOR_ONLY" }, { "caregiverId": "caregiver-grandma", "code": "DENY_Q_DRAFT_AUTHOR_ONLY" }, { "caregiverId": "caregiver-nanny", "code": "DENY_Q_DRAFT_AUTHOR_ONLY" } ] },
+      { "questionId": "fxqexcluded0000000000000", "allow": ["caregiver-mom", "caregiver-dad", "caregiver-grandma", "caregiver-nanny"], "deny": [] }
+    ],
+    "askDenies": [
+      {
+        "asCaregiverId": "caregiver-nanny",
+        "targetEntryId": "fxentrymeal0000000000000",
+        "audienceKind": "directed",
+        "addresseeIds": ["caregiver-neighbor"],
+        "expectedCode": "DENY_Q_ADDRESSEE_NOT_IN_HOUSEHOLD"
+      },
+      {
+        "asCaregiverId": "caregiver-dad",
+        "targetEntryId": "fxentrydraft000000000000",
+        "audienceKind": "household",
+        "addresseeIds": [],
+        "expectedCode": "DENY_Q_DRAFT_AUTHOR_ONLY"
+      }
+    ],
+    "digest": {
+      "note": "digest expectations per viewer; windowStart = local midnight (1789617600000)",
+      "windowStart": 1789617600000,
+      "perViewer": [
+        { "caregiverId": "caregiver-mom", "hasQuestions": true, "unresolved": ["fxqnapcheck0000000000000", "fxqreopen000000000000000", "fxqopenwater000000000000"], "resolvedInWindow": ["fxqpottyresolved00000000"] },
+        { "caregiverId": "caregiver-dad", "hasQuestions": true, "unresolved": ["fxqnapcheck0000000000000", "fxqreopen000000000000000", "fxqopenwater000000000000"], "resolvedInWindow": ["fxqpottyresolved00000000"] },
+        { "caregiverId": "caregiver-grandma", "hasQuestions": true, "unresolved": ["fxqreopen000000000000000", "fxqopenwater000000000000"], "resolvedInWindow": ["fxqpottyresolved00000000"] },
+        { "caregiverId": "caregiver-nanny", "hasQuestions": true, "unresolved": ["fxqopenwater000000000000"], "resolvedInWindow": ["fxqpottyresolved00000000"] }
+      ],
+      "explicitNegativePreserved": { "questionId": "fxqpottyresolved00000000", "latestAnswerText": "None today." },
+      "excludedQuestionAbsentFromDigest": "fxqexcluded0000000000000"
+    }
+  }
+}
