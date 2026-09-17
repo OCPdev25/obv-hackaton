@@ -1,0 +1,33 @@
+{
+  "manifestVersion": 1,
+  "pr": 99,
+  "prUrl": "https://github.com/OCPdev25/obv-hackaton/pull/99",
+  "testedHeadSha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "classification": "docs-only",
+  "classificationJustification": "documentation and comment updates only",
+  "review": {
+    "result": "pass",
+    "reviewer": "sibling-qa-worker (independent of the PR author)",
+    "reviewedHeadSha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "date": "2026-09-17",
+    "url": "https://github.com/OCPdev25/obv-hackaton/pull/99#review"
+  },
+  "checks": [
+    {
+      "name": "CI / Typecheck, test, build",
+      "status": "green",
+      "headSha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "url": "https://github.com/OCPdev25/obv-hackaton/actions/runs/999001"
+    }
+  ],
+  "evidence": [
+    {
+      "kind": "test-run",
+      "name": "docs link check (no code changed — minimal behavior evidence)",
+      "headSha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "result": "pass",
+      "url": "https://github.com/OCPdev25/obv-hackaton/actions/runs/999002"
+    }
+  ],
+  "notes": "fixture: NEGATIVE CONTROL nc5b — claims docs-only but the live diff (test context) touches packages/domain source; ONLY refusal must be classification_mismatch"
+}

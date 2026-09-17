@@ -1,0 +1,48 @@
+{
+  "manifestVersion": 1,
+  "pr": 99,
+  "prUrl": "https://github.com/OCPdev25/obv-hackaton/pull/99",
+  "testedHeadSha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "classification": "backend-only",
+  "classificationJustification": "touches backend/convex and packages/domain only — no UI surface",
+  "review": {
+    "result": "pass",
+    "reviewer": "sibling-qa-worker (independent of the PR author)",
+    "reviewedHeadSha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "date": "2026-09-17",
+    "url": "https://github.com/OCPdev25/obv-hackaton/pull/99#review"
+  },
+  "checks": [
+    {
+      "name": "CI / Typecheck, test, build",
+      "status": "green",
+      "headSha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "url": "https://github.com/OCPdev25/obv-hackaton/actions/runs/999001"
+    }
+  ],
+  "evidence": [
+    {
+      "kind": "behavior-run",
+      "name": "convex entries adapter round-trip behavior against synthetic family data",
+      "headSha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "result": "pass",
+      "url": "https://github.com/OCPdev25/obv-hackaton/actions/runs/999002"
+    }
+  ],
+  "suites": {
+    "security": {
+      "ran": true,
+      "result": "pass",
+      "headSha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "url": "https://github.com/OCPdev25/obv-hackaton/actions/runs/999003"
+    },
+    "evaluation": {
+      "ran": true,
+      "result": "pass",
+      "headSha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "negativeControl": "fail-as-expected",
+      "url": "https://github.com/OCPdev25/obv-hackaton/actions/runs/999004"
+    }
+  },
+  "notes": "fixture: NEGATIVE CONTROL nc5 — claims backend-only but the live diff (test context) touches apps/mobile; ONLY refusal must be classification_mismatch"
+}
