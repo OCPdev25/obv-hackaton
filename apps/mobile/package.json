@@ -10,12 +10,16 @@
     "ios": "expo start --ios"
   },
   "dependencies": {
+    "@expo/metro-runtime": "~57.0.15",
+    "@journal/home-b": "workspace:*",
     "@journal/ui": "workspace:*",
     "convex": "^1.46.0",
     "effect": "4.0.0-rc.115",
     "expo": "~57.0.23",
     "react": "19.2.3",
-    "react-native": "0.86.3"
+    "react-dom": "19.2.3",
+    "react-native": "0.86.3",
+    "react-native-web": "^0.21.2"
   },
   "devDependencies": {
     "@types/node": "^20.19.0",

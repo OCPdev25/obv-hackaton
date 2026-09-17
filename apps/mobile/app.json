@@ -4,7 +4,7 @@
     "slug": "shared-child-journal",
     "version": "0.1.0",
     "scheme": "sharedchildjournal",
-    "platforms": ["ios", "android"],
+    "platforms": ["ios", "android", "web"],
     "newArchEnabled": true
   }
 }
