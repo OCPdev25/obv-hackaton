@@ -1,0 +1,28 @@
+{
+  "name": "@journal/spike-voice-photo",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "description": "Integration spike: expo-audio record-then-transcribe via @react-native-ai/apple (iOS 26 SpeechAnalyzer) and expo-image-picker photo capture persisted to Convex file storage, against the published Effect v4 schema contract.",
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@react-native-ai/apple": "0.12.0",
+    "convex": "1.46.0",
+    "effect": "4.0.0-rc.115",
+    "expo": "57.0.23",
+    "expo-audio": "57.0.5",
+    "expo-file-system": "57.0.7",
+    "expo-image-picker": "57.0.18",
+    "react": "19.2.3",
+    "react-native": "0.86.3"
+  },
+  "devDependencies": {
+    "@types/node": "20.19.43",
+    "@types/react": "19.1.17",
+    "typescript": "5.9.3",
+    "vitest": "4.1.11"
+  }
+}
