@@ -53,12 +53,24 @@ export function evaluateAccess(principal: Principal, action: Action, resource: R
   }
 
   // 4. Publication-state boundary — Dimension 1. Applies to an entry and to its
-  //    derived events (events inherit the entry's visibility).
+  //    derived events (events inherit the entry's visibility), and to knowledge
+  //    items (drafts recorder-only — recordedBy is the author-analog). The
+  //    knowledge item's `kind` is NEVER consulted here: it is a
+  //    retrieval/rendering discriminant only, not an authorization input
+  //    (guardrail; KN-8 pins it).
   if ((resource.kind === 'entry' || resource.kind === 'entryEvents') && resource.entry.status === 'draft') {
     if (resource.entry.authorId !== principal.caregiverId) {
       return deny(
         'DENY_DRAFT_AUTHOR_ONLY',
         `entry is ${resource.entry.status} and authored by ${resource.entry.authorId}; caregiver ${principal.caregiverId} is a household member but not the author`,
+      )
+    }
+  }
+  if (resource.kind === 'knowledgeItem' && resource.item.visibility === 'draft') {
+    if (resource.item.recordedBy !== principal.caregiverId) {
+      return deny(
+        'DENY_DRAFT_AUTHOR_ONLY',
+        `knowledge item on topic ${resource.item.topic} is draft and recorded by ${resource.item.recordedBy}; caregiver ${principal.caregiverId} is a household member but not the recorder`,
       )
     }
   }

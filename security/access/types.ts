@@ -8,7 +8,7 @@
  * (documented in THREAT-MODEL.md §Contract gaps), not claims about the
  * existing schema.
  */
-import type { Entry } from './schema-mock'
+import type { Entry, KnowledgeItem } from './schema-mock'
 
 /** An authenticated caregiver and the households they are EXPLICITLY a member of. */
 export interface CaregiverPrincipal {
@@ -44,6 +44,14 @@ export type Resource =
    * prove extraction events INHERIT the entry's publication-state visibility.
    */
   | { readonly kind: 'entryEvents'; readonly scope: ChildScope; readonly entry: Entry }
+  /**
+   * A family-knowledge item (packages/domain knowledge table, PR #16).
+   * Household scoping is identical to every other resource; the publication
+   * dimension mirrors entries (drafts author-only, via recordedBy). The
+   * item's `kind` is deliberately part of the resource but MUST never affect
+   * the decision — KN-8 proves that.
+   */
+  | { readonly kind: 'knowledgeItem'; readonly scope: ChildScope; readonly item: KnowledgeItem }
 
 export type Action =
   | { readonly type: 'read' }
