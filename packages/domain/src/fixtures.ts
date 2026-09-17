@@ -25,7 +25,17 @@ export const fixtureChild: ChildFixture = {
   displayName: "Mila",
 }
 
+export const fixtureCaregiverAna: CaregiverFixture = {
+  caregiverId: id(CaregiverId)("caregiver_ana"),
+  displayName: "Ana",
+}
+
+export const fixtureCaregiverRafa: CaregiverFixture = {
+  caregiverId: id(CaregiverId)("caregiver_rafa"),
+  displayName: "Rafa",
+}
+
 export const fixtureCaregivers: readonly [CaregiverFixture, CaregiverFixture] = [
-  { caregiverId: id(CaregiverId)("caregiver_ana"), displayName: "Ana" },
-  { caregiverId: id(CaregiverId)("caregiver_rafa"), displayName: "Rafa" },
+  fixtureCaregiverAna,
+  fixtureCaregiverRafa,
 ]
