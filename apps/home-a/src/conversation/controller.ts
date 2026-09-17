@@ -137,7 +137,8 @@ export class ConversationController {
 
   // --- review → publish ---------------------------------------------------------
 
-  publish(entryId: string, edits: ReadonlyMap<string, EventEdit>, audience?: Audience): void {
+  /** Arrow field: the UI passes this as a bare reference, so it must not lose `this`. */
+  publish = (entryId: string, edits: ReadonlyMap<string, EventEdit>, audience?: Audience): void => {
     const atMs = this.now
     const result = this.store.publish(this.principal, {
       entryId,
@@ -169,7 +170,8 @@ export class ConversationController {
 
   // --- post-publish correction (append-only) -------------------------------------
 
-  correct(eventId: string, changes: EventEdit, reason: string): void {
+  /** Arrow field: the UI passes this as a bare reference, so it must not lose `this`. */
+  correct = (eventId: string, changes: EventEdit, reason: string): void => {
     const atMs = this.now
     const result = this.store.correct(this.principal, {
       eventId,
