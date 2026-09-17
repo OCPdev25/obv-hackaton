@@ -1,3 +1,6 @@
+import { Schema } from "effect"
+import { CaptureId } from "@journal/domain"
+
 import type { CaptureEvent } from "./events.js"
 import type { CaptureRecovery, DiscardReceipt } from "./state.js"
 
@@ -31,7 +34,8 @@ export const createCapture = (input: {
   authorId: string
   at: number
 }): CaptureRecovery => ({
-  captureId: input.captureId,
+  // Canonical identifier space: brand at ingress (fail-closed on empty).
+  captureId: Schema.decodeSync(CaptureId)(input.captureId),
   authorId: input.authorId,
   rawTranscript: "",
   phase: "drafting",
