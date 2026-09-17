@@ -8,6 +8,11 @@ dist/
 .expo/
 *.tsbuildinfo
 
+# Expo prebuild output (Continuous Native Generation — regenerate with
+# `npx expo prebuild -p ios --no-install`; not committed per Expo convention)
+apps/mobile/ios/
+apps/mobile/android/
+
 # Env files (real values only; .env.example files are committed)
 .env
 .env.local

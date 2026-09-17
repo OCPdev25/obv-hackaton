@@ -2,3 +2,7 @@ packages:
   - apps/*
   - backend/*
   - packages/*
+  # The voice-photo spike joins the pnpm workspace so apps/mobile can import the
+  # transcriber port as a workspace dependency (spike keeps its own npm lockfile
+  # for its standalone README gates).
+  - spikes/voice-photo

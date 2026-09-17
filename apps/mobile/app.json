@@ -5,6 +5,19 @@
     "version": "0.1.0",
     "scheme": "sharedchildjournal",
     "platforms": ["ios", "android"],
-    "newArchEnabled": true
+    "newArchEnabled": true,
+    "plugins": [
+      ["expo-audio", {
+        "microphonePermission": "Allow Shared Child Journal to access your microphone so you can dictate journal entries."
+      }],
+      ["expo-image-picker", {
+        "photosPermission": "Allow Shared Child Journal to attach pictures to journal entries."
+      }]
+    ],
+    "ios": {
+      "infoPlist": {
+        "NSSpeechRecognitionUsageDescription": "Shared Child Journal transcribes your dictated entries on-device."
+      }
+    }
   }
 }
