@@ -1,0 +1,66 @@
+{
+  "id": "routine-context",
+  "description": "Family-profile routine context appears verbatim, attributed to the child profile, next to captured events; a nap follow-up is answered with a citation.",
+  "input": {
+    "childId": "syn-child-ava",
+    "childName": "Ava",
+    "recipientName": "Nana Ruth",
+    "lastSeenAt": 1789444800000,
+    "generatedAt": 1789516800000,
+    "timezone": "America/New_York",
+    "entries": [
+      {
+        "entryId": "syn-entry-002",
+        "captureId": "syn-capture-002",
+        "authorId": "caregiver-dad",
+        "createdAt": 1789491900000,
+        "visibility": "published",
+        "extractionStatus": "structured",
+        "rawTranscript": "Ava napped for 95 minutes starting at 1:02 PM.",
+        "events": [
+          {
+            "category": "sleep",
+            "timestamp": 1789491720000,
+            "payload": {
+              "minutes": 95
+            },
+            "confidence": 0.9
+          }
+        ]
+      }
+    ],
+    "routineNotes": [
+      {
+        "childId": "syn-child-ava",
+        "note": "Ava naps around 1:00 PM and eats lunch at noon."
+      }
+    ]
+  },
+  "expect": {
+    "claimCountByCategory": {
+      "sleep": 1
+    },
+    "digestContains": [
+      "Family note: Ava naps around 1:00 PM and eats lunch at noon."
+    ],
+    "coverageZero": [
+      "potty",
+      "meal",
+      "mood",
+      "milestone",
+      "school"
+    ],
+    "questionTags": [],
+    "suggestedFollowUpsMin": 1,
+    "followUps": [
+      {
+        "question": "How did her nap go?",
+        "outcome": "answered",
+        "answerContains": [
+          "95 min"
+        ],
+        "mustCite": true
+      }
+    ]
+  }
+}

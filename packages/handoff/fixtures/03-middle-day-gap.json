@@ -1,0 +1,82 @@
+{
+  "id": "middle-day-gap",
+  "description": "Captures on the first and last days only: exactly the untouched middle day is disclosed as a gap, and a month-spanning follow-up is refused as out of window.",
+  "input": {
+    "childId": "syn-child-ava",
+    "childName": "Ava",
+    "recipientName": "Nana Ruth",
+    "lastSeenAt": 1789387200000,
+    "generatedAt": 1789603200000,
+    "timezone": "America/New_York",
+    "entries": [
+      {
+        "entryId": "syn-entry-001",
+        "captureId": "syn-capture-001",
+        "authorId": "caregiver-mom",
+        "createdAt": 1789387500000,
+        "visibility": "published",
+        "extractionStatus": "structured",
+        "rawTranscript": "Ava had 8 ounces of milk with breakfast at 8:00 AM. Then she went poop on the potty at 9:30 AM.",
+        "events": [
+          {
+            "category": "meal",
+            "timestamp": 1789387200000,
+            "payload": {
+              "ounces": 8
+            },
+            "confidence": 0.95
+          },
+          {
+            "category": "potty",
+            "timestamp": 1789392600000,
+            "confidence": 0.9
+          }
+        ]
+      },
+      {
+        "entryId": "syn-entry-004",
+        "captureId": "syn-capture-004",
+        "authorId": "caregiver-mom",
+        "createdAt": 1789560300000,
+        "visibility": "published",
+        "extractionStatus": "structured",
+        "rawTranscript": "Ava ate half a banana and some oatmeal for breakfast at 8:00 AM.",
+        "events": [
+          {
+            "category": "meal",
+            "timestamp": 1789560000000,
+            "confidence": 0.9
+          }
+        ]
+      }
+    ],
+    "routineNotes": []
+  },
+  "expect": {
+    "claimCountByCategory": {
+      "meal": 2,
+      "potty": 1
+    },
+    "statementContainsByCategory": {
+      "meal": [
+        "8 oz"
+      ]
+    },
+    "gapDates": [
+      "2026-09-15"
+    ],
+    "coverageZero": [
+      "sleep",
+      "mood",
+      "milestone",
+      "school"
+    ],
+    "questionTags": [],
+    "followUps": [
+      {
+        "question": "How was her month?",
+        "outcome": "refused-out-of-window"
+      }
+    ]
+  }
+}

@@ -1,0 +1,176 @@
+{
+  "id": "rich-window",
+  "description": "Three-day window with published structured captures: per-event claims with source links, a low-confidence event withheld to questions, a failed extraction surfaced, and a disclosed partial-day gap for the current morning.",
+  "input": {
+    "childId": "syn-child-ava",
+    "childName": "Ava",
+    "recipientName": "Nana Ruth",
+    "lastSeenAt": 1789387200000,
+    "generatedAt": 1789650000000,
+    "timezone": "America/New_York",
+    "entries": [
+      {
+        "entryId": "syn-entry-001",
+        "captureId": "syn-capture-001",
+        "authorId": "caregiver-mom",
+        "createdAt": 1789387500000,
+        "visibility": "published",
+        "extractionStatus": "structured",
+        "rawTranscript": "Ava had 8 ounces of milk with breakfast at 8:00 AM. Then she went poop on the potty at 9:30 AM.",
+        "events": [
+          {
+            "category": "meal",
+            "timestamp": 1789387200000,
+            "payload": {
+              "ounces": 8
+            },
+            "confidence": 0.95
+          },
+          {
+            "category": "potty",
+            "timestamp": 1789392600000,
+            "confidence": 0.9
+          }
+        ]
+      },
+      {
+        "entryId": "syn-entry-002",
+        "captureId": "syn-capture-002",
+        "authorId": "caregiver-dad",
+        "createdAt": 1789491900000,
+        "visibility": "published",
+        "extractionStatus": "structured",
+        "rawTranscript": "Ava napped for 95 minutes starting at 1:02 PM.",
+        "events": [
+          {
+            "category": "sleep",
+            "timestamp": 1789491720000,
+            "payload": {
+              "minutes": 95
+            },
+            "confidence": 0.9
+          }
+        ]
+      },
+      {
+        "entryId": "syn-entry-003",
+        "captureId": "syn-capture-003",
+        "authorId": "caregiver-dad",
+        "createdAt": 1789511400000,
+        "visibility": "published",
+        "extractionStatus": "structured",
+        "rawTranscript": "She was really happy and giggly after dinner.",
+        "events": [
+          {
+            "category": "mood",
+            "timestamp": 1789511400000,
+            "confidence": 0.85
+          }
+        ]
+      },
+      {
+        "entryId": "syn-entry-004",
+        "captureId": "syn-capture-004",
+        "authorId": "caregiver-mom",
+        "createdAt": 1789560300000,
+        "visibility": "published",
+        "extractionStatus": "structured",
+        "rawTranscript": "Ava ate half a banana and some oatmeal for breakfast at 8:00 AM.",
+        "events": [
+          {
+            "category": "meal",
+            "timestamp": 1789560000000,
+            "confidence": 0.9
+          }
+        ]
+      },
+      {
+        "entryId": "syn-entry-005",
+        "captureId": "syn-capture-005",
+        "authorId": "caregiver-mom",
+        "createdAt": 1789578600000,
+        "visibility": "published",
+        "extractionStatus": "structured",
+        "rawTranscript": "Ava seemed fussy before her nap.",
+        "events": [
+          {
+            "category": "mood",
+            "timestamp": 1789576200000,
+            "confidence": 0.42
+          }
+        ]
+      },
+      {
+        "entryId": "syn-entry-006",
+        "captureId": "syn-capture-006",
+        "authorId": "caregiver-dad",
+        "createdAt": 1789595100000,
+        "visibility": "published",
+        "extractionStatus": "failed",
+        "rawTranscript": "Ava's grandma picked her up and they went to the park.",
+        "events": []
+      }
+    ],
+    "routineNotes": []
+  },
+  "expect": {
+    "claimCountByCategory": {
+      "meal": 2,
+      "potty": 1,
+      "sleep": 1,
+      "mood": 1
+    },
+    "statementContainsByCategory": {
+      "meal": [
+        "8 oz"
+      ],
+      "sleep": [
+        "95 min"
+      ]
+    },
+    "gapDates": [
+      "2026-09-17"
+    ],
+    "coverageZero": [
+      "milestone",
+      "school"
+    ],
+    "questionTags": [
+      "extraction-failed",
+      "low-confidence-event"
+    ],
+    "excludedFromDigest": [],
+    "digestContains": [
+      "No entries were logged on 2026-09-17"
+    ],
+    "suggestedFollowUpsMin": 1,
+    "followUps": [
+      {
+        "question": "How did naps go?",
+        "outcome": "answered",
+        "answerContains": [
+          "95 min"
+        ],
+        "mustCite": true
+      },
+      {
+        "question": "Is her eating normal for her age?",
+        "outcome": "refused-medical",
+        "answerContains": [
+          "can't draw conclusions"
+        ]
+      },
+      {
+        "question": "What did she do last month?",
+        "outcome": "refused-out-of-window"
+      },
+      {
+        "question": "Any school moments?",
+        "outcome": "not-logged",
+        "answerContains": [
+          "Nothing was logged"
+        ]
+      }
+    ]
+  }
+}

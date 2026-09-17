@@ -1,0 +1,45 @@
+{
+  "id": "empty-window",
+  "description": "Window with zero captures of any kind: no claims, every category discloses zero coverage, and each day gets care-neutral gap disclosure — absence of logs never reads as absence of care.",
+  "input": {
+    "childId": "syn-child-ava",
+    "childName": "Ava",
+    "recipientName": "Nana Ruth",
+    "lastSeenAt": 1789387200000,
+    "generatedAt": 1789650000000,
+    "timezone": "America/New_York",
+    "entries": [],
+    "routineNotes": []
+  },
+  "expect": {
+    "claimCountByCategory": {},
+    "gapDates": [
+      "2026-09-14",
+      "2026-09-15",
+      "2026-09-16",
+      "2026-09-17"
+    ],
+    "coverageZero": [
+      "potty",
+      "meal",
+      "sleep",
+      "mood",
+      "milestone",
+      "school"
+    ],
+    "questionTags": [],
+    "digestContains": [
+      "No entries were logged on 2026-09-15"
+    ],
+    "suggestedFollowUpsMin": 1,
+    "followUps": [
+      {
+        "question": "What did Ava eat?",
+        "outcome": "not-logged",
+        "answerContains": [
+          "Nothing was logged"
+        ]
+      }
+    ]
+  }
+}

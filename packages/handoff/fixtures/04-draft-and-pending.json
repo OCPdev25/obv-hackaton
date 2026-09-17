@@ -1,0 +1,79 @@
+{
+  "id": "draft-and-pending",
+  "description": "Draft and pending captures in the window: neither contributes claims or quoted content; both surface as unresolved questions, and the day is not disclosed as a gap because captures exist.",
+  "input": {
+    "childId": "syn-child-ava",
+    "childName": "Ava",
+    "recipientName": "Nana Ruth",
+    "lastSeenAt": 1789531200000,
+    "generatedAt": 1789617540000,
+    "timezone": "America/New_York",
+    "entries": [
+      {
+        "entryId": "syn-entry-d01",
+        "captureId": "syn-capture-d01",
+        "authorId": "caregiver-mom",
+        "createdAt": 1789567200000,
+        "visibility": "draft",
+        "extractionStatus": "structured",
+        "rawTranscript": "Draft capture: Ava napped for 60 minutes this morning. xyzzy unpublished marker.",
+        "events": [
+          {
+            "category": "sleep",
+            "timestamp": 1789567200000,
+            "payload": {
+              "minutes": 60
+            },
+            "confidence": 0.9
+          }
+        ]
+      },
+      {
+        "entryId": "syn-entry-p01",
+        "captureId": "syn-capture-p01",
+        "authorId": "caregiver-dad",
+        "createdAt": 1789574400000,
+        "visibility": "published",
+        "extractionStatus": "pending",
+        "rawTranscript": "Ava is having lunch with her cousins.",
+        "events": []
+      }
+    ],
+    "routineNotes": []
+  },
+  "expect": {
+    "claimCountByCategory": {},
+    "gapDates": [],
+    "coverageZero": [
+      "potty",
+      "meal",
+      "sleep",
+      "mood",
+      "milestone",
+      "school"
+    ],
+    "questionTags": [
+      "draft-capture",
+      "extraction-pending"
+    ],
+    "excludedFromDigest": [
+      "xyzzy",
+      "Draft capture",
+      "cousins"
+    ],
+    "digestContains": [
+      "still in draft review",
+      "still being processed"
+    ],
+    "suggestedFollowUpsMin": 1,
+    "followUps": [
+      {
+        "question": "How long was her nap?",
+        "outcome": "not-logged",
+        "answerContains": [
+          "Nothing was logged"
+        ]
+      }
+    ]
+  }
+}
