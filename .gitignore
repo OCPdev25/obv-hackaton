@@ -1,4 +1,28 @@
+# Dependencies
 node_modules/
-.convex/
+.pnpm-store/
+
+# Build outputs
+dist/
+.turbo/
+.expo/
+*.tsbuildinfo
+
+# Env files (real values only; .env.example files are committed)
 .env
+.env.local
+.env.*.local
 *.local
+
+# Convex local state
+.convex/
+
+# OS / editor
+.DS_Store
+*.swp
+.idea/
+.vscode/
+
+# Convex codegen is committed intentionally for this scaffold (CI has no
+# Convex deployment); if that policy changes, uncomment:
+# backend/convex/convex/_generated/
