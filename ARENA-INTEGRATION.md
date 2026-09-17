@@ -70,20 +70,40 @@ win wherever the two conflict.
 ## Verification evidence (this session, this branch)
 
 Executed in `/home/user/work/arena-int` (worktree of
-`task/arena-integration-pick-base-graft-justif-qKuZn1nq`, base `fd7a6ab`):
+`task/arena-integration-pick-base-graft-justif-qKuZn1nq`):
 
-- `pnpm turbo run typecheck test build --force` — **20/20 tasks, 0 cached**
-  (baseline clean-master was 18/18; +2 = the new capture package).
-- `bun test ./security` — **29 pass, 0 fail** (unchanged by this branch).
-- `bun test` in `backend/convex` — **31 pass, 0 fail** (17 knowledge + 14 new
-  entries-graft tests).
-- `bun src/run.ts --adapter=./src/integrated-adapter.ts` (PR #6 harness) —
-  **6/6 fixtures** on the integrated adapter; negative control
-  (`broken-adapter.ts --expect-failure`) fails as required (1/6).
-- `pnpm --filter @journal/capture journeys` — **15/15 checks**.
+- At base `fd7a6ab` (pre-rebase): `pnpm turbo run typecheck test build
+  --force` — **20/20 tasks, 0 cached** (baseline clean-master was 18/18; +2 =
+  the new capture package). Every gate below also ran green here.
+- After rebase onto `9ea7e73` (PR #15's merge commit), on the branch head —
+  all gates re-run because the rebase invalidates prior results:
+  - `bun test ./security` — **29 pass, 0 fail**.
+  - `bun test` in `backend/convex` — **31 pass, 0 fail** (17 knowledge + 14
+    new entries-graft tests).
+  - PR #6 harness on the integrated adapter — **6/6 fixtures**; negative
+    control (`broken-adapter.ts --expect-failure`) exits as expected.
+  - `pnpm --filter @journal/capture journeys` — **15/15 checks**.
+  - `pnpm install --frozen-lockfile` — no-op (lockfile carries the capture
+    workspace member).
+  - `pnpm turbo run typecheck test build --force` — **19/20**:
+    `@journal/capture-recovery#test` FAILS. This failure is **pre-existing on
+    clean master** — verified in a separate worktree at `9ea7e73` (same
+    fixture error: `steps[2].event.attempt` expected object, got a number).
+    It is PR #15's post-squash schema incompatibility (numeric `attempt` vs
+    canonical `AttemptNumber` record); the repair is owned by the open,
+    CI-green PR #35 (`5f4edf7`, mergeStateStatus CLEAN) and a duplicate PR
+    #36 — deliberately NOT duplicated on this branch to avoid forking their
+    fix. This branch touches nothing in `packages/capture-recovery`.
 - `packages/domain` diff vs `fd7a6ab` — **empty** (rule-2 discipline held).
 
 ## Known limitations (stated, not hidden)
+
+- **Master-side test failure (not this branch's diff)** —
+  `@journal/capture-recovery#test` fails on clean master `9ea7e73` (PR #15's
+  post-squash incompatibility). Repaired by open PR #35 / duplicate PR #36;
+  this branch rebases onto master after that merge, and full-suite turbo green
+  is re-established there. Until then this PR's turbo check is expected red on
+  that one pre-existing package test.
 
 - **N1** — no local Convex runtime harness; the append path's handler wiring is
   proven by generated-API typecheck + validator-level tests, not live Convex.
