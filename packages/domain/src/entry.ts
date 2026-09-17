@@ -1,5 +1,6 @@
 import { Schema } from "effect"
 import { convexId } from "./ids.js"
+import { CaptureId } from "./extraction.js"
 import { Attachment } from "./attachment.js"
 
 /** Extraction lifecycle stored on every entry. */
@@ -30,6 +31,12 @@ export const EntryFields = {
   structuredEventIds: Schema.Array(convexId("events")),
   extractionStatus: ExtractionStatus,
   visibility: EntryVisibility,
+  /**
+   * Capture session that produced this entry — the idempotency key for
+   * retried captures (original capture wins). Absent for manual entries
+   * that never went through a capture session.
+   */
+  captureId: Schema.optional(CaptureId),
   photoId: Schema.optional(Schema.String),
   /** v0.3 (art_rBKvvzIa SS4 + art_lyBemdV9 SS2): supersedes photoId going forward; the scalar stays until its readers migrate. */
   attachments: Schema.optionalKey(Schema.Array(Attachment)),

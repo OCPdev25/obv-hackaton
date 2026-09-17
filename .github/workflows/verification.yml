@@ -1,0 +1,42 @@
+# Verification suites beyond the Turborepo pipeline: the standalone security
+# suite and evaluation harness (with its negative control), plus the
+# verification-gate validator tests. PRs that touch security/, evaluation/, or
+# packages/domain run these on every push; the merge gate itself additionally
+# demands green checks on the exact head SHA (verification/README.md).
+name: Verification
+
+on:
+  pull_request:
+    branches: [master]
+  push:
+    branches: [master]
+
+concurrency:
+  group: verification-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  suites:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.3.14
+
+      - name: Security suite (17 fail-closed access cases)
+        run: bun test ./security
+
+      - name: Evaluation harness (corpus vs worked example)
+        working-directory: evaluation
+        run: bun src/run.ts
+
+      - name: Evaluation negative control (broken adapter must fail)
+        working-directory: evaluation
+        run: bun src/run.ts --adapter=./src/example/broken-adapter.ts --expect-failure
+
+      - name: Verification-gate validator tests (positive + negative controls)
+        working-directory: verification
+        run: bun test ./test

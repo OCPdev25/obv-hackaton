@@ -1,0 +1,126 @@
+{
+  "fixtureId": "F-AX-RESUME-REFS-001",
+  "kind": "acceptance",
+  "title": "resume produces the same envelope refs as fresh capture; the historical answer renders at its current status",
+  "contractSource": "art_gCDrtx4S section 5, F-AX-RESUME-REFS-001 (serves slot 17)",
+  "scenario": {
+    "narrative": "Mom asks 'she slept an hour' (the F-AX-CLARIFY-001 envelope); the clarification is shown; the app is killed. While the app is closed, revision fx_rev_001 commits (watermark v1). Mom reopens and answers 'Mia'. The resumed session's follow-up envelope carries the same references[] (same referenceIds, targetIds, visibleToActor) with currentChild now user-asserted, and the previously served answer A1 from history renders superseded - never the pre-correction value as current.",
+    "anchors": {
+      "askUtc": "2026-09-17T18:30:00Z",
+      "revisionCommittedUtc": "2026-09-17T20:30:00Z",
+      "resumeUtc": "2026-09-17T23:00:00Z"
+    }
+  },
+  "input": {
+    "originalEnvelope": {
+      "envelopeId": "fx_env_clarify_001",
+      "captureId": "fx_capture_001",
+      "capturedAt": 1789669800000,
+      "capturedAtTimezone": {
+        "value": "America/New_York",
+        "source": "app-known",
+        "basis": "device settings at capture time"
+      },
+      "utterance": "she slept an hour at nap today",
+      "actor": { "authorId": "fx_parent_a", "role": "parent" },
+      "householdId": "fx_household_1",
+      "viewContext": {
+        "value": { "screen": "timeline" },
+        "source": "app-known",
+        "basis": "timeline screen open"
+      },
+      "references": [
+        {
+          "referenceId": "fx_ref_001",
+          "kind": "event",
+          "targetId": "fx_evt_sleep_001",
+          "relatedChildId": "fx_child_m",
+          "snippet": "Mia - nap, 1 hour",
+          "source": "app-known",
+          "visibleToActor": true
+        },
+        {
+          "referenceId": "fx_ref_002",
+          "kind": "event",
+          "targetId": "fx_evt_leo_nap_001",
+          "relatedChildId": "fx_child_l",
+          "snippet": "Leo - nap, 45 minutes",
+          "source": "app-known",
+          "visibleToActor": true
+        }
+      ]
+    },
+    "historicalAnswerA1": {
+      "_tag": "answered",
+      "envelopeId": "fx_env_ask_001",
+      "response": "Mia napped for 1 hour.",
+      "citations": [{ "recordId": "fx_evt_sleep_001", "recordKind": "event" }],
+      "answerId": "fx_ans_001",
+      "readWatermark": { "householdId": "fx_household_1", "version": 0 },
+      "status": "current"
+    },
+    "revisionWhileClosed": {
+      "revisionId": "fx_rev_001",
+      "targetRecordId": "fx_evt_sleep_001",
+      "containingEntryId": "fx_entry_sleep_001",
+      "revisedAt": 1789677000000,
+      "summary": "quantity: 1 hour -> 45 minutes"
+    },
+    "resumedEnvelope": {
+      "envelopeId": "fx_env_resume_001",
+      "captureId": "fx_capture_resume_001",
+      "capturedAt": 1789686000000,
+      "capturedAtTimezone": {
+        "value": "America/New_York",
+        "source": "app-known",
+        "basis": "device settings at capture time"
+      },
+      "utterance": "Mia",
+      "actor": { "authorId": "fx_parent_a", "role": "parent" },
+      "householdId": "fx_household_1",
+      "currentChild": {
+        "value": { "childId": "fx_child_m", "displayName": "Mia" },
+        "source": "user-asserted",
+        "basis": "mom's spoken answer to the pending clarification"
+      },
+      "viewContext": {
+        "value": { "screen": "timeline" },
+        "source": "app-known",
+        "basis": "timeline screen open"
+      },
+      "references": [
+        {
+          "referenceId": "fx_ref_001",
+          "kind": "event",
+          "targetId": "fx_evt_sleep_001",
+          "relatedChildId": "fx_child_m",
+          "snippet": "Mia - nap, 1 hour",
+          "source": "app-known",
+          "visibleToActor": true
+        },
+        {
+          "referenceId": "fx_ref_002",
+          "kind": "event",
+          "targetId": "fx_evt_leo_nap_001",
+          "relatedChildId": "fx_child_l",
+          "snippet": "Leo - nap, 45 minutes",
+          "source": "app-known",
+          "visibleToActor": true
+        }
+      ]
+    }
+  },
+  "expected": {
+    "sameReferenceIds": ["fx_ref_001", "fx_ref_002"],
+    "sameTargetIds": ["fx_evt_sleep_001", "fx_evt_leo_nap_001"],
+    "sameVisibleToActor": [true, true],
+    "resumedCurrentChildSource": "user-asserted",
+    "resumedCurrentChildChildId": "fx_child_m",
+    "reClarifyOutcomeTag": "resolved",
+    "reClarifyTargetId": "fx_child_m",
+    "reClarifyProvenance": "user-asserted",
+    "historicalAnswerStatusAfterRestore": "superseded",
+    "historicalAnswerSupersededByRevisionId": "fx_rev_001",
+    "historicalAnswerServableAsCurrent": false
+  }
+}

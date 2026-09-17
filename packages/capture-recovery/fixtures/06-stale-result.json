@@ -1,0 +1,23 @@
+{
+  "id": "stale-result",
+  "kind": "stale-result",
+  "description": "After a failed attempt 0 the caregiver retries (attempt 1). The superseded attempt 0 extraction result arrives late and is suppressed — discarded, never merged (contract v0.2 rule b). The latest attempt 1 result applies normally.",
+  "capture": { "captureId": "cap-recover-006", "authorId": "caregiver-1", "at": 1789564100000 },
+  "steps": [
+    { "event": { "_tag": "TranscriptChanged", "at": 1789564101000, "text": "Nina was fussy before her nap" } },
+    { "event": { "_tag": "SubmitRequested", "at": 1789564102000, "submissionId": "sub-recover-006" } },
+    { "event": { "_tag": "SubmitRejected", "at": 1789564103000, "attempt": 0, "reason": "network" } },
+    { "event": { "_tag": "RetryRequested", "at": 1789564134000 } },
+    { "event": { "_tag": "ExtractionResultArrived", "at": 1789564135000, "attempt": 0, "outcome": "structured" } },
+    { "event": { "_tag": "SubmitAccepted", "at": 1789564136000 } },
+    { "event": { "_tag": "ExtractionResultArrived", "at": 1789564140000, "attempt": 1, "outcome": "structured" } }
+  ],
+  "expect": {
+    "phase": "saved",
+    "tone": "success",
+    "bannerVisible": false,
+    "staleResultsSuppressed": 1,
+    "attempt": 1,
+    "extractionStatus": "structured"
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "name": "@journal/capture-recovery",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Interrupted-capture recovery: pure state machine, truthful saved/pending/failed contract, replayable fixtures",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.test.json --noEmit",
+    "test": "bun test"
+  },
+  "dependencies": {
+    "@journal/domain": "workspace:*",
+    "effect": "4.0.0-rc.115"
+  },
+  "devDependencies": {
+    "@types/bun": "^1.3.14",
+    "typescript": "~6.0.3"
+  }
+}

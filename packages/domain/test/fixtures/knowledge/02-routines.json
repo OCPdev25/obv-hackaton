@@ -1,0 +1,54 @@
+{
+  "kind": "knowledge-items",
+  "id": "knowledge-02-routines",
+  "description": "Synthetic routines as ordered steps: a bedtime routine extracted from a transcript (with source span) and a morning routine dictated in conversation. Step order and wording are preserved exactly.",
+  "items": [
+    {
+      "householdId": "synthetic-household-0001",
+      "childId": "synthetic-child-0001",
+      "kind": "routine",
+      "topic": "bedtime-routine",
+      "statement": "Fixed order, every night.",
+      "steps": ["warm bath", "pajamas", "two books (she picks)", "white noise on", "lights out"],
+      "status": "current",
+      "validFrom": 1789588800000,
+      "statedBy": "caregiver-mom",
+      "recordedBy": "extraction-model",
+      "provenanceKind": "model-extracted",
+      "confidence": 0.78,
+      "sourceType": "entry",
+      "sourceEntryId": "synthetic-entry-0002",
+      "sourceSpan": { "start": 0, "end": 118 },
+      "sourceQuote": "Our bedtime routine is pretty fixed: a warm bath, pajamas, two books — she picks — then white noise on and lights out.",
+      "visibility": "published",
+      "createdAt": 1789588800000
+    },
+    {
+      "householdId": "synthetic-household-0001",
+      "childId": "synthetic-child-0001",
+      "kind": "routine",
+      "topic": "morning-routine",
+      "statement": "Same flow every weekday morning.",
+      "steps": ["wake up 6:45", "potty", "get dressed (outfit in top drawer)", "breakfast — oatmeal most days"],
+      "status": "current",
+      "validFrom": 1789588800000,
+      "statedBy": "caregiver-dad",
+      "recordedBy": "caregiver-dad",
+      "provenanceKind": "caregiver-stated",
+      "confidence": 0.9,
+      "sourceType": "conversation",
+      "sourceRef": "synthetic-conversation-0007",
+      "sourceQuote": "Morning is: up at 6:45, potty, dressed from the top drawer, then breakfast — oatmeal most days.",
+      "visibility": "published",
+      "createdAt": 1789588800000
+    }
+  ],
+  "expected": {
+    "itemCount": 2,
+    "topics": ["bedtime-routine", "morning-routine"],
+    "kindCounts": { "routine": 2 },
+    "statusCounts": { "current": 2 },
+    "supersedesCount": 0,
+    "conflictTopics": []
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "id": "discard-receipt",
+  "kind": "discard-receipt",
+  "description": "The caregiver explicitly discards a sensitive capture. The raw text is cleared; a receipt (time, length, attempt, submissionId) remains so a discarded capture is a visible receipt — never silent absence — and the missing-log vs zero-care distinction is preserved. Post-discard edits are anomalies, not resurrections.",
+  "capture": { "captureId": "cap-recover-007", "authorId": "caregiver-1", "at": 1789564200000 },
+  "steps": [
+    { "event": { "_tag": "TranscriptChanged", "at": 1789564201000, "text": "Ava bit her friend at pickup, we talked about it" } },
+    { "event": { "_tag": "DiscardRequested", "at": 1789564202000 } },
+    { "reload": true },
+    { "event": { "_tag": "TranscriptChanged", "at": 1789564260000, "text": "attempted resurrection" } }
+  ],
+  "expect": {
+    "phase": "discarded",
+    "tone": "neutral",
+    "title": "Discarded — nothing was added to the journal",
+    "bannerVisible": true,
+    "hasReceipt": true,
+    "rawCleared": true,
+    "anomalies": 1
+  }
+}

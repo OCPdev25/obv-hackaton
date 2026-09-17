@@ -28,6 +28,7 @@ apps/mobile          Expo app; ConvexProvider reads EXPO_PUBLIC_CONVEX_URL
 backend/convex       Convex schema + functions (children, households, entries, events)
 packages/domain      Effect v4 schemas + Convex-validator adapter + JSON Schema (draft 2020-12) derivation
 packages/extraction  Transcript → typed events pipeline (stub, no LLM call yet)
+packages/month-history  Deterministic month-history view model + executable journeys (28-check rubric, `bun src/run.ts`)
 packages/ui          Shared RN primitives
 evaluation/          Acceptance corpus (6 fixtures) + candidate-agnostic cross-review harness
 security/            THREAT-MODEL.md + executable fail-closed access cases (17 tests)
@@ -59,12 +60,29 @@ pnpm build                                    # buildable packages
 bun test ./security                           # 17 fail-closed access cases (13 negative + 4 positive)
 cd evaluation && bun src/run.ts               # corpus vs the worked example adapter
 bun src/run.ts --adapter=./src/example/broken-adapter.ts --expect-failure   # negative control must fail
+pnpm --filter @journal/month-history journeys   # month-history 28-check rubric (runner + coverage both directions)
 ```
 
 The security suite and evaluation harness are standalone (`security/` and
 `evaluation/` are not pnpm workspace members), so CI's `pnpm turbo run test`
 does not cover them — run them locally whenever you touch `security/`,
-`evaluation/`, or the domain contracts.
+`evaluation/`, or the domain contracts. `.github/workflows/verification.yml`
+runs both suites (plus the evaluation negative control and the
+verification-gate validator tests) on every PR and push to `master`.
+
+## Verification gate (executable merge workflow)
+
+The review → repair → merge workflow below is executable in
+`verification/` (see `verification/README.md`). PRs record a
+`verification-manifest:v1` block (body or comment — review result, check and
+suite runs, behavior/playable-flow evidence, all on the exact tested HEAD).
+`bun verification/src/cli.ts validate-pr --pr=<n>` validates the latest
+manifest against live PR state; the merge owner runs
+`sweep --pr=<n> --owner=<name>` which refuses unless the PR is open on
+master, checks are green on the exact head SHA, and the manifest validates,
+then merges `--squash` and emits the evidence receipt. Arena candidate
+branches are held regardless of evidence. The validator is pinned by
+positive + negative controls (`cd verification && bun test ./test`).
 
 ## CI
 

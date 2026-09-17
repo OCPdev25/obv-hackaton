@@ -2,9 +2,8 @@ import { ConvexProvider, ConvexReactClient } from "convex/react"
 import { useMemo } from "react"
 import { StyleSheet, View } from "react-native"
 
-import { Text } from "@journal/ui"
-
 import { getConvexClientUrl } from "./src/lib/convex"
+import { MonthHistoryScreen } from "./src/month/MonthHistoryScreen"
 
 export default function App() {
   const client = useMemo(() => new ConvexReactClient(getConvexClientUrl()), [])
@@ -12,7 +11,7 @@ export default function App() {
   return (
     <ConvexProvider client={client}>
       <View style={styles.container}>
-        <Text>Shared Child Journal</Text>
+        <MonthHistoryScreen />
       </View>
     </ConvexProvider>
   )
@@ -20,8 +19,6 @@ export default function App() {
 
 const styles = StyleSheet.create({
   container: {
-    alignItems: "center",
     flex: 1,
-    justifyContent: "center",
   },
 })

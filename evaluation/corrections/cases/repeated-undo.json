@@ -1,0 +1,328 @@
+{
+  "cases": [
+    {
+      "id": "CC-12-repeated-corrections-idempotent",
+      "category": "repeated-corrections-and-undo",
+      "description": "Two sequential corrections of the same field (2:15 → 2:30 → 2:45), then the second correction replays verbatim. Final value 14:45, exactly two correction revisions, replay is a no-op.",
+      "exercises": ["sequential corrections keep the full intermediate lineage", "idempotent replay produces no duplicate revision", "no collapsed single revision"],
+      "setup": {
+        "turns": [
+          {
+            "turnId": "s1",
+            "captureId": "fx_cc12_nap",
+            "speakerId": "fx_u_dad",
+            "capturedAt": 1789496400000,
+            "text": "Nora went down for her nap at 2:15.",
+            "seedEvents": [
+              { "category": "sleep", "occurredAt": 1789496100000, "note": "nap" }
+            ]
+          }
+        ],
+        "baseline": { "entryCount": 1 }
+      },
+      "turns": [
+        {
+          "turnId": "t1",
+          "speakerId": "fx_u_dad",
+          "capturedAt": 1789496700000,
+          "text": "Actually, two thirty.",
+          "correctionId": "cc12-t1",
+          "expect": {
+            "responseClass": "applied",
+            "stateDelta": {
+              "entryChanges": [
+                { "ofCaptureId": "fx_cc12_nap", "events": [{ "category": "sleep", "occurredAt": 1789497000000 }] }
+              ],
+              "appendedRevisions": [
+                { "ofCaptureId": "fx_cc12_nap", "kind": "correction", "authorId": "fx_u_dad", "count": 1 }
+              ]
+            }
+          }
+        },
+        {
+          "turnId": "t2",
+          "speakerId": "fx_u_dad",
+          "capturedAt": 1789496880000,
+          "text": "No wait — 2:45.",
+          "correctionId": "cc12-t2",
+          "expect": {
+            "responseClass": "applied",
+            "stateDelta": {
+              "entryChanges": [
+                { "ofCaptureId": "fx_cc12_nap", "events": [{ "category": "sleep", "occurredAt": 1789497900000 }] }
+              ],
+              "appendedRevisions": [
+                { "ofCaptureId": "fx_cc12_nap", "kind": "correction", "authorId": "fx_u_dad", "count": 1 }
+              ]
+            }
+          }
+        }
+      ],
+      "replay": {
+        "turnIndex": 1,
+        "note": "cc12-t2 re-sent verbatim (same correctionId) — idempotency probe.",
+        "expectResponseClass": "applied"
+      },
+      "final": {
+        "entryCount": 1,
+        "entries": [
+          {
+            "ofCaptureId": "fx_cc12_nap",
+            "childId": "fx_child_nora",
+            "authorId": "fx_u_dad",
+            "status": "draft",
+            "transcriptByteEquals": "Nora went down for her nap at 2:15.",
+            "events": [{ "category": "sleep", "occurredAt": 1789497900000 }],
+            "revisionKinds": ["capture", "correction", "correction"],
+            "lastRevisionAuthorId": "fx_u_dad"
+          }
+        ]
+      },
+      "forbidden": [
+        "idempotent.duplicate_revision",
+        "lineage.truncate",
+        "entry.delete",
+        "raw.mutate"
+      ]
+    },
+    {
+      "id": "CC-13-undo-restore-value",
+      "category": "repeated-corrections-and-undo",
+      "description": "After two corrections (2:15 → 2:30 → 2:45), \"undo that\" restores 2:30. The undo is a new append-only revision that references the undone one — history keeps every step.",
+      "exercises": ["undo as append-only restore, not history rewrite", "value history fully preserved", "undo attribution to the undoing author"],
+      "setup": {
+        "turns": [
+          {
+            "turnId": "s1",
+            "captureId": "fx_cc13_nap",
+            "speakerId": "fx_u_dad",
+            "capturedAt": 1789496400000,
+            "text": "Nora went down for her nap at 2:15.",
+            "seedEvents": [
+              { "category": "sleep", "occurredAt": 1789496100000, "note": "nap" }
+            ]
+          },
+          {
+            "turnId": "s2",
+            "speakerId": "fx_u_dad",
+            "capturedAt": 1789496700000,
+            "text": "Actually, two thirty.",
+            "correctionId": "cc13-t1"
+          },
+          {
+            "turnId": "s3",
+            "speakerId": "fx_u_dad",
+            "capturedAt": 1789496880000,
+            "text": "No wait — 2:45.",
+            "correctionId": "cc13-t2"
+          }
+        ],
+        "baseline": {
+          "entryCount": 1,
+          "entries": [
+            { "ofCaptureId": "fx_cc13_nap", "events": [{ "category": "sleep", "occurredAt": 1789497900000 }] }
+          ],
+          "revisionKinds": { "fx_cc13_nap": ["capture", "correction", "correction"] }
+        }
+      },
+      "turns": [
+        {
+          "turnId": "t1",
+          "speakerId": "fx_u_dad",
+          "capturedAt": 1789497300000,
+          "text": "Undo that — 2:30 was right.",
+          "correctionId": "cc13-t3",
+          "expect": {
+            "responseClass": "applied",
+            "stateDelta": {
+              "entryChanges": [
+                { "ofCaptureId": "fx_cc13_nap", "transcriptUnchanged": true, "events": [{ "category": "sleep", "occurredAt": 1789497000000 }] }
+              ],
+              "appendedRevisions": [
+                { "ofCaptureId": "fx_cc13_nap", "kind": "undo", "authorId": "fx_u_dad", "count": 1 }
+              ]
+            }
+          }
+        }
+      ],
+      "final": {
+        "entryCount": 1,
+        "entries": [
+          {
+            "ofCaptureId": "fx_cc13_nap",
+            "childId": "fx_child_nora",
+            "authorId": "fx_u_dad",
+            "status": "draft",
+            "transcriptByteEquals": "Nora went down for her nap at 2:15.",
+            "events": [{ "category": "sleep", "occurredAt": 1789497000000 }],
+            "revisionKinds": ["capture", "correction", "correction", "undo"],
+            "lastRevisionAuthorId": "fx_u_dad"
+          }
+        ]
+      },
+      "forbidden": [
+        "lineage.truncate",
+        "entry.delete",
+        "raw.mutate",
+        "revision.attribution_rewrite"
+      ]
+    },
+    {
+      "id": "CC-14-undo-to-original",
+      "category": "repeated-corrections-and-undo",
+      "description": "\"Undo everything\" after corrections and a prior undo walks the value back to the ORIGINAL captured 2:15 — again via append-only undo revisions, with raw transcript and full history intact.",
+      "exercises": ["undo-to-capture-state semantics", "append-only lineage across two undos", "raw transcript still byte-identical to first dictation"],
+      "setup": {
+        "turns": [
+          {
+            "turnId": "s1",
+            "captureId": "fx_cc14_nap",
+            "speakerId": "fx_u_dad",
+            "capturedAt": 1789496400000,
+            "text": "Nora went down for her nap at 2:15.",
+            "seedEvents": [
+              { "category": "sleep", "occurredAt": 1789496100000, "note": "nap" }
+            ]
+          },
+          {
+            "turnId": "s2",
+            "speakerId": "fx_u_dad",
+            "capturedAt": 1789496700000,
+            "text": "Actually, two thirty.",
+            "correctionId": "cc14-t1"
+          },
+          {
+            "turnId": "s3",
+            "speakerId": "fx_u_dad",
+            "capturedAt": 1789496880000,
+            "text": "No wait — 2:45.",
+            "correctionId": "cc14-t2"
+          },
+          {
+            "turnId": "s4",
+            "speakerId": "fx_u_dad",
+            "capturedAt": 1789497300000,
+            "text": "Undo that — 2:30 was right.",
+            "correctionId": "cc14-t3"
+          }
+        ],
+        "baseline": {
+          "entryCount": 1,
+          "entries": [
+            { "ofCaptureId": "fx_cc14_nap", "events": [{ "category": "sleep", "occurredAt": 1789497000000 }] }
+          ],
+          "revisionKinds": { "fx_cc14_nap": ["capture", "correction", "correction", "undo"] }
+        }
+      },
+      "turns": [
+        {
+          "turnId": "t1",
+          "speakerId": "fx_u_dad",
+          "capturedAt": 1789498200000,
+          "text": "Actually, undo everything — 2:15 was right after all.",
+          "correctionId": "cc14-t4",
+          "expect": {
+            "responseClass": "applied",
+            "stateDelta": {
+              "entryChanges": [
+                { "ofCaptureId": "fx_cc14_nap", "transcriptUnchanged": true, "events": [{ "category": "sleep", "occurredAt": 1789496100000 }] }
+              ],
+              "appendedRevisions": [
+                { "ofCaptureId": "fx_cc14_nap", "kind": "undo", "authorId": "fx_u_dad", "count": 1 }
+              ]
+            }
+          }
+        }
+      ],
+      "final": {
+        "entryCount": 1,
+        "entries": [
+          {
+            "ofCaptureId": "fx_cc14_nap",
+            "childId": "fx_child_nora",
+            "authorId": "fx_u_dad",
+            "status": "draft",
+            "transcriptByteEquals": "Nora went down for her nap at 2:15.",
+            "events": [{ "category": "sleep", "occurredAt": 1789496100000 }],
+            "revisionKinds": ["capture", "correction", "correction", "undo", "undo"],
+            "lastRevisionAuthorId": "fx_u_dad"
+          }
+        ]
+      },
+      "forbidden": [
+        "lineage.truncate",
+        "entry.delete",
+        "raw.mutate",
+        "publication.change_via_correction"
+      ]
+    },
+    {
+      "id": "CC-15-undo-unauthorized",
+      "category": "repeated-corrections-and-undo",
+      "description": "Nana holds a read-only grant on Nora. Her attempt to undo Mom's correction must fail closed: rejection, zero writes, and no revision record for the attempt.",
+      "exercises": ["authorization fail-closed on undo", "read-only grant cannot write", "no revision record for rejected turns"],
+      "setup": {
+        "turns": [
+          {
+            "turnId": "s1",
+            "captureId": "fx_cc15_nap",
+            "speakerId": "fx_u_mom",
+            "capturedAt": 1789496400000,
+            "text": "Nora went down for her nap at 2:15.",
+            "seedEvents": [
+              { "category": "sleep", "occurredAt": 1789496100000, "note": "nap" }
+            ]
+          },
+          {
+            "turnId": "s2",
+            "speakerId": "fx_u_mom",
+            "capturedAt": 1789496700000,
+            "text": "Actually, two thirty.",
+            "correctionId": "cc15-t1"
+          }
+        ],
+        "baseline": {
+          "entryCount": 1,
+          "entries": [
+            { "ofCaptureId": "fx_cc15_nap", "events": [{ "category": "sleep", "occurredAt": 1789497000000 }] }
+          ],
+          "revisionKinds": { "fx_cc15_nap": ["capture", "correction"] }
+        }
+      },
+      "turns": [
+        {
+          "turnId": "t1",
+          "speakerId": "fx_u_nana",
+          "capturedAt": 1789497000000,
+          "text": "Undo Mom's change.",
+          "correctionId": "cc15-t2",
+          "expect": {
+            "responseClass": "rejected",
+            "stateDelta": "none"
+          }
+        }
+      ],
+      "final": {
+        "entryCount": 1,
+        "entries": [
+          {
+            "ofCaptureId": "fx_cc15_nap",
+            "childId": "fx_child_nora",
+            "authorId": "fx_u_mom",
+            "status": "draft",
+            "transcriptByteEquals": "Nora went down for her nap at 2:15.",
+            "events": [{ "category": "sleep", "occurredAt": 1789497000000 }],
+            "revisionKinds": ["capture", "correction"],
+            "lastRevisionAuthorId": "fx_u_mom"
+          }
+        ]
+      },
+      "forbidden": [
+        "write.without_grant",
+        "lineage.truncate",
+        "revision.attribution_rewrite",
+        "entry.delete"
+      ]
+    }
+  ]
+}

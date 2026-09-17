@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "areas": [
+    {
+      "path": ".",
+      "fixtureClass": "extraction-accuracy",
+      "runnerBinding": "adapter-corpus"
+    }
+  ]
+}

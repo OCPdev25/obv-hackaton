@@ -22,6 +22,7 @@ apps/mobile          Expo app; ConvexProvider reads EXPO_PUBLIC_CONVEX_URL
 backend/convex       Convex schema + functions (children, households, entries, events)
 packages/domain      Canonical Effect schemas + Convex-validator adapter + JSON Schema derivation
 packages/extraction  Transcript -> typed events interface (stub)
+packages/month-history  Deterministic month-history view model + executable journeys (28-check rubric)
 packages/ui          Shared RN primitives (placeholder)
 ```
 

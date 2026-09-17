@@ -8,7 +8,10 @@
     "eval": "bun src/run.ts",
     "test": "bun src/run.ts",
     "typecheck": "tsc --noEmit",
-    "eval:broken": "bun src/run.ts --adapter=./src/example/broken-adapter.ts --expect-failure"
+    "eval:broken": "bun src/run.ts --adapter=./src/example/broken-adapter.ts --expect-failure",
+    "selfcheck:manifest": "bun src/manifest-selfcheck.ts",
+    "eval:corrections": "bun src/corrections/run.ts",
+    "eval:corrections:broken": "bun src/corrections/run.ts --adapter=./src/corrections/example/broken-adapter.ts --expect-failure"
   },
   "devDependencies": {
     "@types/node": "^20.14.0",

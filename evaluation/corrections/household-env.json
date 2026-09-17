@@ -1,0 +1,52 @@
+{
+  "envVersion": "0.1.0",
+  "description": "Shared synthetic household for the conversational correction challenge corpus. All fixture instants fall on 2026-09-15 (America/New_York, EDT) and were machine-computed against the IANA tzdb. Grants are explicit role grants — audience permissions live here, never on entries.",
+  "household": {
+    "householdId": "fx_house_main",
+    "timezone": "America/New_York",
+    "fixtureDate": "2026-09-15",
+    "children": [
+      { "childId": "fx_child_nora", "displayName": "Nora" },
+      { "childId": "fx_child_leo", "displayName": "Leo" },
+      { "childId": "fx_child_mia", "displayName": "Mia" }
+    ],
+    "members": [
+      {
+        "memberId": "fx_u_mom",
+        "displayName": "Mom",
+        "role": "parent",
+        "childGrants": {
+          "fx_child_nora": "read-write",
+          "fx_child_leo": "read-write",
+          "fx_child_mia": "read-write"
+        }
+      },
+      {
+        "memberId": "fx_u_dad",
+        "displayName": "Dad",
+        "role": "parent",
+        "childGrants": {
+          "fx_child_nora": "read-write",
+          "fx_child_leo": "read-write",
+          "fx_child_mia": "read-write"
+        }
+      },
+      {
+        "memberId": "fx_u_rosa",
+        "displayName": "Rosa",
+        "role": "caregiver",
+        "childGrants": {
+          "fx_child_leo": "read-write"
+        }
+      },
+      {
+        "memberId": "fx_u_nana",
+        "displayName": "Nana",
+        "role": "caregiver",
+        "childGrants": {
+          "fx_child_nora": "read"
+        }
+      }
+    ]
+  }
+}

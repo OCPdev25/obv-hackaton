@@ -1,0 +1,43 @@
+{
+  "fixtureId": "F-AX-STALE-ANSWER-001",
+  "kind": "adversarial",
+  "title": "a served answer never retains the pre-correction value",
+  "contractSource": "art_gCDrtx4S section 5, F-AX-STALE-ANSWER-001 (serving-layer behavior over the F-AX-CORRECT-ANSWER-001 lineage)",
+  "scenario": {
+    "narrative": "Any request that would return A1 after fx_rev_001 has committed - a replay of A1's (envelopeId, watermark) key, a history render, or a cached serve. No serving path may present the pre-correction value as current truth: every path either recomputes at the current watermark or renders A1 only as superseded with the revision pointer visible.",
+    "anchors": {
+      "correctionCommittedUtc": "2026-09-17T20:30:00Z",
+      "attemptedServeUtc": "2026-09-17T23:00:00Z"
+    }
+  },
+  "input": {
+    "storedAnswerA1": {
+      "_tag": "answered",
+      "envelopeId": "fx_env_ask_001",
+      "response": "Mia napped for 1 hour.",
+      "citations": [{ "recordId": "fx_evt_sleep_001", "recordKind": "event" }],
+      "answerId": "fx_ans_001",
+      "readWatermark": { "householdId": "fx_household_1", "version": 0 },
+      "status": "superseded",
+      "supersededByRevisionId": "fx_rev_001"
+    },
+    "revision": {
+      "revisionId": "fx_rev_001",
+      "targetRecordId": "fx_evt_sleep_001",
+      "containingEntryId": "fx_entry_sleep_001",
+      "revisedAt": 1789677000000,
+      "summary": "quantity: 1 hour -> 45 minutes"
+    },
+    "currentWatermarkVersion": 1,
+    "servingPaths": ["replayed-key", "history-render", "cached-serve"]
+  },
+  "expected": {
+    "everyPathOutcomeTag": "watermark-moved",
+    "observedVersion": 0,
+    "currentVersion": 1,
+    "errorRetryable": true,
+    "serializedErrorMustNotContain": ["Mia napped for 1 hour", "1 hour", "fx_ans_001"],
+    "preCorrectionValueNeverCurrent": true,
+    "recomputedAnswerCitesRevisionId": "fx_rev_001"
+  }
+}
