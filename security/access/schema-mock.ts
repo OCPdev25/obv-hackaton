@@ -81,3 +81,32 @@ export function makeEvent(event: Omit<Event, '_tag'>): Event {
 export function makeEntry(entry: Omit<Entry, '_tag'>): Entry {
   return assertEntryInvariants({ _tag: 'Entry', ...entry })
 }
+
+// --- Knowledge items (family-knowledge slice) ------------------------------------------------
+//
+// Minimal projection of the canonical family-knowledge contract
+// (packages/domain/src/knowledge.ts, PR #16 — KnowledgeFields), transcribed
+// not invented: only the fields the access policy consumes. `kind` is carried
+// ONLY so the kind-is-never-an-authorization-input negative case can prove
+// the policy ignores it (KN-8); it is a retrieval/rendering discriminant,
+// never an authorization input (contract decision adopted 2026-09-17).
+
+export const KNOWLEDGE_KINDS = ['settling', 'routine', 'quote', 'preference'] as const
+export type KnowledgeKind = (typeof KNOWLEDGE_KINDS)[number]
+
+export const KNOWLEDGE_ITEM_STATUSES = ['current', 'superseded'] as const
+export type KnowledgeItemStatus = (typeof KNOWLEDGE_ITEM_STATUSES)[number]
+
+export interface KnowledgeItem {
+  readonly kind: KnowledgeKind
+  readonly topic: string
+  readonly status: KnowledgeItemStatus
+  /** Per-item publication state ONLY (contract v0.2) — mirrors Entry.status. */
+  readonly visibility: PublicationState
+  /** External identity of whoever captured the item — the author-analog for the draft rule. */
+  readonly recordedBy: string
+}
+
+export function makeKnowledgeItem(item: KnowledgeItem): KnowledgeItem {
+  return item
+}
