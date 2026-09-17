@@ -2,6 +2,7 @@ import { describe, expect, test } from "bun:test"
 import { Schema } from "effect"
 
 import {
+  CaptureId,
   CreateChildInput,
   CreateEntryInput,
   CreateEntryOutput,
@@ -220,7 +221,7 @@ describe("Effect -> Convex validator adapter", () => {
     expect(without.captureId).toBeUndefined()
 
     const withCapture = Schema.decodeUnknownSync(EntrySchema)({ ...base, captureId: "cap-001" })
-    expect(withCapture.captureId).toBe("cap-001")
+    expect(withCapture.captureId).toBe(Schema.decodeUnknownSync(CaptureId)("cap-001"))
 
     expect(() => Schema.decodeUnknownSync(EntrySchema)({ ...base, captureId: "" })).toThrow()
   })
@@ -249,7 +250,7 @@ describe("Effect -> Convex validator adapter", () => {
       structuredEventIds: [],
       extractionStatus: "pending",
       visibility: "draft",
-      captureId: "cap-001",
+      captureId: Schema.decodeUnknownSync(CaptureId)("cap-001"),
       createdAt: 1758136800000,
     })
     expect(JSON.stringify(decoded[0])).not.toContain("_id")
